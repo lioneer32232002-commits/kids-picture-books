@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet&size=wide|square -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; }
+  .b { position: relative; overflow: hidden; font-family: "Baloo 2", sans-serif; }
+  .wide { width: 1200px; height: 630px; }
+  .square { width: 1080px; height: 1080px; }
+  .art { position: absolute; inset: 0; background-repeat: no-repeat; }
+  .veil { position: absolute; inset: 0; }
+  .copy { position: absolute; z-index: 2; }
+  .kicker { display: inline-block; font-weight: 800; letter-spacing: .04em; border-radius: 999px; padding: 6px 18px; }
+  h1 { margin: 14px 0 10px; font-weight: 800; line-height: .98; }
+  .sub { font-weight: 700; line-height: 1.25; text-wrap: balance; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .chip { font-weight: 800; border-radius: 999px; padding: 6px 16px; box-shadow: 0 4px 0 rgba(0,0,0,.12); }
+  .cta { display: inline-block; margin-top: 20px; font-weight: 800; border-radius: 999px; padding: 10px 26px; color: #fff; }
+
+  /* ---------- dinosaurs ---------- */
+  .dino .art { background-image: url(../../_raw/dino/banner.jpg); }
+  .dino.wide .art { background-size: cover; background-position: 70% 40%; }
+  .dino .veil { background: linear-gradient(90deg, rgba(255,240,228,.92) 0%, rgba(255,236,222,.75) 34%, rgba(255,236,222,0) 55%); }
+  .dino .copy { color: #4a2f3f; }
+  .dino .kicker { background: #ff8a5c; color: #fff; }
+  .dino h1 { color: #3b2f4a; text-shadow: 0 4px 0 #fff, 0 6px 18px rgba(255,255,255,.9); }
+  .dino h1 span { color: #ff6b3d; }
+  .dino .chip { background: #fff; color: #4a2f3f; }
+  .dino .cta { background: #7cc8a4; box-shadow: 0 6px 0 #4f9f7a; }
+
+  /* ---------- planets ---------- */
+  .planet .art { background-image: url(../../_raw/planet/banner.jpg); }
+  .planet.wide .art { background-size: 108%; background-position: 50% 50%; }
+  .planet .veil { background: linear-gradient(90deg, rgba(10,18,52,.88) 0%, rgba(14,24,66,.65) 36%, rgba(14,24,66,0) 56%); }
+  .planet .copy { color: #fff; }
+  .planet .kicker { background: #ffd166; color: #2a2350; }
+  .planet h1 { color: #fff; text-shadow: 0 4px 0 #2a2350, 0 8px 24px rgba(0,0,0,.5); }
+  .planet h1 span { color: #ffd166; }
+  .planet .chip { background: rgba(255,255,255,.95); color: #2a2350; }
+  .planet .cta { background: #ff7a59; box-shadow: 0 6px 0 #c9502f; }
+
+  /* layout: wide */
+  .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
+  .wide .kicker { font-size: 22px; align-self: flex-start; }
+  .wide h1 { font-size: 84px; }
+  .wide .sub { font-size: 27px; max-width: 520px; }
+  .wide .chip { font-size: 20px; }
+  .wide .cta { font-size: 24px; align-self: flex-start; }
+
+  /* layout: square — art on top, copy below */
+  .square .art { bottom: 38%; background-size: cover; background-position: 75% 50%; }
+  .planet.square .art { background-size: auto 112%; background-position: 78% 50%; }
+  .square .veil { top: 50%; }
+  .dino.square .veil { background: linear-gradient(180deg, rgba(255,240,228,0) 0%, #fff0e4 25%); }
+  .planet.square .veil { background: linear-gradient(180deg, rgba(14,24,66,0) 0%, #121c4a 25%); }
+  .square .copy { left: 60px; right: 60px; bottom: 54px; text-align: center; }
+  .square .kicker { font-size: 26px; }
+  .square h1 { font-size: 92px; }
+  .square .sub { font-size: 32px; }
+  .square .chips { justify-content: center; }
+  .square .chip { font-size: 24px; }
+  .square .cta { font-size: 28px; }
+</style>
+</head>
+<body>
+<div id="b" class="b"><div class="art"></div><div class="veil"></div><div class="copy" id="copy"></div></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const book = q.get("book") || "dino", size = q.get("size") || "wide";
+  document.getElementById("b").classList.add(book, size);
+  const C = {
+    dino: {
+      kicker: "FREE INTERACTIVE PICTURE BOOK",
+      title: "Where Did the <span>Dinosaurs</span> Go?",
+      sub: "Tap the asteroid, watch the sky go dark, and discover Pip's big secret!",
+      chips: ["☄️ Tap & play", "🔊 Sounds & effects", "🧒 Ages 5–7"],
+      cta: "Read it free ▶",
+    },
+    planet: {
+      kicker: "FREE INTERACTIVE PICTURE BOOK",
+      title: "Are We <span>There</span> Yet?",
+      sub: "How long to fly to Mars? How many pizzas to pack? Pick a planet and find out!",
+      chips: ["🚀 Trip calculator", "🍕 Snack counter", "🧒 Ages 5–7"],
+      cta: "Blast off ▶",
+    },
+  }[book];
+  document.getElementById("copy").innerHTML =
+    '<span class="kicker">' + C.kicker + '</span><h1>' + C.title + '</h1><div class="sub">' + C.sub + '</div>' +
+    '<div class="chips">' + C.chips.map(c => '<span class="chip">' + c + '</span>').join("") + '</div>' +
+    '<span class="cta">' + C.cta + '</span>';
+</script>
+</body>
+</html>

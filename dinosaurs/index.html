@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where Did the Dinosaurs Go? | Interactive Picture Book</title>
+<meta name="description" content="A cute, interactive science picture book for kids aged 5-7: tap the asteroid, watch the sky go dark, find the survivors, and discover why birds are living dinosaurs.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Where Did the Dinosaurs Go? 🦖☄️ An interactive picture book">
+<meta property="og:description" content="Tap the asteroid and find out what really happened to the dinosaurs — a cute, true science story for kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/dinosaurs-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/dinosaurs/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #ff8a5c; }
+  .sprite { position: absolute; pointer-events: none; z-index: 2; filter: drop-shadow(0 0 12px rgba(255,170,80,.9)); }
+  #rock { width: 9%; left: 4%; top: 6%; cursor: pointer; pointer-events: auto; transition: transform .3s; }
+  #rock:hover { transform: scale(1.08) rotate(8deg); }
+  .chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+  .chain span.link {
+    background: #fff; border-radius: 16px; padding: 6px 12px; font-weight: 800; font-size: .85em;
+    opacity: .35; transition: all .4s; border: 3px solid transparent;
+  }
+  .chain span.link.lit { opacity: 1; border-color: var(--accent); transform: scale(1.06); }
+  .chain .arrow { font-size: 1.2em; opacity: .5; }
+  .counter { display: inline-block; background: var(--accent-3); color: #fff; border-radius: 999px; padding: 2px 14px; font-weight: 800; }
+  .dark-veil { position: absolute; inset: 0; background: radial-gradient(circle at 56% 12%, rgba(0,0,0,0) 0, rgba(30,20,15,.0) 30%, rgba(30,20,15,.35) 100%); pointer-events: none; z-index: 1; transition: opacity 1.2s; }
+  .shiver { animation: shiver .12s linear 10; }
+  @keyframes shiver { 50% { transform: translate(-50%, -50%) translateX(3px); } }
+  .quiz { margin-top: 6px; }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .again { margin-left: 6px; }
+  .glow-sun { position: absolute; width: 8%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%,-50%);
+    background: radial-gradient(circle, #fff7c2 0, #ffd65c 45%, rgba(255,214,92,0) 70%); opacity: 0; pointer-events: none; z-index: 2; transition: opacity .6s, width 1s; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🦖</span>Where Did the Dinosaurs Go?</a>
+  <div class="tools">
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Pip the little blue bird sits on a friendly T. rex in a prehistoric jungle with a Triceratops and a long-necked dinosaur."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Where Did the Dinosaurs Go?</h1>
+        <p>A true story from long, long ago, told by <span class="hl">Pip</span>, a tiny blue bird with a <b>BIG</b> secret.</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the animals in the picture. Tap <b>📖 Read to me</b> to hear the story. Then press <b>Next ▶</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 DINO WORLD -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="A sunny valley with a long-necked dinosaur, Triceratops, T. rex, Ankylosaurus and a flying Quetzalcoatlus."><div class="layer"></div></div>
+      <div class="text">
+        <p>Dinosaurs lived on Earth for a super-duper long time: about <span class="big">165 million years!</span></p>
+        <p>That's way, way longer than people have been around. Big ones, small ones, spiky ones and long-necked ones all stomped around.</p>
+        <span class="fact">👆 <b>Tap each animal</b> to say hello! <span class="counter" id="hello">0 / 6</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ASTEROID -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="space"><img class="art" src="img/p03.webp" alt="Planet Earth seen from dark, starry space.">
+        <div class="layer"><img id="rock" class="sprite" src="img/asteroid.webp" alt="An asteroid. Tap it!"></div>
+      </div>
+      <div class="text">
+        <p>Then, <b>66 million years ago</b>, a giant space rock called an <span class="hl">asteroid</span> came zooming toward Earth.</p>
+        <p>It was about <span class="big">10 km wide</span>, bigger than a mountain! And it was flying about <span class="big">20 km every second</span>. That's around 80 times faster than a jet plane!</p>
+        <span class="fact">👆 <b>Tap the asteroid</b> and watch where it goes. <button class="pill again" id="rockAgain" style="display:none">🔁 Again</button></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 IMPACT -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="impact"><img class="art" src="img/p04.webp" alt="A bright flash on the horizon, dust clouds and a big wave, while the T. rex, Triceratops and Pip look surprised."><div class="layer"></div></div>
+      <div class="text">
+        <p><b>KA-BOOM!</b> The asteroid crashed into the sea near a place we now call <span class="hl">Mexico</span>.</p>
+        <p>It dug a hole about <span class="big">180 km wide</span>. The ground shook, giant waves called <b>tsunamis</b> rushed across the ocean, and hot dust and rocks flew high into the sky.</p>
+        <span class="fact">👆 <b>Tap the bright flash</b>, then tap the big wave!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 DARK SKY -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="dark"><img class="art" src="img/p05.webp" alt="A dark, dusty sky with a dim sun. The T. rex, Triceratops and Pip huddle together in the cold.">
+        <div class="dark-veil"></div><div class="glow-sun" style="left:56%;top:12%"></div><div class="layer"></div></div>
+      <div class="text">
+        <p>Dust and soot spread all around the world like a giant, dirty blanket in the sky.</p>
+        <p>The Sun's light could hardly get through. For months, maybe even years, Earth was <span class="hl">dark and cold</span>, like a winter night that wouldn't end. Brrr!</p>
+        <span class="fact">🌋 <b>Double trouble:</b> big volcanoes in India were also puffing out smoke and gas around this time. 👆 Tap the Sun and the shivering friends.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 FOOD CHAIN -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage" id="chainStage"><img class="art" src="img/p06.webp" alt="Wilted plants, a hungry Triceratops sniffing a dry leaf, and a hungry T. rex holding its tummy."><div class="layer"></div></div>
+      <div class="text">
+        <p>Plants need sunlight to make their food. With no sunlight, the plants <b>wilted</b>.</p>
+        <p>So the plant-eaters got hungry... and then the meat-eaters got hungry too. It's like a row of falling dominoes!</p>
+        <div class="chain" data-noread>
+          <span class="link" id="c1">🌿 Plants</span><span class="arrow">➜</span>
+          <span class="link" id="c2">🦕 Plant-eaters</span><span class="arrow">➜</span>
+          <span class="link" id="c3">🦖 Meat-eaters</span>
+        </div>
+        <span class="fact">👆 Tap in order: <b>plants</b>, then <b>Triceratops</b>, then <b>T. rex</b>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 SURVIVORS -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="surv"><img class="art" src="img/p07.webp" alt="A tiny mammal in a burrow, a turtle, a crocodile and a frog in a pond, and a bird family in a tree hollow."><div class="layer"></div></div>
+      <div class="text">
+        <p>But <b>not everyone</b> disappeared! Small animals that could <span class="hl">hide</span>, didn't need much food, and could eat seeds, bugs or old leaves made it through.</p>
+        <p>About 3 out of every 4 kinds of living things vanished. The little ones kept life going.</p>
+        <span class="fact">🔎 <b>Find the survivors!</b> Tap the hiding places. <span class="counter" id="found">0 / 5</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 BIRDS ARE DINOSAURS -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="birds"><img class="art" src="img/p08.webp" alt="The T. rex and a chicken stand side by side on a farm, with Pip flying between them."><div class="layer"></div></div>
+      <div class="text">
+        <p>Now here's Pip's <b>BIG secret</b>: birds <span class="big">ARE</span> dinosaurs!</p>
+        <p>Some small, feathered dinosaurs survived. Over millions of years, they became the birds we see today. That means a chicken is a cousin of T. rex!</p>
+        <span class="fact">👆 Tap the <b>T. rex</b>, the <b>chicken</b>, and their <b>feet</b>. What looks the same?</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HOW DO WE KNOW -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="dig"><img class="art" src="img/p09.webp" alt="A cliff with colorful rock layers, a thin dark stripe, and dinosaur fossil bones below it. A kid scientist looks with a magnifying glass."><div class="layer"></div></div>
+      <div class="text">
+        <p>How do scientists know all this? They <b>dig</b>! Rocks pile up in layers, like a giant layer cake. The bottom layers are the oldest.</p>
+        <p>All around the world, there is one thin, dark layer of <span class="hl">asteroid dust</span>. Below it: dinosaur fossils. Above it: no more big dinosaurs!</p>
+        <span class="fact">🗺️ Scientists even found the giant crater, buried under Mexico. It's called <b>Chicxulub</b> (say: CHEEK-shoo-loob). 👆 Tap the layers!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 THE END + QUIZ -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage" id="end"><img class="art" src="img/p10.webp" alt="A kid in a park points at birds flying and a pink cloud shaped like a dinosaur."><div class="layer"></div></div>
+      <div class="text">
+        <h2>The End... or is it?</h2>
+        <p>The dinosaurs didn't <i>all</i> go away. Some of them are flying over your head right now! Next time you see a pigeon, say: <span class="hl">"Hello, little dinosaur!"</span></p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What crashed into Earth?</div>
+          <div class="choice-row" data-q="1"><button class="choice">⛄ A giant snowball</button><button class="choice" data-ok>☄️ An asteroid</button><button class="choice">🚀 A rocket</button></div>
+          <div class="q">2. Why did the plants wilt?</div>
+          <div class="choice-row" data-q="2"><button class="choice">🌧️ Too much rain</button><button class="choice">🦕 Dinosaurs ate them all</button><button class="choice" data-ok>🌑 No sunlight</button></div>
+          <div class="q">3. Which one is a living dinosaur?</div>
+          <div class="choice-row" data-q="3"><button class="choice" data-ok>🐔 A chicken</button><button class="choice">🐱 A cat</button><button class="choice">🐟 A fish</button></div>
+        </div>
+        <div class="end-links" data-noread>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../planets/">🚀 Next book: Are We There Yet?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+
+<footer class="footer">
+  Illustrations made with Google Gemini. Science facts checked against NASA, the Natural History Museum (London) and the Smithsonian.<br>
+  <a href="../">More picture books</a>
+</footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};               // pages whose hotspots are already built
+  function build(n, fn) { if (!once[n]) { once[n] = true; fn(stageOf(n)); } }
+
+  /* ---------- 1 cover ---------- */
+  B.on(1, () => build(1, st => {
+    B.hot(st, 45, 60, 22, 46, "T. rex", () => { S.roar(); B.bubble(st, 52, 40, "<b>ROAR! I'm T. rex!</b>Don't worry, it's a friendly roar."); });
+    B.hot(st, 58, 28, 8, 13, "Pip", (b, e) => { S.chirp(); F.hearts(st, ...B.px(st, 58, 24)); B.bubble(st, 62, 8, "<b>Hi, I'm Pip!</b>Turn the pages and I'll tell you what happened."); });
+    B.hot(st, 12, 74, 18, 34, "Triceratops", () => { S.munch(); B.bubble(st, 4, 40, "<b>Triceratops</b>Three horns, one big frill!"); });
+    B.hot(st, 76, 32, 12, 22, "Long-necked dinosaur", () => { S.growl(); B.bubble(st, 52, 8, "<b>Hello from up here!</b>I'm a long-necked sauropod.", {}); });
+    B.hot(st, 45, 18, 6, 10, "Space rock", () => { S.sparkle(); F.sparkles(st, ...B.px(st, 45, 18)); B.bubble(st, 48, 4, "<b>Hmm... what's that?</b>Something is up in the sky!"); });
+    F.weather(st, "pollen", .6);
+  }) || F.weather(stageOf(1), "pollen", .6));
+
+  /* ---------- 2 dino world ---------- */
+  let hello = 0;
+  const helloTap = () => { hello = Math.min(6, hello + 1); $("#hello").textContent = hello + " / 6"; if (hello === 6) { S.yay(); B.confetti(40); } };
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .5); build(2, st => {
+    const say = (x, y, html, snd, bx, by, right) => (b) => { if (!b.dataset.seen) { b.dataset.seen = 1; helloTap(); } snd(); F.sparkles(st, ...B.px(st, x, y), 14); B.bubble(st, bx, by, html, right ? { right: true } : null); };
+    B.hot(st, 16, 50, 18, 50, "Long-necked sauropod", say(16, 40, "<b>Alamosaurus</b>I'm as long as 2 school buses! I eat leaves from the treetops.", S.growl, 2, 4));
+    B.hot(st, 35, 69, 15, 26, "Triceratops", say(35, 65, "<b>Triceratops</b>Three horns, one frill, and I only eat plants!", S.munch, 22, 30));
+    B.hot(st, 54, 50, 14, 40, "T. rex", say(54, 40, "<b>T. rex</b>My teeth were as big as bananas!", S.roar, 40, 4));
+    B.hot(st, 78, 73, 18, 24, "Ankylosaurus", say(78, 70, "<b>Ankylosaurus</b>I'm covered in bony armor, with a club on my tail!", S.growl, 98, 40, true));
+    B.hot(st, 82, 17, 18, 20, "Quetzalcoatlus", say(82, 17, "<b>Quetzalcoatlus</b>I'm not a dinosaur, I'm a flying reptile as wide as a small airplane!", S.whoosh, 98, 30, true));
+    B.hot(st, 51, 84, 7, 13, "Pip", say(51, 82, "<b>Pip</b>Psst... remember me. My secret comes later!", S.chirp, 54, 58));
+  }); });
+
+  /* ---------- 3 asteroid ---------- */
+  const rock = $("#rock"), space = $("#space");
+  let flying = false;
+  function launch() {
+    if (flying) return; flying = true;
+    B.clearHints(space); space.querySelectorAll(".bubble").forEach(b => b.remove());
+    S.whoosh();
+    const from = [8.5, 14], to = [65, 47], dur = 1700, t0 = performance.now();
+    rock.style.display = "block";
+    (function step(t) {
+      const k = Math.min(1, (t - t0) / dur), e = k * k * (1.6 - .6 * k); // ease-in
+      const x = from[0] + (to[0] - from[0]) * e, y = from[1] + (to[1] - from[1]) * e;
+      rock.style.left = (x - 4.5) + "%"; rock.style.top = (y - 8) + "%";
+      rock.style.transform = "rotate(" + k * 340 + "deg) scale(" + (1 - .45 * k) + ")";
+      const [px, py] = B.px(space, x, y);
+      F.fire(space, px - 6, py - 6, 5, 10); if (Math.random() < .5) F.smoke(space, px - 18, py - 18, 1);
+      if (k < 1) requestAnimationFrame(step);
+      else {
+        rock.style.display = "none";
+        F.flash(space); F.explode(space, px, py, .6); S.boom(); F.shake(space);
+        setTimeout(() => { B.bubble(space, 30, 62, "<b>Direct hit!</b>Turn the page to see what happened next."); $("#rockAgain").style.display = "inline-flex"; flying = false; }, 900);
+      }
+    })(t0);
+  }
+  function resetRock() {
+    rock.style.display = "block"; rock.style.left = "4%"; rock.style.top = "6%"; rock.style.transform = "";
+    space.querySelectorAll(".bubble").forEach(b => b.remove());
+    B.hint(space, 14, 10, "Tap the asteroid!");
+  }
+  rock.addEventListener("click", launch);
+  $("#rockAgain").onclick = () => { resetRock(); };
+  B.on(3, () => { F.weather(space, "stars", .8); if (!flying) resetRock(); });
+
+  /* ---------- 4 impact ---------- */
+  let smokeTimer = 0;
+  B.on(4, () => { const st = stageOf(4); B.hint(st, 50, 16, "Tap the flash!"); build(4, st => {
+    B.hot(st, 58, 34, 14, 24, "Bright flash", () => {
+      B.clearHints(st);
+      const [x, y] = B.px(st, 58, 36);
+      F.flash(st); F.explode(st, x, y, 1.3); F.shake(st); S.boom(); setTimeout(S.rumble, 600);
+      clearInterval(smokeTimer); let n = 0;
+      smokeTimer = setInterval(() => { for (let i = 0; i < 3; i++) F.smoke(st, x + (Math.random() - .5) * 220, y + 10, 2, "#8a776c"); if (++n > 40) clearInterval(smokeTimer); }, 120);
+      B.bubble(st, 30, 4, "<b>BOOM!</b>The crash was millions of times stronger than the biggest firework.");
+    });
+    B.hot(st, 74, 48, 9, 18, "Big wave", () => {
+      S.splash(); F.sparkles(st, ...B.px(st, 74, 46), 20);
+      B.bubble(st, 98, 62, "<b>Tsunami!</b>Giant waves, taller than skyscrapers, raced across the sea.", { right: true });
+    });
+    B.hot(st, 17, 50, 14, 36, "T. rex", () => { S.roar(); B.bubble(st, 4, 8, "<b>Whoa!</b>What was THAT?"); });
+    B.hot(st, 36, 62, 14, 26, "Triceratops", () => { S.growl(); F.shake(st); B.bubble(st, 26, 30, "<b>The ground is shaking!</b>"); });
+  }); }, () => clearInterval(smokeTimer));
+
+  /* ---------- 5 dark sky ---------- */
+  let windTimer = 0;
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "ash", 1.3); S.wind(); clearInterval(windTimer); windTimer = setInterval(S.wind, 6000);
+    build(5, st => {
+      const sun = st.querySelector(".glow-sun"), veil = st.querySelector(".dark-veil");
+      B.hot(st, 56, 12, 8, 14, "Dim sun", () => {
+        S.sparkle(); sun.style.opacity = 1; sun.style.width = "16%"; veil.style.opacity = .2;
+        B.bubble(st, 30, 26, "<b>Come on, Sun!</b>...but the dust is too thick.");
+        setTimeout(() => { sun.style.opacity = 0; sun.style.width = "8%"; veil.style.opacity = 1; S.wind(); }, 1600);
+      });
+      const shiver = (b, msg, bx) => { S.tap(); b.classList.remove("shiver"); void b.offsetWidth; b.classList.add("shiver"); B.bubble(st, bx, 26, msg); };
+      B.hot(st, 19, 57, 14, 40, "T. rex", b => shiver(b, "<b>Brrr!</b>My tiny arms can't even hug myself!", 4));
+      B.hot(st, 36, 64, 13, 26, "Triceratops", b => shiver(b, "<b>So cold!</b>And I'm getting hungry...", 28));
+      B.hot(st, 28, 67, 6, 11, "Pip", b => { S.chirp(); B.bubble(st, 20, 36, "<b>Pip:</b> My feathers keep me warm. That will help later!"); });
+    });
+  }, () => clearInterval(windTimer));
+
+  /* ---------- 6 food chain ---------- */
+  let step6 = 0;
+  B.on(6, () => { const st = stageOf(6); F.weather(st, "ash", .7); if (step6 === 0) B.hint(st, 4, 34, "Start here!"); build(6, st => {
+    const steps = [
+      [15, 64, "Wilted plants", "<b>No sun, no food</b>Plants use sunlight to grow. Now they're drooping.", S.wind, 2, 12],
+      [45, 70, "Triceratops", "<b>Rumble, rumble...</b>No fresh plants to eat. The plant-eaters got very hungry.", S.growl, 26, 22],
+      [80, 61, "T. rex", "<b>Oh no!</b>With fewer plant-eaters around, the meat-eaters got hungry too.", S.growl, 98, 14],
+    ];
+    steps.forEach((s, i) => B.hot(st, s[0], s[1], i ? 16 : 22, i ? 34 : 30, s[2], b => {
+      if (i !== step6) { S.oops(); b.classList.remove("done"); B.bubble(st, 30, 8, i < step6 ? "<b>Already done!</b>Tap the next one." : "<b>Wait!</b>Start with the plants, then follow the chain."); return; }
+      B.clearHints(st); s[4](); step6++;
+      document.getElementById("c" + step6).classList.add("lit");
+      B.bubble(st, s[5], s[6], s[3], i === 2 ? { right: true } : null);
+      F.dust(st, ...B.px(st, s[0], s[1] + 10), 10);
+      if (step6 === 3) setTimeout(() => { S.ding(); B.bubble(st, 26, 4, "<b>That's a food chain!</b>When one link breaks, everyone after it feels it."); }, 2200);
+    }));
+    B.hot(st, 44, 27, 6, 11, "Pip", () => { S.chirp(); B.bubble(st, 48, 6, "<b>Pip:</b> Lucky me, I can eat tiny seeds!"); });
+  }); });
+
+  /* ---------- 7 survivors ---------- */
+  let found = 0;
+  B.on(7, () => { const st = stageOf(7); F.weather(st, "pollen", .6); build(7, st => {
+    const spots = [
+      [18, 71, 16, 22, "Tiny mammal", "<b>Little mammal</b>I hide underground and nibble seeds. Millions of years later, animals like me became elephants, whales... and YOU!", S.munch, 2, 6],
+      [44, 80, 9, 14, "Turtle", "<b>Turtle</b>I can go a long time without eating. Slow and steady!", S.splash, 26, 34],
+      [57, 79, 10, 12, "Crocodile", "<b>Crocodile</b>I can wait for months without a meal. Snap!", S.splash, 36, 30],
+      [56, 92, 8, 10, "Frog", "<b>Frog</b>Ribbit! Ponds and streams kept me safe.", S.tap, 40, 46],
+      [85, 47, 16, 24, "Bird family", "<b>Little birds</b>We eat seeds with our beaks. That helped us survive!", S.chirp, 98, 8, true],
+    ];
+    spots.forEach(s => B.hot(st, s[0], s[1], s[2], s[3], s[4], b => {
+      s[6](); F.sparkles(st, ...B.px(st, s[0], s[1]), 26);
+      B.bubble(st, s[7], s[8], s[5], s[9] ? { right: true } : null);
+      if (!b.dataset.seen) { b.dataset.seen = 1; found++; $("#found").textContent = found + " / 5"; if (found === 5) setTimeout(() => { S.yay(); B.confetti(60); B.bubble(st, 26, 4, "<b>You found them all!</b>Small and clever wins the day."); }, 1500); }
+    }));
+    B.hot(st, 52, 34, 7, 12, "Pip", () => { S.chirp(); F.hearts(st, ...B.px(st, 52, 30)); });
+  }); });
+
+  /* ---------- 8 birds are dinosaurs ---------- */
+  function cluck() { [0, .18, .36].forEach(d => setTimeout(() => S.tap(), d * 1000)); }
+  B.on(8, () => build(8, st => {
+    B.hot(st, 27, 48, 20, 46, "T. rex", () => { S.roar(); B.bubble(st, 4, 4, "<b>Hey, cousin!</b>We both have hollow bones and lay eggs."); });
+    B.hot(st, 69, 58, 18, 40, "Chicken", () => { cluck(); F.hearts(st, ...B.px(st, 69, 40)); B.bubble(st, 98, 4, "<b>Bawk bawk!</b>T. rex is my great-great-great... cousin!", { right: true }); });
+    B.hot(st, 21, 88, 12, 14, "T. rex feet", () => { S.dig(); F.dust(st, ...B.px(st, 21, 92)); B.bubble(st, 4, 50, "<b>Look at my feet:</b> three big toes!"); });
+    B.hot(st, 63, 90, 10, 13, "Chicken feet", () => { S.dig(); F.dust(st, ...B.px(st, 63, 93)); B.bubble(st, 98, 50, "<b>Same here:</b> three big toes, just like T. rex!", { right: true }); });
+    B.hot(st, 51, 39, 8, 13, "Pip", () => { S.chirp(); F.hearts(st, ...B.px(st, 51, 34)); B.bubble(st, 36, 4, "<b>Surprise!</b>I'm a dinosaur too. Tweet!"); });
+    B.hot(st, 95, 48, 7, 12, "Pigeon", () => { S.chirp(); B.bubble(st, 98, 20, "<b>Coo!</b>Pigeons are dinosaurs too.", { right: true }); });
+  }));
+
+  /* ---------- 9 dig ---------- */
+  B.on(9, () => build(9, st => {
+    B.hot(st, 40, 19, 30, 14, "Top rock layers", () => { S.dig(); F.dust(st, ...B.px(st, 40, 22)); B.bubble(st, 4, 30, "<b>Newer layers (on top)</b>Only tiny shells here. No big dinosaurs anymore!"); }, "rect");
+    B.hot(st, 45, 40, 36, 7, "Thin dark layer", () => { S.sparkle(); F.sparkles(st, ...B.px(st, 45, 40), 30); B.bubble(st, 4, 50, "<b>The asteroid dust layer!</b>It's full of iridium, a metal that's rare on Earth but common in space rocks."); }, "rect");
+    B.hot(st, 36, 64, 36, 26, "Dinosaur fossil", () => { S.dig(); F.dust(st, ...B.px(st, 36, 72), 20); B.bubble(st, 50, 4, "<b>T. rex fossil!</b>Older layers (below) still have dinosaur bones."); }, "rect");
+    B.hot(st, 84, 66, 12, 34, "Kid scientist", () => { S.dig(); F.dust(st, ...B.px(st, 80, 88), 18); B.bubble(st, 98, 6, "<b>Brush, brush!</b>Scientists who study fossils are called paleontologists.", { right: true }); });
+  }));
+
+  /* ---------- 10 end ---------- */
+  B.on(10, () => { const st = stageOf(10); F.weather(st, "pollen", .7); build(10, st => {
+    B.hot(st, 69, 30, 22, 30, "Dinosaur cloud", () => { S.sparkle(); F.sparkles(st, ...B.px(st, 69, 30), 30); B.bubble(st, 98, 58, "<b>A cloud-o-saurus!</b>", { right: true }); });
+    B.hot(st, 42, 25, 20, 22, "Flock of birds", () => { S.chirp(); B.bubble(st, 26, 50, "<b>Tweet tweet!</b>Pip and friends: real, living dinosaurs."); });
+    B.hot(st, 45, 89, 8, 12, "Pigeon", () => { S.chirp(); B.bubble(st, 30, 50, "<b>Hello, little dinosaur!</b>"); });
+    B.hot(st, 25, 72, 14, 36, "Kid", () => { S.yay(); B.confetti(50); });
+  }); });
+
+  // quiz
+  let right = 0;
+  document.querySelectorAll(".choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) {
+      c.classList.add("right"); row.dataset.done = 1; S.ding(); right++;
+      if (right === 3) { S.yay(); B.confetti(120); }
+    } else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

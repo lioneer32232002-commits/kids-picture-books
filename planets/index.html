@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Are We There Yet? A Trip to the Planets | Interactive Picture Book</title>
+<meta name="description" content="A cute, interactive science picture book for kids aged 5-7: pick a planet, pick a jet or a rocket, and find out how long the trip takes, how many pizzas to pack, and how old everyone would be when you get home.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Are We There Yet? 🚀🪐 An interactive trip to the planets">
+<meta property="og:description" content="Pick a planet and a ride. How long would it take? How many pizzas would you need? A cute, true science story for kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/planets-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/planets/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #ff7a59; --accent-4: #6c8cff;
+    --bg: radial-gradient(circle at 12% 8%, #dfe6ff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #ffe1ec 0, transparent 45%), #eef1ff;
+  }
+  .sprite { position: absolute; pointer-events: none; z-index: 2; transform: translate(-50%, -50%); }
+  /* trip picker */
+  .picker { background: #fff; border-radius: 20px; padding: 10px 12px; margin: 8px 0; box-shadow: 0 3px 0 rgba(59,47,74,.1); }
+  .picker .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .picker .row + .row { margin-top: 8px; }
+  .picker .lbl { font-weight: 800; font-size: .8em; color: var(--ink-soft); margin-right: 4px; }
+  .pchip {
+    border: 3px solid transparent; background: #f4f5ff; border-radius: 16px; cursor: pointer; padding: 4px 8px 2px;
+    display: inline-flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 13px; color: var(--ink);
+    transition: transform .12s; min-width: 58px;
+  }
+  .pchip img { width: 34px; height: 34px; object-fit: contain; }
+  .pchip:hover { transform: translateY(-2px); }
+  .pchip.on { border-color: var(--accent); background: #fff1ea; }
+  .vchip { border: 3px solid transparent; background: #f4f5ff; border-radius: 16px; cursor: pointer; padding: 4px 12px; font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
+  .vchip img { width: 44px; height: 26px; object-fit: contain; }
+  .vchip.on { border-color: var(--accent); background: #fff1ea; }
+  .answer { font-size: 1.05em; }
+  .answer .num { font-weight: 800; color: var(--accent); font-size: 1.25em; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 8px 0; }
+  .stat { background: #fff; border-radius: 18px; padding: 8px 12px; text-align: center; box-shadow: 0 3px 0 rgba(59,47,74,.1); }
+  .stat .em { font-size: 30px; line-height: 1.1; }
+  .stat .n { font-weight: 800; font-size: 1.2em; color: var(--accent); line-height: 1.1; }
+  .stat .t { font-size: .72em; color: var(--ink-soft); line-height: 1.2; }
+  .stat.gone { background: #f3eefc; }
+  .stat.gone .n { color: #9a7fd1; }
+  /* travel bar on the cockpit page */
+  .travel { position: absolute; left: 49%; right: 11%; top: 44%; height: 18%; z-index: 3; pointer-events: none; }
+  .travel .track { position: absolute; left: 8%; right: 8%; top: 50%; height: 6px; border-radius: 6px; background: rgba(255,255,255,.35); }
+  .travel .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 6px; background: linear-gradient(90deg, #ffd166, #ff7a59); }
+  .travel img.from, .travel img.to { position: absolute; top: 50%; width: 13%; transform: translate(-50%, -50%); }
+  .travel img.from { left: 4%; } .travel img.to { left: 96%; }
+  .travel img.ship { position: absolute; top: 50%; width: 15%; left: 8%; transform: translate(-50%, -50%); filter: drop-shadow(0 0 8px rgba(255,200,120,.8)); }
+  .clock { position: absolute; left: 49%; right: 11%; top: 22%; text-align: center; z-index: 3; color: #fff; font-weight: 800;
+    font-size: clamp(14px, 2.2vw, 26px); text-shadow: 0 2px 6px rgba(0,0,0,.6); pointer-events: none; }
+  .bigbtn { border: none; cursor: pointer; border-radius: 999px; padding: 10px 22px; font-size: clamp(16px, 2vw, 21px); font-weight: 800;
+    color: #fff; background: var(--accent); box-shadow: 0 5px 0 #d9583a; margin: 6px 6px 0 0; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: none; }
+  .bigbtn.alt { background: var(--accent-4); box-shadow: 0 5px 0 #4b66d6; }
+  /* page 3 line-up */
+  .lineup { position: absolute; left: 15%; width: 74%; top: 50%; height: 30%; transform: translateY(-50%); display: flex; align-items: center; z-index: 2; pointer-events: none; }
+  .lineup img { display: block; flex: none; animation: popin .35s cubic-bezier(.2,1.4,.4,1) both; }
+  @keyframes popin { from { transform: scale(0); } to { transform: scale(1); } }
+  /* page 5 race */
+  .race { position: absolute; left: 3%; right: 3%; top: 4%; z-index: 3; pointer-events: none; display: grid; gap: 4px; }
+  .lane { position: relative; height: clamp(34px, 6.5vw, 70px); background: rgba(255,255,255,.18); border-radius: 999px; border: 2px dashed rgba(255,255,255,.4); }
+  .lane img { position: absolute; top: 50%; height: 86%; left: 0; transform: translate(0, -50%); }
+  .lane .goal { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); height: 80%; }
+  .lane .tag { position: absolute; right: 13%; top: 50%; transform: translateY(-50%); color: #fff; font-weight: 800; font-size: clamp(12px, 1.7vw, 20px); text-shadow: 0 2px 4px rgba(0,0,0,.7); }
+  /* food rain */
+  .food { position: absolute; top: -10%; font-size: clamp(20px, 3.4vw, 40px); z-index: 4; pointer-events: none; animation: drop linear forwards; }
+  @keyframes drop { to { transform: translateY(125%) rotate(360deg); top: 100%; } }
+  .frost { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1s;
+    background: radial-gradient(ellipse at 22% 45%, rgba(190,230,255,.0) 20%, rgba(170,215,255,.55) 70%); box-shadow: inset 0 0 80px rgba(220,240,255,.9); }
+  .frost.on { opacity: 1; }
+  .toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 800; background: #fff; border-radius: 999px; padding: 6px 14px 6px 6px; border: none; font-size: 17px; color: var(--ink); box-shadow: 0 3px 0 rgba(59,47,74,.12); }
+  .toggle .sw { width: 52px; height: 30px; border-radius: 999px; background: #d6d9ea; position: relative; transition: background .3s; }
+  .toggle .sw::after { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: left .3s; box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+  .toggle.on .sw { background: #6cc4ff; } .toggle.on .sw::after { left: 25px; }
+  .agebtns { display: inline-flex; gap: 6px; }
+  .note { font-size: .75em; color: var(--ink-soft); }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🚀</span>Are We There Yet?</a>
+  <div class="tools">
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Nova the kid astronaut and Bolt the robot dog ride a rocket past cute planets."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Are We There Yet?</h1>
+        <p><b>A Trip to the Planets</b> with <span class="hl">Nova</span>, a kid astronaut, and <span class="hl">Bolt</span>, a robot dog. How far is space, really? Let's find out!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap things in the pictures. Tap <b>📖 Read to me</b> to hear the story. Then press <b>Next ▶</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 SOLAR SYSTEM -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="The Sun and the eight planets in a row, with Nova floating near Earth."><div class="layer"></div></div>
+      <div class="text">
+        <p>Our home, <b>Earth</b>, is one of <span class="big">8 planets</span> that go around and around the Sun. Together they're called the <span class="hl">Solar System</span>.</p>
+        <span class="fact">👆 <b>Tap each planet</b> to meet it! <span class="counter" id="met" style="background:var(--accent-3);color:#fff;border-radius:999px;padding:2px 12px;font-weight:800">0 / 10</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 SPACE IS BIG -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="big"><img class="art" src="img/p03.webp" alt="Earth on the left and the Moon on the right, far apart in space."><div class="layer"></div></div>
+      <div class="text">
+        <p>Space is <span class="big">SUPER</span> big. Even the Moon, our closest neighbor, is about <b>384,000 km</b> away.</p>
+        <p>How far is that? Let's line things up between Earth and the Moon!</p>
+        <div data-noread>
+          <button class="bigbtn" id="earths">🌍 Line up Earths</button>
+          <button class="bigbtn alt" id="allplanets">🪐 Squeeze in ALL the planets</button>
+        </div>
+        <span class="fact" id="bigfact">Guess first: how many Earths do you think would fit?</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 CHOOSE YOUR RIDE -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="ride"><img class="art" src="img/p04.webp" alt="Nova and Bolt choose between a jet plane and a rocket."><div class="layer"></div></div>
+      <div class="text">
+        <p>To travel, we need a ride! Our two choices:</p>
+        <div class="stat-grid" data-noread>
+          <div class="stat"><div class="em">✈️</div><div class="n">900 km/h</div><div class="t">Passenger jet plane. Super fast on Earth!</div></div>
+          <div class="stat"><div class="em">🚀</div><div class="n">58,000 km/h</div><div class="t">The fastest rocket ship ever launched from Earth (New Horizons)</div></div>
+        </div>
+        <p>The rocket is about <span class="big">65 times faster</span> than the jet. Whoosh!</p>
+        <span class="fact">👆 Tap the <b>jet</b> and the <b>rocket</b> to start their engines.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 THE MOON RACE -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="moon"><img class="art" src="img/p05.webp" alt="Nova and Bolt bounce on the Moon with Earth in the sky.">
+        <div class="race" aria-hidden="true">
+          <div class="lane"><img id="r-jet" src="img/jet.webp" alt=""><span class="tag" id="t-jet">✈️ 0 hours</span><img class="goal" src="img/moon.webp" alt=""></div>
+          <div class="lane"><img id="r-rocket" src="img/rocket.webp" alt=""><span class="tag" id="t-rocket">🚀 0 hours</span><img class="goal" src="img/moon.webp" alt=""></div>
+        </div>
+        <div class="layer"></div></div>
+      <div class="text">
+        <p>First stop: <b>the Moon!</b> If you could fly straight there without stopping...</p>
+        <p>✈️ A jet plane would take about <span class="big">18 days</span>. 🚀 Our super rocket: only about <span class="big">7 hours</span>!</p>
+        <div data-noread><button class="bigbtn" id="race">🏁 Start the race!</button></div>
+        <span class="fact">🧑‍🚀 The real Apollo astronauts took about <b>3 days</b>. They went slower so they could stop safely at the Moon.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 PLANET TRIP CALCULATOR -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage" id="cockpit"><img class="art" src="img/p06.webp" alt="Nova and Bolt in a cozy spaceship cockpit looking out a big round window.">
+        <div class="clock" id="clock">Pick a planet, then blast off!</div>
+        <div class="travel" aria-hidden="true"><div class="track"><div class="fill" id="fill"></div></div>
+          <img class="from" src="img/earth.webp" alt=""><img class="ship" id="ship" src="img/rocket.webp" alt=""><img class="to" id="toImg" src="img/mars.webp" alt=""></div>
+        <div class="layer"></div></div>
+      <div class="text">
+        <p>Now let's go farther! <b>Pick a planet and a ride</b>, and the spaceship computer will tell you how long the trip takes.</p>
+        <div class="picker" data-noread></div>
+        <p class="answer" id="ans6"></p>
+        <div data-noread><button class="bigbtn" id="blast">🚀 Blast off!</button></div>
+        <span class="fact" id="real6"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 SNACKS -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="pantry"><img class="art" src="img/p07.webp" alt="Nova and Bolt float in a spaceship pantry full of pizza, nuggets, ice cream and fruit."><div class="layer"></div></div>
+      <div class="text">
+        <p>A long trip means you get <b>hungry</b>. Astronauts must pack <span class="hl">all</span> their food before they leave. There are no shops in space!</p>
+        <div class="picker" data-noread></div>
+        <p class="answer" id="ans7"></p>
+        <div class="stat-grid" id="food7" data-noread></div>
+        <div data-noread><button class="bigbtn" id="pack">🍕 Pack the snacks!</button></div>
+        <span class="fact" id="stack7"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 SPACE SLEEP -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="sleep"><img class="art" src="img/p08.webp" alt="Nova sleeps in a glowing sleep pod with a teddy bear while Bolt sleeps in a tiny pod."><div class="frost" id="frost"></div><div class="layer"></div></div>
+      <div class="text">
+        <p>Some trips are <b>so long</b> that you'd get bored... and you'd need mountains of food. What if you could sleep the whole way, like a bear in winter?</p>
+        <div class="picker" data-noread></div>
+        <div data-noread style="margin:6px 0"><button class="toggle" id="pod"><span class="sw"></span><span id="podLbl">Space Sleep pod: OFF</span></button></div>
+        <p class="answer" id="ans8"></p>
+        <span class="fact">🔬 <b>True or pretend?</b> Pretend, for now! People can't be frozen and woken up yet. Scientists study how bears hibernate to make "space sleep" possible one day.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 COMING HOME -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="home"><img class="art" src="img/p09.webp" alt="Nova returns home and finds the family much older, with calendar pages blowing in the wind."><div class="layer"></div></div>
+      <div class="text">
+        <p>Here's the tricky part. While you travel, <b>time keeps going on Earth</b>. Your family keeps getting older, even if you were asleep in the pod.</p>
+        <div class="picker" data-noread></div>
+        <p data-noread style="margin:6px 0"><b>How old are you?</b> <span class="agebtns" id="ages"></span></p>
+        <p class="answer" id="ans9"></p>
+        <div class="stat-grid" id="fam9" data-noread></div>
+        <span class="fact" id="msg9"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 THE END -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage" id="night"><img class="art" src="img/p10.webp" alt="Nova, Bolt and family look at the stars through a telescope on a summer night."><div class="layer"></div></div>
+      <div class="text">
+        <h2>Home Sweet Home</h2>
+        <p>Space is amazing, but it's <span class="hl">really, really far</span>. That's why scientists keep building faster spaceships, and why we send brave robots to explore for us.</p>
+        <p>And Earth? It's the only planet we know where we can breathe the air, splash in the sea, and eat pizza with our family. 💛</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Which is faster?</div>
+          <div class="choice-row"><button class="choice">✈️ A jet plane</button><button class="choice" data-ok>🚀 A rocket</button></div>
+          <div class="q">2. What is the biggest planet?</div>
+          <div class="choice-row"><button class="choice">🔴 Mars</button><button class="choice" data-ok>🟠 Jupiter</button><button class="choice">🌍 Earth</button></div>
+          <div class="q">3. While you fly far away, your family on Earth...</div>
+          <div class="choice-row"><button class="choice">⏸️ stops getting older</button><button class="choice" data-ok>⏳ keeps getting older</button></div>
+        </div>
+        <div class="end-links" data-noread>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../dinosaurs/">🦖 Other book: Where Did the Dinosaurs Go?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+
+<footer class="footer">
+  Illustrations made with Google Gemini. Distances are straight-line distances when each planet is closest to Earth (NASA data).
+  Real spaceships fly curved paths around the Sun, so real trips take longer.<br>
+  <a href="../">More picture books</a>
+</footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const fmt = n => Math.round(n).toLocaleString("en-US");
+
+  /* ================= science data ================= */
+  // km at closest approach to Earth; real mission travel times for comparison
+  const PLANETS = {
+    moon:    { name: "the Moon", short: "Moon",    km: 384400,  real: "about 3 days (Apollo astronauts)" },
+    venus:   { name: "Venus",    short: "Venus",   km: 38e6,    real: "about 5 months (Venus Express robot)" },
+    mars:    { name: "Mars",     short: "Mars",    km: 55e6,    real: "about 7 months (Perseverance rover)" },
+    mercury: { name: "Mercury",  short: "Mercury", km: 77e6,    real: "about 6½ years (MESSENGER robot, it had to loop around a lot!)" },
+    jupiter: { name: "Jupiter",  short: "Jupiter", km: 588e6,   real: "about 5 years (Juno robot)" },
+    saturn:  { name: "Saturn",   short: "Saturn",  km: 1.2e9,   real: "about 7 years (Cassini robot)" },
+    uranus:  { name: "Uranus",   short: "Uranus",  km: 2.6e9,   real: "about 8½ years (Voyager 2 robot)" },
+    neptune: { name: "Neptune",  short: "Neptune", km: 4.3e9,   real: "about 12 years (Voyager 2 robot)" },
+  };
+  const RIDES = {
+    jet:    { name: "jet plane", emoji: "✈️", kmh: 900 },
+    rocket: { name: "super rocket", emoji: "🚀", kmh: 58000 },
+  };
+  const state = { planet: "mars", ride: "rocket", pod: false, age: 6 };
+
+  const hours = () => PLANETS[state.planet].km / RIDES[state.ride].kmh;
+  const days = () => hours() / 24;
+  const years = () => days() / 365.25;
+  function say(h) {
+    const d = h / 24, y = d / 365.25;
+    if (h < 48) return { n: Math.max(1, Math.round(h)), u: Math.round(h) === 1 ? "hour" : "hours" };
+    if (d < 60) return { n: Math.round(d), u: "days" };
+    if (y < 2) return { n: Math.round(d / 30.4), u: "months" };
+    return { n: Math.round(y), u: "years" };
+  }
+  const timeStr = h => { const t = say(h); return t.n.toLocaleString("en-US") + " " + t.u; };
+
+  /* ================= shared picker ================= */
+  const pickers = [...document.querySelectorAll(".picker")];
+  function renderPickers() {
+    pickers.forEach(pk => {
+      pk.innerHTML = "";
+      const r1 = document.createElement("div"); r1.className = "row";
+      r1.innerHTML = '<span class="lbl">GO TO:</span>';
+      Object.entries(PLANETS).forEach(([k, p]) => {
+        const b = document.createElement("button");
+        b.className = "pchip" + (k === state.planet ? " on" : "");
+        b.innerHTML = '<img src="img/' + k + '.webp" alt="">' + p.short;
+        b.onclick = () => { state.planet = k; S.tap(); update(); };
+        r1.appendChild(b);
+      });
+      const r2 = document.createElement("div"); r2.className = "row";
+      r2.innerHTML = '<span class="lbl">RIDE:</span>';
+      Object.entries(RIDES).forEach(([k, r]) => {
+        const b = document.createElement("button");
+        b.className = "vchip" + (k === state.ride ? " on" : "");
+        b.innerHTML = '<img src="img/' + k + '.webp" alt="">' + r.name;
+        b.onclick = () => { state.ride = k; k === "rocket" ? S.rocket() : S.jet(); update(); };
+        r2.appendChild(b);
+      });
+      pk.append(r1, r2);
+    });
+  }
+
+  function update() {
+    renderPickers();
+    const P = PLANETS[state.planet], R = RIDES[state.ride], h = hours(), d = days(), y = years();
+    // page 6
+    $("#ans6").innerHTML = R.emoji + " By " + R.name + " to <b>" + P.name + "</b> (" + fmt(P.km) + " km), flying non-stop: <span class='num'>" + timeStr(h) + "</span>" +
+      (y >= 1 ? ". You'd ask <i>\"Are we there yet?\"</i> about <b>" + fmt(d * 12) + "</b> times! (once every hour you're awake)" : "!");
+    $("#real6").innerHTML = "🛰️ <b>Real life:</b> " + P.real + ". Spaceships fly curvy paths around the Sun, not a straight line.";
+    $("#toImg").src = "img/" + state.planet + ".webp";
+    $("#ship").src = "img/" + state.ride + ".webp";
+    $("#clock").textContent = "Trip to " + P.short + ": " + timeStr(h);
+    // page 7 food
+    const awake = state.pod ? Math.min(d, 14) : d;
+    const D = Math.max(1, Math.ceil(awake));
+    $("#ans7").innerHTML = "Trip to <b>" + P.name + "</b> by " + R.name + ": <span class='num'>" + timeStr(h) + "</span>" + (state.pod ? " (you sleep in the pod, so you only eat while awake: " + D + " days)" : "") + ". You'd need:";
+    const pizzas = D, nuggets = D * 6, ice = D, kg = D * 1.5;
+    $("#food7").innerHTML =
+      stat("🍕", fmt(pizzas), "pizzas (one a day)") + stat("🍗", fmt(nuggets), "chicken nuggets (6 a day)") +
+      stat("🍦", fmt(ice), "ice-cream cones (one treat a day)") + stat("🧳", weightStr(kg), "of food in total");
+    const m = pizzas * 0.04;
+    $("#stack7").innerHTML = "📦 If you stacked up all the pizza boxes, the pile would be <b>" + heightStr(m) + "</b> tall" + compare(m) + ".";
+    // page 8
+    $("#pod").classList.toggle("on", state.pod);
+    $("#podLbl").textContent = "Space Sleep pod: " + (state.pod ? "ON 💤" : "OFF");
+    $("#frost").classList.toggle("on", state.pod);
+    $("#ans8").innerHTML = "Trip to <b>" + P.name + "</b> by " + R.name + ": <span class='num'>" + timeStr(h) + "</span> one way. " +
+      (state.pod
+        ? "💤 You sleep almost the whole way, so you only need food for about <b>" + Math.ceil(Math.min(d, 14)) + " days</b> instead of " + fmt(Math.ceil(d)) + ". And in our pretend pod, <b>you don't get any older</b> while you sleep!"
+        : (y >= 1 ? "That's a LOT of waiting. Turn on the pod and see what changes!" : "That's short enough to stay awake. Try a farther planet, or the jet!"));
+    // page 9
+    renderFamily();
+  }
+  const stat = (em, n, t, cls) => '<div class="stat ' + (cls || "") + '"><div class="em">' + em + '</div><div class="n">' + n + '</div><div class="t">' + t + "</div></div>";
+  function weightStr(kg) {
+    if (kg < 1000) return fmt(kg) + " kg";
+    const t = kg / 1000;
+    return (t < 10 ? t.toFixed(1) : fmt(t)) + " tons";
+  }
+  function heightStr(m) { return m < 1 ? Math.round(m * 100) + " cm" : m < 10 ? m.toFixed(1).replace(".0", "") + " m" : m < 1000 ? fmt(m) + " m" : (m / 1000).toFixed(1) + " km"; }
+  function compare(m) {
+    if (m < 1.2) return ", about as tall as you";
+    if (m < 2.5) return ", taller than a grown-up";
+    if (m < 508) return ", " + Math.round(m / 1.2) + " times taller than you";
+    if (m < 8849) return ", taller than " + (m / 508).toFixed(1).replace(".0", "") + " Taipei 101 towers stacked up";
+    return ", higher than " + (m / 8849).toFixed(1).replace(".0", "") + " Mount Everests";
+  }
+
+  /* family ages */
+  const FAMILY = [
+    { em: "👩", who: "Mom", age: 35, life: 95 },
+    { em: "👨", who: "Dad", age: 37, life: 95 },
+    { em: "👵", who: "Grandma", age: 65, life: 95 },
+    { em: "👶", who: "Baby brother", age: 1, life: 95 },
+    { em: "🐶", who: "Pet dog", age: 3, life: 15 },
+  ];
+  const ageBox = $("#ages");
+  [5, 6, 7, 8].forEach(a => {
+    const b = document.createElement("button"); b.className = "choice"; b.textContent = a;
+    b.onclick = () => { state.age = a; S.tap(); renderFamily(); };
+    ageBox.appendChild(b);
+  });
+  function renderFamily() {
+    ageBox.querySelectorAll("button").forEach(b => b.classList.toggle("on", +b.textContent === state.age));
+    const P = PLANETS[state.planet], R = RIDES[state.ride];
+    const ry = years() * 2;                    // there and back
+    const rt = timeStr(hours() * 2);
+    $("#ans9").innerHTML = "Round trip to <b>" + P.name + "</b> and back by " + R.name + ": <span class='num'>" + rt + "</span>. When you land, " + (state.pod ? "you're still <b>" + state.age + "</b> (you slept in the pod!)" : "you're <b>" + Math.floor(state.age + ry) + "</b> years old") + ". And your family:";
+    let gone = 0;
+    $("#fam9").innerHTML = (state.pod ? stat("🧒", state.age, "You (asleep in the pod)") : stat("🧒", Math.floor(state.age + ry), "You")) +
+      FAMILY.map(f => {
+        const now = Math.floor(f.age + ry);
+        if (now >= f.life) { gone++; return stat("💐", f.who, "would be " + fmt(now) + ". Might not be here anymore", "gone"); }
+        return stat(f.em, now, f.who + " (now " + f.age + ")");
+      }).join("");
+    let msg;
+    if (ry < 0.1) msg = "🤗 You're home so fast, nobody even missed you. Big hugs!";
+    else if (ry < 2) msg = "🤗 Everyone looks about the same. Big welcome-home hugs!";
+    else if (!gone && ry < 8) msg = "🎂 You missed a lot of birthday parties! Your baby brother is a big kid now and goes to school!";
+    else if (!gone) msg = "🎂 You missed SO many birthday parties! Your baby brother is a teenager now, taller than you!";
+    else if (gone < FAMILY.length) msg = "⏳ So much time has passed. Some of the people who waved goodbye have grown very old, and some might not be here to hug you anymore.";
+    else msg = "⏳ This trip is longer than a whole lifetime. Everyone who waved goodbye would be gone, and their great-great-grandchildren would welcome you home instead. That's why scientists dream of much faster spaceships!";
+    $("#msg9").innerHTML = msg;
+  }
+
+  /* ================= 1 cover ================= */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "stars", .7); build(1, st => {
+    B.hot(st, 33, 30, 12, 30, "Nova", () => { S.yay(); F.sparkles(st, ...B.px(st, 33, 26), 26); B.bubble(st, 40, 6, "<b>Hi, I'm Nova!</b>Let's find out how far the planets are!"); });
+    B.hot(st, 26, 32, 7, 13, "Bolt", () => { S.chirp(); B.bubble(st, 4, 6, "<b>Beep boop! Woof!</b>I'm Bolt, the robot dog."); });
+    B.hot(st, 33, 64, 18, 24, "Rocket", () => { S.rocket(); const [x, y] = B.px(st, 17, 74); for (let i = 0; i < 25; i++) setTimeout(() => { F.fire(st, x, y, 6, 16); F.smoke(st, x - 20, y, 2, "#ddd"); }, i * 60); F.shake(st); });
+    B.hot(st, 74, 47, 14, 22, "Jupiter", () => { S.pop(); B.bubble(st, 98, 70, "<b>Jupiter</b>The biggest planet of all!", { right: true }); });
+    B.hot(st, 88, 18, 12, 16, "Saturn", () => { S.pop(); B.bubble(st, 98, 34, "<b>Saturn</b>Look at my rings!", { right: true }); });
+  }); });
+
+  /* ================= 2 solar system ================= */
+  let met = 0;
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "stars", .6); build(2, st => {
+    const facts = [
+      [7, 37, 12, 40, "Sun", "<b>The Sun ☀️</b>I'm a star! About 109 Earths could line up across me."],
+      [19.5, 49, 5, 9, "Mercury", "<b>Mercury</b>Smallest planet, closest to the Sun. My year is only 88 days!"],
+      [27, 49, 6, 11, "Venus", "<b>Venus</b>The hottest planet, hotter than a pizza oven!"],
+      [38, 51, 7, 13, "Earth", "<b>Earth 🌍</b>Home sweet home! The only planet we know with life."],
+      [44, 40, 4, 7, "Moon", "<b>The Moon</b>I'm Earth's best buddy, not a planet."],
+      [48.7, 49, 5, 9, "Mars", "<b>Mars</b>The red planet! My dust is rusty, like an old bike."],
+      [60, 49, 11, 20, "Jupiter", "<b>Jupiter</b>The biggest! About 1,300 Earths could fit inside me."],
+      [74, 27, 13, 17, "Saturn", "<b>Saturn</b>My rings are made of ice and rock."],
+      [83, 49, 6, 18, "Uranus", "<b>Uranus</b>I spin on my side, like a rolling ball!"],
+      [91, 49, 6, 11, "Neptune", "<b>Neptune</b>The windiest planet. Super-duper fast winds!"],
+    ];
+    facts.forEach(f => B.hot(st, f[0], f[1], f[2], f[3], f[4], b => {
+      S.pop(); F.sparkles(st, ...B.px(st, f[0], f[1]), 18);
+      const right = f[0] > 55;
+      B.bubble(st, right ? Math.min(98, f[0] + 4) : Math.max(2, f[0] - 4), f[1] > 45 ? 62 : 58, f[5], right ? { right: true } : null);
+      if (!b.dataset.seen) { b.dataset.seen = 1; met++; $("#met").textContent = met + " / 10"; if (met === 10) { S.yay(); B.confetti(60); } }
+    }));
+    B.hot(st, 34, 74, 8, 18, "Nova", () => { S.chirp(); B.bubble(st, 26, 30, "<b>Nova:</b> Which one should we visit first?"); });
+  }); });
+
+  /* ================= 3 space is big ================= */
+  const big = $("#big");
+  function lineup(items, done) {
+    big.querySelectorAll(".lineup").forEach(n => n.remove());
+    const row = document.createElement("div"); row.className = "lineup";
+    big.appendChild(row);
+    const W = row.getBoundingClientRect().width;
+    items.forEach((it, i) => setTimeout(() => {
+      const im = document.createElement("img"); im.src = "img/" + it.k + ".webp"; im.alt = "";
+      const w = W * it.f;
+      im.style.width = (it.k === "saturn" ? w * 2.1 : it.k === "uranus" ? w * 1.25 : w) + "px";
+      if (it.k === "saturn") im.style.margin = "0 " + (-w * .55) + "px";
+      if (it.k === "uranus") im.style.margin = "0 " + (-w * .12) + "px";
+      row.appendChild(im); S.tick();
+      if (i === items.length - 1) setTimeout(done, 300);
+    }, i * (items.length > 12 ? 90 : 320)));
+  }
+  $("#earths").onclick = () => {
+    lineup(Array.from({ length: 30 }, () => ({ k: "earth", f: 1 / 30 })), () => {
+      S.ding(); $("#bigfact").innerHTML = "🌍 <b>30 Earths</b> fit in the gap between Earth and the Moon!";
+    });
+  };
+  $("#allplanets").onclick = () => {
+    const D = { mercury: 4879, venus: 12104, mars: 6779, jupiter: 139820, saturn: 116460, uranus: 50724, neptune: 49244 };
+    lineup(Object.entries(D).map(([k, d]) => ({ k, f: d / 384400 })), () => {
+      S.yay(); B.confetti(40);
+      $("#bigfact").innerHTML = "🪐 <b>Wow!</b> All the other planets, side by side, can just squeeze in between Earth and the Moon. (Only when the Moon is at its usual distance!)";
+    });
+  };
+  B.on(3, () => { F.weather(big, "stars", .8); build(3, st => {
+    B.hot(st, 6, 48, 12, 50, "Earth", () => { S.pop(); B.bubble(st, 10, 8, "<b>Earth:</b> Bye-bye! See you soon!"); });
+    B.hot(st, 94, 48, 8, 18, "Moon", () => { S.snore(); B.bubble(st, 98, 66, "<b>Moon:</b> Yawn... I'm SO far away.", { right: true }); });
+  }); });
+
+  /* ================= 4 choose ride ================= */
+  B.on(4, () => { const st = stageOf(4); F.weather(st, "pollen", .3); build(4, st => {
+    B.hot(st, 22, 58, 26, 30, "Jet plane", () => {
+      S.jet(); const [x, y] = B.px(st, 10, 62); for (let i = 0; i < 14; i++) setTimeout(() => F.smoke(st, x, y, 1, "#eef"), i * 90);
+      B.bubble(st, 2, 6, "<b>Jet plane ✈️</b>900 km/h. It could fly around the whole Earth in about 2 days!");
+    });
+    B.hot(st, 85, 42, 14, 66, "Rocket", () => {
+      S.rocket(); F.shake(st);
+      const [x, y] = B.px(st, 85, 80);
+      for (let i = 0; i < 40; i++) setTimeout(() => { F.fire(st, x, y, 7, 18); F.smoke(st, x + (Math.random() - .5) * 120, y + 10, 2, "#e9e4f0"); }, i * 60);
+      B.bubble(st, 70, 6, "<b>Rocket 🚀</b>58,000 km/h! It could zoom around the Earth in less than 1 hour!", { right: true });
+    });
+    B.hot(st, 47, 58, 9, 30, "Nova", () => { S.chirp(); B.bubble(st, 34, 14, "<b>Nova:</b> Hmm... which one should I pick?"); });
+    B.hot(st, 58, 77, 7, 14, "Bolt", () => { S.chirp(); F.hearts(st, ...B.px(st, 58, 70)); });
+  }); });
+
+  /* ================= 5 moon race ================= */
+  let raceT = 0;
+  function race() {
+    cancelAnimationFrame(raceT);
+    const jet = $("#r-jet"), rk = $("#r-rocket"), tj = $("#t-jet"), tr = $("#t-rocket");
+    const J = 384400 / 900, R = 384400 / 58000;     // hours
+    const realMs = 9000, t0 = performance.now();      // jet race shown in 9 seconds
+    S.rocket(); setTimeout(S.jet, 300);
+    let rocketDone = false;
+    (function step(t) {
+      const simH = (t - t0) / realMs * J;
+      const pj = Math.min(1, simH / J), pr = Math.min(1, simH / R);
+      jet.style.left = "calc(" + (pj * 78) + "%)"; rk.style.left = "calc(" + (pr * 78) + "%)";
+      tj.textContent = "✈️ " + (pj < 1 ? timeStr(simH) : timeStr(J) + " 🏁");
+      tr.textContent = "🚀 " + (pr < 1 ? timeStr(simH) : timeStr(R) + " 🏁");
+      if (pr >= 1 && !rocketDone) { rocketDone = true; S.ding(); B.bubble(stageOf(5), 30, 46, "<b>Rocket wins!</b> Still waiting for the jet... zzz"); }
+      if (pj < 1) raceT = requestAnimationFrame(step); else { S.yay(); B.bubble(stageOf(5), 30, 46, "<b>The jet made it!</b> 18 days later. Phew!"); }
+    })(t0);
+  }
+  $("#race").onclick = race;
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "stars", .5); build(5, st => {
+    B.hot(st, 40, 32, 12, 30, "Nova", () => { S.pop(); F.dust(st, ...B.px(st, 40, 50)); B.bubble(st, 28, 50, "<b>Boing!</b> On the Moon you can jump about 6 times higher!"); });
+    B.hot(st, 60, 50, 8, 18, "Bolt", () => { S.chirp(); B.bubble(st, 48, 66, "<b>Bolt:</b> No air here, so I wear my helmet!"); });
+    B.hot(st, 85, 25, 13, 24, "Earth", () => { S.sparkle(); F.sparkles(st, ...B.px(st, 85, 25)); B.bubble(st, 98, 48, "<b>Earth</b> looks so small from here!", { right: true }); });
+  }); }, () => cancelAnimationFrame(raceT));
+
+  /* ================= 6 cockpit ================= */
+  let flyT = 0;
+  function blast() {
+    cancelAnimationFrame(flyT);
+    const st = stageOf(6), ship = $("#ship"), fill = $("#fill"), clock = $("#clock");
+    const H = hours(), dur = 4000, t0 = performance.now();
+    state.ride === "rocket" ? S.rocket() : S.jet();
+    F.weather(st, "stars", 1.2);
+    (function step(t) {
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 2);
+      ship.style.left = (8 + e * 84) + "%"; fill.style.width = (e * 100) + "%";
+      clock.textContent = "⏱️ " + timeStr(Math.max(1, H * e));
+      const r = ship.getBoundingClientRect(), s = st.getBoundingClientRect();
+      F.fire(st, r.left - s.left + 4, r.top - s.top + r.height / 2, 3, 4);
+      if (k < 1) flyT = requestAnimationFrame(step);
+      else { S.ding(); clock.textContent = "🏁 Arrived at " + PLANETS[state.planet].short + "! " + timeStr(H); F.sparkles(st, r.left - s.left + r.width, r.top - s.top + r.height / 2, 30); }
+    })(t0);
+  }
+  $("#blast").onclick = blast;
+  B.on(6, () => { const st = stageOf(6); F.weather(st, "stars", .6); build(6, st => {
+    B.hot(st, 23, 50, 14, 40, "Nova", () => { S.chirp(); B.bubble(st, 4, 6, "<b>Nova:</b> Pick a planet below, then press Blast off!"); });
+    B.hot(st, 39, 58, 7, 16, "Bolt", () => { S.chirp(); F.hearts(st, ...B.px(st, 39, 50)); });
+  }); }, () => cancelAnimationFrame(flyT));
+
+  /* ================= 7 snacks ================= */
+  $("#pack").onclick = () => {
+    const st = stageOf(7), foods = ["🍕", "🍗", "🍦", "🍎", "🍌", "🥟", "🍪", "🧃"];
+    const n = Math.min(60, 8 + Math.round(Math.log10(Math.max(10, days())) * 12));
+    S.munch();
+    for (let i = 0; i < n; i++) setTimeout(() => {
+      const f = document.createElement("div"); f.className = "food";
+      f.textContent = foods[i % foods.length];
+      f.style.left = (Math.random() * 92) + "%"; f.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+      st.appendChild(f); setTimeout(() => f.remove(), 3200);
+      if (i % 6 === 0) S.pop();
+    }, i * 70);
+  };
+  B.on(7, () => build(7, st => {
+    B.hot(st, 39, 32, 12, 30, "Nova", () => { S.munch(); B.bubble(st, 50, 6, "<b>Nom nom!</b> In space, crumbs float away, so astronauts eat carefully."); });
+    B.hot(st, 65, 66, 9, 18, "Bolt", () => { S.chirp(); B.bubble(st, 50, 40, "<b>Bolt:</b> Got it! A floating nugget!"); });
+    B.hot(st, 90, 42, 14, 70, "Pizza boxes", () => { S.pop(); F.sparkles(st, ...B.px(st, 90, 30)); B.bubble(st, 98, 6, "<b>Pizza tower!</b> See how tall your stack would be below.", { right: true }); });
+  }));
+
+  /* ================= 8 sleep ================= */
+  let snoreT = 0;
+  $("#pod").onclick = () => {
+    state.pod = !state.pod; update();
+    const st = stageOf(8);
+    if (state.pod) { S.sparkle(); F.weather(st, "snow", .8); clearInterval(snoreT); snoreT = setInterval(S.snore, 3000); S.snore(); }
+    else { S.pop(); F.weather(st, "stars", .5); clearInterval(snoreT); }
+  };
+  B.on(8, () => { const st = stageOf(8); F.weather(st, state.pod ? "snow" : "stars", .6); build(8, st => {
+    B.hot(st, 21, 46, 22, 56, "Nova in the sleep pod", () => { S.snore(); B.bubble(st, 34, 8, "<b>Zzz...</b> Wake me up when we get there!"); });
+    B.hot(st, 46, 67, 9, 18, "Bolt", () => { S.snore(); B.bubble(st, 40, 36, "<b>Bolt:</b> Beep... zzz... boop."); });
+    B.hot(st, 84, 28, 18, 34, "Window", () => { S.whoosh(); B.bubble(st, 98, 62, "<b>Stars zooming by!</b>", { right: true }); });
+  }); }, () => clearInterval(snoreT));
+
+  /* ================= 9 home ================= */
+  B.on(9, () => { const st = stageOf(9); F.weather(st, "pollen", .4); build(9, st => {
+    B.hot(st, 52, 50, 16, 34, "Calendar pages", () => { S.wind(); F.sparkles(st, ...B.px(st, 52, 50), 20); B.bubble(st, 30, 6, "<b>Whoosh!</b> Days, months and years fly by on Earth."); });
+    B.hot(st, 75, 62, 10, 34, "Mom, now very old", () => { S.ding(); F.hearts(st, ...B.px(st, 75, 50)); B.bubble(st, 98, 6, "<b>Mom:</b> My little astronaut, you're home! I missed you SO much.", { right: true }); });
+    B.hot(st, 87, 52, 9, 36, "Grown-up brother with a baby", () => { S.chirp(); B.bubble(st, 98, 30, "<b>Little brother:</b> I'm a grown-up now, and this is my baby!", { right: true }); });
+    B.hot(st, 29, 66, 10, 30, "Nova", () => { S.pop(); B.bubble(st, 4, 6, "<b>Nova:</b> Wait... why does everyone look so old?"); });
+  }); });
+
+  /* ================= 10 end ================= */
+  B.on(10, () => { const st = stageOf(10); F.weather(st, "stars", .9); build(10, st => {
+    B.hot(st, 86, 19, 9, 16, "Moon", () => { S.sparkle(); F.sparkles(st, ...B.px(st, 86, 19), 24); B.bubble(st, 98, 38, "<b>Goodnight, Moon!</b>", { right: true }); });
+    B.hot(st, 45, 44, 9, 16, "Telescope", () => { S.sparkle(); for (let i = 0; i < 5; i++) setTimeout(() => F.sparkles(st, ...B.px(st, 50 + Math.random() * 40, 10 + Math.random() * 25), 14), i * 250); B.bubble(st, 30, 70, "<b>Look!</b> That tiny dot is Jupiter!"); });
+    B.hot(st, 30, 49, 18, 40, "Family", () => { S.yay(); F.hearts(st, ...B.px(st, 30, 30)); B.confetti(40); });
+    B.hot(st, 91, 58, 10, 18, "House", () => { S.ding(); B.bubble(st, 98, 78, "<b>Home sweet home.</b>", { right: true }); });
+  }); });
+
+  // quiz
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  update();
+  B.init();
+})();
+</script>
+</body>
+</html>
