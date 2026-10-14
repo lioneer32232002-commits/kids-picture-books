@@ -13,9 +13,9 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets"}
 # sprite name -> max size (px)
-SPRITES = {"asteroid": 360}
+SPRITES = {"asteroid": 360, "boss": 520}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
 _c = lambda col, row: (col / 3, row / 3, (col + 1) / 3, (row + 1) / 3)
 SHEETS: dict = {
@@ -34,6 +34,14 @@ SHEETS: dict = {
               [("orange", 0, 0), ("strawberry", 1, 0), ("kiwi", 2, 0), ("pepper", 3, 0),
                ("carrot", 0, 1), ("broccoli", 1, 1), ("spinach", 2, 1), ("sweetpotato", 3, 1),
                ("peas", 0, 2), ("banana", 1, 2), ("lollipop", 2, 2), ("soda", 3, 2)]},
+    # space clean-up game (planets book)
+    "junk": {n: ((c / 3, r / 3, (c + 1) / 3, (r + 1) / 3), 200) for n, c, r in
+             [("sat", 0, 0), ("panel", 1, 0), ("bolt", 2, 0), ("tank", 0, 1), ("glove", 1, 1), ("wrench", 2, 1),
+              ("camera", 0, 2), ("dish", 1, 2), ("cables", 2, 2)]},
+    "rocks": {"rock_big": ((0, 0, 1 / 3, .5), 280), "rock_med": ((1 / 3, 0, 2 / 3, .5), 200), "rock_small": ((2 / 3, 0, 1, .4), 120),
+              "rock_metal": ((0, .5, 1 / 3, 1), 240), "ice": ((1 / 3, .5, 2 / 3, 1), 140), "comet": ((2 / 3, .4, 1, 1), 380)},
+    "items": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), 220) for n, c, r in
+              [("ufo", 0, 0), ("buddy", 1, 0), ("shield", 2, 0), ("dust", 0, 1), ("magnet", 1, 1), ("power", 2, 1)]},
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket"}
@@ -134,7 +142,7 @@ def main():
             continue
         out = ROOT / folder / "img"
         out.mkdir(parents=True, exist_ok=True)
-        for f in sorted(src_dir.glob("p[0-9][0-9].jpg")) + sorted(src_dir.glob("map[0-9].jpg")):
+        for f in sorted(src_dir.glob("p[0-9][0-9].jpg")) + sorted(src_dir.glob("map[0-9].jpg")) + sorted(src_dir.glob("bg_*.jpg")):
             page(f, out / (f.stem + ".webp"))
             print("page", f.name)
         for name, size in SPRITES.items():

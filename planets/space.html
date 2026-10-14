@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space Clean-Up! | A Rocket Game from "Are We There Yet?"</title>
+<meta name="description" content="A gentle space shooter for kids 5-7: fly Nova's rocket to the planets, clean up asteroids and space junk, upgrade your laser, and say hi to friendly aliens.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Space Clean-Up! 🚀✨ A rocket game for kids">
+<meta property="og:description" content="Fly to the planets, clean up space junk and asteroids, upgrade your rocket, and wave to friendly aliens. 8 levels, free.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/space-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #ff7a59; --bg: radial-gradient(circle at 15% 10%, #dfe6ff 0, transparent 40%), radial-gradient(circle at 90% 90%, #ffe1ec 0, transparent 45%), #eef1ff; }
+  .layout { display: flex; gap: 20px; justify-content: center; align-items: flex-start; max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; }
+  .gamebox { flex: none; width: min(100%, calc((100vh - 84px) * 9 / 16)); }
+  #game { width: 100%; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; background: #0d0a26; box-shadow: var(--shadow); touch-action: none; }
+  #game canvas { display: block; }
+  .side { flex: 1; max-width: 380px; display: grid; gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.4; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .gear { display: grid; grid-template-columns: 44px 1fr; gap: 8px 10px; align-items: center; }
+  .gear img { width: 44px; height: 44px; object-fit: contain; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; align-items: center; }
+    .side { max-width: 560px; width: 100%; }
+    .gamebox { width: min(100%, calc((100vh - 70px) * 9 / 16)); }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🚀</span>Space Clean-Up!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<div class="layout">
+  <div class="gamebox"><div id="game"></div></div>
+  <aside class="side">
+    <div class="box">
+      <h3>🕹️ How to fly</h3>
+      <b>Drag anywhere</b> (or use the arrow keys) to move Nova's rocket. The laser fires all by itself!
+      Clean up junk and rocks, grab ✨ stardust, and reach the planet. Watch for the red ⚠ warning: comets are too big to clean, so <b>dodge</b> them!
+    </div>
+    <div class="box">
+      <h3>🛠️ Your gear</h3>
+      <div class="gear">
+        <img src="img/power.webp" alt=""><span><b>Laser power-up</b>: up to 5 beams at once.</span>
+        <img src="img/buddy.webp" alt=""><span><b>Bolt the robot dog</b>: a helper that aims for you (up to 2).</span>
+        <img src="img/shield.webp" alt=""><span><b>Shield bubble</b>: blocks one bump.</span>
+        <img src="img/magnet.webp" alt=""><span><b>Magnet</b>: pulls in stardust for 10 seconds.</span>
+        <img src="img/dust.webp" alt=""><span><b>Stardust</b>: charges 💥 Star Burst and buys upgrades in the Hangar.</span>
+      </div>
+    </div>
+    <div class="box">
+      <h3>👽 Be kind in space</h3>
+      Friendly aliens are living things, so the cleaner beam passes right through them. Fly over and say hi to make a new friend!
+      <p class="note">Science note: real asteroids are about a million kilometers apart, and real scientists plan to catch space junk with nets and robot arms, because breaking it apart makes more junk. The game makes space busier so it's fun to play!</p>
+    </div>
+  </aside>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Built with Phaser · <a href="./">Read "Are We There Yet?"</a> · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="space.js"></script>
+<script>
+  SpaceCleanUp.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__scGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>

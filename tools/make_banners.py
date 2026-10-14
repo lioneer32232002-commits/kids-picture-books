@@ -20,6 +20,8 @@ JOBS = [
     ("planet", "square", "planets-square", (1080, 1080)),
     ("immune", "wide", "immune-fb", (1200, 630)),
     ("immune", "square", "immune-square", (1080, 1080)),
+    ("space", "wide", "space-fb", (1200, 630)),
+    ("space", "square", "space-square", (1080, 1080)),
 ]
 
 
