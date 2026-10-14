@@ -18,6 +18,8 @@ JOBS = [
     ("dino", "square", "dinosaurs-square", (1080, 1080)),
     ("planet", "wide", "planets-fb", (1200, 630)),
     ("planet", "square", "planets-square", (1080, 1080)),
+    ("immune", "wide", "immune-fb", (1200, 630)),
+    ("immune", "square", "immune-square", (1080, 1080)),
 ]
 
 

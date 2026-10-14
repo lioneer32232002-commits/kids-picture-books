@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Body Defenders: Veggie Power! | Interactive Picture Book + Game</title>
+<meta name="description" content="Meet the white blood cell heroes inside your body, learn why fruits and vegetables help them, then lead them in a tower defense game against cute viruses. For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Body Defenders: Veggie Power! 🥦🦠 Picture book + tower defense game">
+<meta property="og:description" content="Meet the tiny heroes inside your body, power them up with fruits and veggies, and stop the viruses! For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/immune-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/immune/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #ff6f7d; --bg: radial-gradient(circle at 15% 10%, #ffe1ec 0, transparent 40%), radial-gradient(circle at 90% 90%, #e2f7e6 0, transparent 45%), #fff1f0; }
+  .actor { position: absolute; transform: translate(-50%, -50%); cursor: pointer; border: none; background: none; padding: 0; z-index: 2;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); transition: transform .15s; animation: idle 2.4s ease-in-out infinite; }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .actor:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .card { display: none; background: #fff; border-radius: 18px; padding: 12px 16px; margin: 8px 0; border: 3px solid var(--paper-2); font-size: .85em; }
+  .card.on { display: block; animation: pop .3s; }
+  .card h3 { margin: 0 0 4px; font-size: 1.15em; color: var(--ink); }
+  .card .tag { display: inline-block; background: #fff1ea; color: #e0662f; border-radius: 999px; padding: 0 10px; font-weight: 800; margin-right: 6px; font-size: .9em; }
+  .bars { display: grid; grid-template-columns: 78px 1fr; gap: 3px 10px; align-items: center; margin-top: 8px; font-size: .85em; font-weight: 700; }
+  .bar { height: 12px; border-radius: 6px; background: #f1ebf4; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #ffb36b, #ff6f7d); }
+  .foodgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; margin: 8px 0; }
+  .foodgrid button { border: 3px solid transparent; background: #fff; border-radius: 16px; padding: 6px 4px 2px; cursor: pointer; box-shadow: 0 3px 0 rgba(59,47,74,.12); font-family: inherit; font-weight: 700; font-size: 12px; color: var(--ink); }
+  .foodgrid button img { width: 46px; height: 46px; object-fit: contain; display: block; margin: 0 auto; }
+  .foodgrid button.on { border-color: var(--accent); }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #5ccf6a; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #3f9e4c; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .dim::after { content: ""; position: absolute; inset: 0; background: rgba(40,20,50,.25); pointer-events: none; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🥦</span>Body Defenders</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Four cute white blood cell heroes stand on a broccoli and carrot castle while little viruses sneak toward them."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Body Defenders: Veggie Power!</h1>
+        <p>Inside your body lives a team of tiny heroes. They protect you from germs every single day! Let's meet them. Then <span class="hl">YOU</span> can lead them into battle.</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the heroes. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 GERMS -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="In a classroom, a girl sneezes into her elbow and tiny cartoon viruses float toward Leo."><div class="layer"></div></div>
+      <div class="text">
+        <p><b>Germs</b> are tiny things that can make us sick. <b>Viruses</b> are one kind of germ. They are SO small that hundreds of them could line up across one hair!</p>
+        <p>A virus can't grow on its own. It sneaks into the cells of your body and makes copies of itself. Viruses travel on sneezes, coughs and dirty hands.</p>
+        <span class="fact">👆 Tap the <b>sneeze</b>, the <b>viruses</b> and <b>Leo</b>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 DEFENDERS (weapons) -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="hq"><img class="art" src="img/p03.webp" alt="A cozy defender headquarters inside the body.">
+        <div class="layer">
+          <button class="actor" data-hero="neo" style="left:21%;top:76%;width:13%"><img src="img/neo.webp" alt="Neo the Neutrophil"></button>
+          <button class="actor" data-hero="max" style="left:40%;top:74%;width:15%;animation-delay:.3s"><img src="img/max.webp" alt="Max the Macrophage"></button>
+          <button class="actor" data-hero="bella" style="left:60%;top:76%;width:13%;animation-delay:.6s"><img src="img/bella.webp" alt="Bella the B Cell"></button>
+          <button class="actor" data-hero="tcell" style="left:79%;top:75%;width:14%;animation-delay:.9s"><img src="img/tcell.webp" alt="Captain T the Killer T Cell"></button>
+        </div></div>
+      <div class="text">
+        <p>Meet your <b>white blood cells</b>, the Body Defenders! In the game, they are your <span class="hl">towers</span>. Tap each hero to see its job and its power.</p>
+        <div class="card" id="heroCard" data-noread></div>
+        <span class="fact">🔬 White blood cells travel in your blood, and they can squeeze out of it to fight germs wherever they hide.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 VIRUSES (weak -> strong) -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage dim" id="germs"><img class="art" src="img/map3.webp" alt="Inside a blood vessel with six cartoon viruses lined up from small to big.">
+        <div class="layer">
+          <button class="actor" data-germ="sniffle" style="left:10%;top:62%;width:9%"><img src="img/sniffle.webp" alt="Sniffle"></button>
+          <button class="actor" data-germ="zippy" style="left:24%;top:62%;width:9%;animation-delay:.2s"><img src="img/zippy.webp" alt="Zippy"></button>
+          <button class="actor" data-germ="flu" style="left:39%;top:60%;width:11%;animation-delay:.4s"><img src="img/flu.webp" alt="Flu-Boss Jr"></button>
+          <button class="actor" data-germ="tummy" style="left:54%;top:60%;width:11%;animation-delay:.6s"><img src="img/tummy.webp" alt="Tummy Bug"></button>
+          <button class="actor" data-germ="armor" style="left:69%;top:59%;width:13%;animation-delay:.8s"><img src="img/armor.webp" alt="Armor Virus"></button>
+          <button class="actor" data-germ="mega" style="left:87%;top:54%;width:19%;animation-delay:1s"><img src="img/mega.webp" alt="Mega Virus"></button>
+        </div></div>
+      <div class="text">
+        <p>Here come the <b>germs</b>, from weakest to strongest! Each level of the game sends tougher ones. Tap a germ to learn its tricks.</p>
+        <div class="card" id="germCard" data-noread></div>
+        <span class="fact">😄 These are pretend characters. Real viruses don't have faces (or crowns)!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 EAT THE RAINBOW -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="Leo eats a rainbow plate of fruits and vegetables while the defenders glow happily."><div class="layer"></div></div>
+      <div class="text">
+        <p>Your defenders need good fuel! <b>Fruits and vegetables</b> give them vitamins and minerals so they can do their jobs well. Different colors bring different helpers, so <span class="hl">eat the rainbow</span>.</p>
+        <div class="foodgrid" id="foods" data-noread></div>
+        <div class="card" id="foodCard" data-noread></div>
+        <span class="fact">✅ <b>Science check:</b> eating well doesn't mean you'll never get sick. Even vitamin C can't stop every cold! But a colorful plate helps your body be ready to fight.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 HOW TO PLAY -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage" id="how"><img class="art" src="img/map1.webp" alt="A game map inside the nose.">
+        <div class="layer">
+          <button class="actor" style="left:22%;top:38%;width:9%" data-say="Tap a glowing spot to place me!"><img src="img/neo.webp" alt="Neo"></button>
+          <button class="actor" style="left:48%;top:24%;width:8%;animation-delay:.3s" data-say="Stop me before I reach the heart!"><img src="img/sniffle.webp" alt="Sniffle"></button>
+          <button class="actor" style="left:74%;top:66%;width:7%;animation-delay:.6s" data-say="Tap me for +15 power!"><img src="img/orange.webp" alt="Orange"></button>
+          <button class="actor" style="left:86%;top:36%;width:6%;animation-delay:.9s" data-say="Oops! Sugar crash: your defenders get sleepy."><img src="img/lollipop.webp" alt="Lollipop"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play</h2>
+        <ol class="steps">
+          <li><b>Tap a glowing spot</b> to place a defender. Each one costs ⚡ power.</li>
+          <li>Press <b>▶</b> to send the germs. Don't let them reach the 💖 heart!</li>
+          <li><b>Tap floating fruits and veggies</b> for more ⚡. Skip the candy and soda!</li>
+          <li>Catch 4 food colors for <b>🌈 Rainbow Power</b>. Tap a defender to <b>upgrade</b> it.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Body Defenders</a>
+        <span class="fact" data-noread>8 levels: nose ➜ tummy ➜ bloodstream, plus endless <b>Germ Rush</b> mode. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 STAYING STRONG + SCIENCE -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p07.webp" alt="Leo washes his hands with soap, then sleeps cozily with water and soup by his bed."><div class="layer"></div></div>
+      <div class="text">
+        <h2>Help Your Defenders Every Day</h2>
+        <p>Wash your hands with soap for 20 seconds (sing "Happy Birthday" two times!). Sleep well, drink water, play outside, and eat your colors.</p>
+        <p>And if you <i>do</i> catch a cold? That's okay! Rest, and your defenders will win. Afterward, your <span class="hl">memory cells</span> remember that germ, so next time they fight back faster. Vaccines teach memory cells safely, too.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Which defender is a "big eater"?</div>
+          <div class="choice-row"><button class="choice">Neo</button><button class="choice" data-ok>Max the Macrophage</button><button class="choice">Bella</button></div>
+          <div class="q">2. What do B cells make?</div>
+          <div class="choice-row"><button class="choice" data-ok>Antibodies</button><button class="choice">Candy</button><button class="choice">Sneezes</button></div>
+          <div class="q">3. What helps your defenders the most?</div>
+          <div class="choice-row"><button class="choice">🍭 Lots of candy</button><button class="choice" data-ok>🌈 Colorful fruits &amp; veggies</button><button class="choice">🥤 Soda</button></div>
+        </div>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Science sources:</b>
+          <a href="https://nutritionsource.hsph.harvard.edu/nutrition-and-immunity/" target="_blank" rel="noopener">Harvard T.H. Chan School of Public Health, Nutrition and Immunity</a> ·
+          <a href="https://ods.od.nih.gov/factsheets/VitaminC-Consumer/" target="_blank" rel="noopener">NIH Office of Dietary Supplements, Vitamin C</a> ·
+          <a href="https://ods.od.nih.gov/factsheets/VitaminA-Consumer/" target="_blank" rel="noopener">NIH ODS, Vitamin A</a> ·
+          <a href="https://www.cdc.gov/clean-hands/about/index.html" target="_blank" rel="noopener">CDC, Clean Hands</a> ·
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK279364/" target="_blank" rel="noopener">InformedHealth.org, How does the immune system work?</a><br>
+          The game simplifies real biology: in real life each white blood cell has many jobs, and they all work as a team.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Body Defenders</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const hop = el => { el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); };
+
+  /* -------- data shown on the cards -------- */
+  const HEROES = {
+    neo:   { name: "Neo the Neutrophil", cost: 50, bars: [2, 3, 5], job: "The most common white blood cell, and the FIRST to rush to a germ fight!", game: "Cheap and super fast. Great for your first towers. Level 3 shoots two germs at once." },
+    max:   { name: "Max the Macrophage", cost: 80, bars: [5, 1, 2], job: "'Macrophage' means 'big eater'. Max swallows germs whole, then shows other defenders what he caught.", game: "Short reach but a HUGE chomp. Put him at a corner. Level 3 chomps germs next to the target too." },
+    bella: { name: "Bella the B Cell", cost: 70, bars: [1, 5, 3], job: "B cells make antibodies: tiny Y-shaped helpers that stick to germs so they can't do their tricks.", game: "Antibodies slow germs down and make them easier to hit. They even crack open armor! Level 3 hits 3 germs." },
+    tcell: { name: "Captain T, the Killer T Cell", cost: 120, bars: [4, 4, 3], job: "Killer T cells find body cells that a virus has sneaked into, and stop them so the virus can't spread.", game: "Strong strikes that break right through armor. Extra powerful against the Mega Virus!" },
+  };
+  const GERMS = {
+    sniffle: { name: "Sniffle", lvl: 1, text: "A cold virus. Weak, but it comes in big groups.", real: "Most colds are caused by viruses called rhinoviruses ('rhino' means nose!)." },
+    zippy:   { name: "Zippy", lvl: 1, text: "Small and super speedy. Quick defenders like Neo catch it.", real: "Germs spread faster when people are close together and don't cover sneezes." },
+    flu:     { name: "Flu-Boss Jr", lvl: 2, text: "A flu virus. Much tougher than a cold.", real: "A flu shot each year trains your memory cells to spot the flu." },
+    tummy:   { name: "Tummy Bug", lvl: 2, text: "When you pop it, it splits into two little bugs!", real: "Tummy bugs spread from unwashed hands, so wash with soap before you eat." },
+    armor:   { name: "Armor Virus", lvl: 3, text: "Wears a hard shell. Most attacks bounce off!", real: "In the game, Captain T and Bella's antibodies get through the shell." },
+    mega:    { name: "Mega Virus", lvl: 4, text: "The final boss! It calls in Sniffles to help.", real: "Pretend boss! The real immune system is a team, and teamwork wins." },
+  };
+  const FOOD = [
+    ["orange", "Orange", "Vitamin C", "helps your immune cells do their jobs."],
+    ["strawberry", "Strawberry", "Vitamin C", "a red helper for your defenders."],
+    ["kiwi", "Kiwi", "Vitamin C", "small fruit, lots of vitamin C!"],
+    ["pepper", "Red pepper", "Vitamin C", "crunchy and full of vitamin C."],
+    ["broccoli", "Broccoli", "Vitamin C", "a green tree full of vitamins."],
+    ["carrot", "Carrot", "Vitamin A", "helps your immune system and the soft linings inside your body."],
+    ["sweetpotato", "Sweet potato", "Vitamin A", "orange inside, packed with vitamin A."],
+    ["spinach", "Spinach", "Folate", "helps your body build new cells, including defenders."],
+    ["peas", "Peas", "Fiber", "feeds the good bacteria in your tummy, which help your immune system."],
+    ["banana", "Banana", "Vitamin B6", "helps your immune system work."],
+    ["lollipop", "Lollipop", null, "Yummy treat, but no vitamins for your defenders. In the game: sugar crash! 😴"],
+    ["soda", "Soda", null, "Sugary drinks don't help your defenders. Water is the best drink!"],
+  ];
+  const stars = n => "⭐".repeat(n);
+  const bar = (label, v) => '<span>' + label + '</span><span class="bar"><i style="width:' + v * 20 + '%"></i></span>';
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .6); build(1, st => {
+    const say = (x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => { snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null); });
+    say(23, 35, 10, 18, "Neo", "<b>Hi, I'm Neo!</b>I'm always first to the fight!", S.chirp, 4, 4);
+    say(34, 22, 11, 20, "Max", "<b>I'm Max!</b>I eat germs for breakfast. CHOMP!", S.munch, 20, 48);
+    say(46, 35, 9, 16, "Bella", "<b>I'm Bella!</b>My antibodies stick like glue!", S.pop, 30, 56);
+    say(60, 42, 10, 22, "Captain T", "<b>Captain T reporting!</b>No shell can stop me.", S.roar, 98, 4, true);
+    say(86, 63, 18, 26, "Viruses", "<b>Uh-oh!</b>Germs are sneaking in!", S.oops, 98, 20, true);
+    say(33, 62, 26, 26, "Broccoli castle", "<b>Our veggie fortress!</b>Vegetables help power the team.", S.sparkle, 4, 30);
+  }); });
+
+  /* -------- 2 germs -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .5); build(2, st => {
+    B.hot(st, 76, 42, 14, 30, "Sneezing girl", () => { S.whoosh(); B.bubble(st, 98, 4, "<b>Achoo!</b>Great job sneezing into your elbow! That keeps germs off your hands.", { right: true }); });
+    B.hot(st, 55, 42, 18, 24, "Viruses", () => { S.sparkle(); const [x, y] = B.px(st, 55, 42); F.sparkles(st, x, y, 30); B.bubble(st, 30, 66, "<b>Tiny invaders!</b>Too small to see, but your defenders can find them."); });
+    B.hot(st, 31, 45, 14, 34, "Leo", () => { S.oops(); B.bubble(st, 4, 6, "<b>Leo:</b> Uh-oh... the germs are coming my way!"); });
+  }); });
+
+  /* -------- 3 heroes -------- */
+  document.querySelectorAll("[data-hero]").forEach(btn => btn.onclick = () => {
+    const h = HEROES[btn.dataset.hero], card = $("#heroCard");
+    hop(btn); S.sparkle(); F.sparkles(stageOf(3), ...B.px(stageOf(3), parseFloat(btn.style.left), 70), 20);
+    card.innerHTML = "<h3>" + h.name + "</h3><p style='margin:0 0 6px'>🔬 " + h.job + "</p><p style='margin:0'><span class='tag'>In the game</span>" + h.game +
+      "</p><div class='bars'>" + bar("Power", h.bars[0]) + bar("Reach", h.bars[1]) + bar("Speed", h.bars[2]) + "<span>Cost</span><b>⚡ " + h.cost + "</b></div>";
+    card.classList.remove("on"); void card.offsetWidth; card.classList.add("on");
+    B.speak(h.name + ". " + h.job);
+  });
+  B.on(3, () => F.weather(stageOf(3), "pollen", .4));
+
+  /* -------- 4 germs -------- */
+  document.querySelectorAll("[data-germ]").forEach(btn => btn.onclick = () => {
+    const g = GERMS[btn.dataset.germ], card = $("#germCard");
+    hop(btn); btn.dataset.germ === "mega" ? (S.roar(), F.shake(stageOf(4))) : S.growl();
+    card.innerHTML = "<h3>" + g.name + " <span style='font-size:.8em'>" + stars(g.lvl) + "</span></h3><p style='margin:0 0 6px'>🎮 " + g.text + "</p><p style='margin:0'>🔬 " + g.real + "</p>";
+    card.classList.remove("on"); void card.offsetWidth; card.classList.add("on");
+    B.speak(g.name + ". " + g.text);
+  });
+  B.on(4, () => F.weather(stageOf(4), "ash", .4));
+
+  /* -------- 5 food -------- */
+  const grid = $("#foods");
+  FOOD.forEach(([k, name, nut, why]) => {
+    const b = document.createElement("button");
+    b.innerHTML = '<img src="img/' + k + '.webp" alt="">' + name;
+    b.onclick = () => {
+      grid.querySelectorAll("button").forEach(o => o.classList.toggle("on", o === b));
+      const card = $("#foodCard");
+      card.innerHTML = nut ? "<h3>" + name + ": " + nut + "</h3><p style='margin:0'>" + nut + " " + why + "</p><p style='margin:6px 0 0'><span class='tag'>In the game</span>+15 ⚡ power!</p>"
+                           : "<h3>" + name + "</h3><p style='margin:0'>" + why + "</p>";
+      card.classList.remove("on"); void card.offsetWidth; card.classList.add("on");
+      nut ? (S.ding(), F.sparkles(stageOf(5), ...B.px(stageOf(5), 75, 80), 24)) : S.oops();
+      B.speak(nut ? name + ". " + nut + " " + why : name + ". " + why);
+    };
+    grid.appendChild(b);
+  });
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "pollen", .5); build(5, st => {
+    B.hot(st, 75, 80, 22, 22, "Rainbow plate", () => { S.yay(); F.sparkles(st, ...B.px(st, 75, 78), 40); B.bubble(st, 98, 4, "<b>A rainbow plate!</b>Red, orange, yellow, green and purple. Every color helps!", { right: true }); });
+    B.hot(st, 80, 62, 14, 16, "Happy defenders", () => { S.chirp(); F.hearts(st, ...B.px(st, 80, 58)); B.bubble(st, 50, 8, "<b>Defenders:</b> Thanks for the fuel, Leo!"); });
+    B.hot(st, 40, 40, 16, 40, "Leo", () => { S.munch(); B.bubble(st, 4, 4, "<b>Leo:</b> Crunch! I'm powering up my team."); });
+  }); });
+
+  /* -------- 6 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    hop(btn); S.pop(); const st = stageOf(6), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, x > 60 ? 98 : x, Math.min(70, y + 10), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+
+  /* -------- 7 -------- */
+  B.on(7, () => { const st = stageOf(7); build(7, st => {
+    B.hot(st, 35, 62, 20, 30, "Hand washing", () => { S.splash(); F.sparkles(st, ...B.px(st, 33, 62), 30); B.bubble(st, 4, 4, "<b>Scrub, scrub!</b>Soap and water wash germs right off your hands."); });
+    B.hot(st, 75, 55, 26, 34, "Sleeping", () => { S.snore(); B.bubble(st, 98, 4, "<b>Zzz...</b>Sleep gives your body time to rest and recharge.", { right: true }); });
+    B.hot(st, 59, 82, 14, 16, "Water and soup", () => { S.ding(); B.bubble(st, 40, 50, "<b>Water and warm soup</b> keep you cozy when you're feeling sick."); });
+  }); F.weather(st, "stars", .3); });
+
+  // quiz
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

@@ -4,6 +4,7 @@ Two free, interactive English science picture books for kids aged 5–7.
 
 - **Where Did the Dinosaurs Go?** — `dinosaurs/`
 - **Are We There Yet? A Trip to the Planets** — `planets/`
+- **Body Defenders: Veggie Power!** — `immune/` (story) + `immune/play.html` (Phaser 3 tower defense, 8 levels + endless)
 
 Live: https://lioneer32232002-commits.github.io/kids-picture-books/
 
@@ -15,6 +16,7 @@ Live: https://lioneer32232002-commits.github.io/kids-picture-books/
 | `dinosaurs/`, `planets/` | One `index.html` per book + `img/` (WebP pages and cut-out sprites) |
 | `banners/` | Facebook banners: `*-fb.jpg` 1200×630 (link/ad), `*-square.jpg` 1080×1080 (feed post) |
 | `tools/process_images.py` | Raw Gemini images in `_raw/` (not committed) → WebP pages + transparent sprites |
+| `immune/game.js` | Tower defense game (Phaser 3 from jsDelivr). `?unlock=1` unlocks all levels; `?timer=1` runs the loop on setTimeout for automated testing |
 | `tools/make_banners.py` | Renders banners from `tools/banners/banner.html` with headless Chrome (needs `python -m http.server 8080`) |
 
 Illustrations generated with Google Gemini.

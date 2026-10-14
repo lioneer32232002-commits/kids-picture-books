@@ -265,6 +265,7 @@
     sfx: SFX, fx: FX, confetti, speak, stopSpeak,
     pages: [], index: 0, hooks: {}, autoRead: false,
     get muted() { return muted; },
+    setMuted(m) { muted = !!m; try { localStorage.setItem("pb-muted", muted ? "1" : "0"); } catch (e) {} },
 
     /** register enter/leave hooks for page n (1-based) */
     on(n, enter, leave) { this.hooks[n] = { enter, leave }; },
