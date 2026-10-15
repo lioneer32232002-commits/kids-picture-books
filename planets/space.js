@@ -25,6 +25,13 @@
     metal:  { tex: "rock_metal", big: 1, hp: 16, size: 112, dust: 6, drop: 0.35, spin: 0.3 },
     ice:    { tex: "ice", hp: 2, size: 58, dust: 1, drop: 0.04, spin: 1.6 },
   };
+  // Damaged meteors: the game's mid/large "enemy ships". They fly in, hover, shed glowing shards,
+  // and fly away again if you don't clean them in time. Still rocks, so no faces.
+  const ELITES = {
+    crackM:   { tex: "crack_m", name: "Cracked Meteor", hp: 26, size: 200, dust: 14, hoverY: 300, swing: 170, stay: 10, fire: 2.0, pattern: "spread", shard: 0xffa54d, drops: ["power"] },
+    crackIce: { tex: "crack_ice", name: "Cracked Ice Meteor", hp: 28, size: 200, dust: 14, hoverY: 300, swing: 190, stay: 10, fire: 1.8, pattern: "aimed", shard: 0x7ff0ff, drops: ["power"] },
+    crackL:   { tex: "crack_l", tex2: "crack_l2", name: "Giant Cracked Meteor", hp: 70, size: 310, dust: 34, hoverY: 330, swing: 120, stay: 15, fire: 2.6, pattern: "ring", shard: 0xff8a3d, drops: ["power", "shield"], big: true },
+  };
   const JUNK = ["sat", "panel", "bolt", "tank", "glove", "wrench", "camera", "dish", "cables"];
   const ITEMS = ["power", "shield", "buddy", "magnet"];
   const ITEM_INFO = {
@@ -32,19 +39,19 @@
   };
 
   const LEVELS = [
-    { name: "Earth Orbit", to: "moon", bg: "bg_orbit", len: 60, speed: 1, mix: { junk: 1 }, rate: 0.9,
+    { name: "Earth Orbit", to: "moon", bg: "bg_orbit", len: 60, speed: 1, mix: { junk: 1 }, rate: 0.9, elites: [[26, "crackM"]],
       tip: "Old satellites and lost tools are floating around Earth. Let's clean them up!" },
-    { name: "Off to the Moon", to: "moon", bg: "bg_deep", len: 70, speed: 1.05, mix: { junk: 0.7, rockS: 0.3 }, rate: 0.75, ufo: 1,
+    { name: "Off to the Moon", to: "moon", bg: "bg_deep", len: 70, speed: 1.05, mix: { junk: 0.7, rockS: 0.3 }, rate: 0.75, ufo: 1, elites: [[20, "crackM"], [48, "crackM"]],
       tip: "Friendly aliens! Your cleaner beam can't hurt living things. Fly over and say hi!" },
-    { name: "Mars Run", to: "mars", bg: "bg_deep", len: 75, speed: 1.1, mix: { junk: 0.4, rockM: 0.35, rockS: 0.2, metal: 0.05 }, rate: 0.85, ufo: 1 },
-    { name: "The Asteroid Belt", to: "jupiter", bg: "bg_deep", len: 75, speed: 1.15, mix: { rockL: 0.25, rockM: 0.35, metal: 0.1, junk: 0.3 }, rate: 0.95, boss: 1,
+    { name: "Mars Run", to: "mars", bg: "bg_deep", len: 75, speed: 1.1, mix: { junk: 0.4, rockM: 0.35, rockS: 0.2, metal: 0.05 }, rate: 0.85, ufo: 1, elites: [[18, "crackM"], [42, "crackL"], [64, "crackM"]] },
+    { name: "The Asteroid Belt", to: "jupiter", bg: "bg_deep", len: 75, speed: 1.15, mix: { rockL: 0.25, rockM: 0.35, metal: 0.1, junk: 0.3 }, rate: 0.95, boss: 1, elites: [[16, "crackM"], [36, "crackL"], [58, "crackM"]],
       tip: "Asteroid Belt! Big rocks break into smaller rocks. A giant junk ball is waiting at the end..." },
-    { name: "Jupiter Storm", to: "jupiter", bg: "bg_deep", len: 80, speed: 1.2, mix: { junk: 0.4, rockM: 0.3, metal: 0.1, rockS: 0.2 }, rate: 0.8, comets: 1, ufo: 1,
+    { name: "Jupiter Storm", to: "jupiter", bg: "bg_deep", len: 80, speed: 1.2, mix: { junk: 0.4, rockM: 0.3, metal: 0.1, rockS: 0.2 }, rate: 0.8, comets: 1, ufo: 1, elites: [[20, "crackM"], [42, "crackL"], [62, "crackM"]],
       tip: "Comets are too big to clean! Watch for the red warning and dodge!" },
-    { name: "Saturn's Rings", to: "saturn", bg: "bg_ice", len: 80, speed: 1.25, mix: { ice: 0.6, rockS: 0.2, junk: 0.2 }, rate: 0.5, ufo: 1,
+    { name: "Saturn's Rings", to: "saturn", bg: "bg_ice", len: 80, speed: 1.25, mix: { ice: 0.6, rockS: 0.2, junk: 0.2 }, rate: 0.5, ufo: 1, elites: [[18, "crackIce"], [40, "crackIce"], [60, "crackL"]],
       tip: "Saturn's rings are made of ice and rock. Lots of little ice chunks ahead!" },
-    { name: "Icy Uranus", to: "uranus", bg: "bg_ice", len: 85, speed: 1.3, mix: { ice: 0.4, metal: 0.1, rockL: 0.15, junk: 0.35 }, rate: 0.75, comets: 1, ufo: 1 },
-    { name: "Neptune Finale", to: "neptune", bg: "bg_deep", len: 85, speed: 1.35, mix: { rockL: 0.2, metal: 0.1, junk: 0.45, ice: 0.25 }, rate: 0.75, comets: 1, boss: 2, ufo: 1,
+    { name: "Icy Uranus", to: "uranus", bg: "bg_ice", len: 85, speed: 1.3, mix: { ice: 0.4, metal: 0.1, rockL: 0.15, junk: 0.35 }, rate: 0.75, comets: 1, ufo: 1, elites: [[16, "crackIce"], [36, "crackL"], [56, "crackIce"], [72, "crackM"]] },
+    { name: "Neptune Finale", to: "neptune", bg: "bg_deep", len: 85, speed: 1.35, mix: { rockL: 0.2, metal: 0.1, junk: 0.45, ice: 0.25 }, rate: 0.75, comets: 1, boss: 2, ufo: 1, elites: [[18, "crackM"], [36, "crackL"], [54, "crackIce"], [70, "crackL"]],
       tip: "Last stop: Neptune! The MEGA junk ball is coming. You can do it!" },
   ];
   const FACTS = {
@@ -114,7 +121,8 @@
       ["rocket", "moon", "mars", "jupiter", "saturn", "uranus", "neptune", "earth", "p01",
        "sat", "panel", "bolt", "tank", "glove", "wrench", "camera", "dish", "cables",
        "rock_big", "rock_med", "rock_small", "rock_metal", "ice", "comet",
-       "ufo", "buddy", "shield", "dust", "magnet", "power", "boss", "bg_orbit", "bg_deep", "bg_ice"].forEach(im);
+       "ufo", "buddy", "shield", "dust", "magnet", "power", "boss", "bg_orbit", "bg_deep", "bg_ice",
+       "crack_m", "crack_l", "crack_l2", "crack_ice"].forEach(im);
     }
     create() {
       const g = this.make.graphics({ add: false });
@@ -127,28 +135,70 @@
       g.fillStyle(0xffffff, 1); g.fillPoints([{ x: 14, y: 0 }, { x: 18, y: 10 }, { x: 28, y: 14 }, { x: 18, y: 18 }, { x: 14, y: 28 }, { x: 10, y: 18 }, { x: 0, y: 14 }, { x: 10, y: 10 }], true);
       g.generateTexture("star", 28, 28); g.clear();
       // twinkle star for background
-      g.fillStyle(0xffffff, 1).fillCircle(3, 3, 3); g.generateTexture("twinkle", 6, 6); g.destroy();
+      g.fillStyle(0xffffff, 1).fillCircle(3, 3, 3); g.generateTexture("twinkle", 6, 6); g.clear();
+      // speed streak (fades at both ends)
+      for (let i = 0; i < 40; i++) { g.fillStyle(0xffffff, Math.sin(i / 40 * Math.PI) * 0.9); g.fillRect(1, i * 3, 3, 3); }
+      g.generateTexture("streak", 5, 120); g.clear();
+      // glowing meteor shard
+      for (let r = 14; r > 0; r--) { g.fillStyle(0xffffff, (1 - r / 14) * 0.5); g.fillCircle(14, 14, r); }
+      g.fillStyle(0xffffff, 1).fillPoints([{ x: 14, y: 4 }, { x: 20, y: 14 }, { x: 14, y: 24 }, { x: 8, y: 14 }], true);
+      g.generateTexture("shard", 28, 28); g.destroy();
+      // seamless scrolling space: each backdrop stacked on top of its own mirror image
+      [["bg_deep", "tile_deep"], ["bg_ice", "tile_ice"]].forEach(([src, key]) => {
+        const img = this.textures.get(src).getSourceImage();
+        const c = this.textures.createCanvas(key, img.width, img.height * 2), ctx = c.getContext();
+        ctx.drawImage(img, 0, 0); ctx.save(); ctx.translate(0, img.height * 2); ctx.scale(1, -1); ctx.drawImage(img, 0, 0); ctx.restore();
+        c.refresh();
+      });
+      // launch backdrop (Earth below us), its top edge feathered so it melts into the scrolling space
+      {
+        const img = this.textures.get("bg_orbit").getSourceImage();
+        const c = this.textures.createCanvas("launch", img.width, img.height), ctx = c.getContext();
+        ctx.drawImage(img, 0, 0);
+        const gr = ctx.createLinearGradient(0, 0, 0, img.height * 0.45);
+        gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "rgba(0,0,0,1)");
+        ctx.globalCompositeOperation = "destination-in"; ctx.fillStyle = gr; ctx.fillRect(0, 0, img.width, img.height);
+        c.refresh();
+      }
       this.scene.start("title");
     }
   }
 
   /* ============================================================ background */
   function makeBackground(sc, key) {
-    // painted backdrop stays put; three layers of stars stream past for the sense of speed
-    const src = sc.textures.get(key).getSourceImage();
-    const bg = sc.add.image(W / 2, H / 2, key).setScale(Math.max(W / src.width, H / src.height) * 1.04);
-    const layers = [0.25, 0.55, 1].map((sp, i) => {
+    // Forward flight: the painted space scrolls down like Raiden, stars and speed streaks rush past
+    // in layers, and now and then a faraway planet drifts by. Level 1 starts by leaving Earth behind.
+    const tileKey = key === "bg_ice" ? "tile_ice" : "tile_deep";
+    const src = sc.textures.get(tileKey).getSourceImage(), ts = W / src.width;
+    const bg = sc.add.tileSprite(W / 2, H / 2, W, H, tileKey).setTileScale(ts, ts);
+    let launch = null;
+    if (key === "bg_orbit") {
+      const o = sc.textures.get("launch").getSourceImage();
+      launch = sc.add.image(W / 2, H / 2, "launch").setScale(Math.max(W / o.width, H / o.height));
+    }
+    const scenery = sc.add.image(-500, -500, "jupiter").setAlpha(0.28).setVisible(false);
+    let sceneryT = 6 + Math.random() * 6;
+    const layers = [0.35, 0.7, 1.25].map((sp, i) => {
       const arr = [];
-      for (let n = 0; n < 30 - i * 7; n++) {
-        arr.push(sc.add.image(Math.random() * W, Math.random() * H, "twinkle").setAlpha(0.35 + i * 0.25).setScale(0.4 + i * 0.35));
-      }
+      for (let n = 0; n < 34 - i * 8; n++) arr.push(sc.add.image(Math.random() * W, Math.random() * H, "twinkle").setAlpha(0.35 + i * 0.25).setScale(0.4 + i * 0.4, (0.4 + i * 0.4) * (1 + i * 0.9)));
       return { sp, arr };
     });
-    let t = 0;
+    const streaks = [];
+    for (let n = 0; n < 7; n++) streaks.push(sc.add.image(Math.random() * W, Math.random() * H * 2 - H, "streak").setAlpha(0.18 + Math.random() * 0.2).setScale(1, 0.8 + Math.random() * 0.8));
     return {
       update(dt, speed) {
-        t += dt; bg.y = H / 2 + Math.sin(t * 0.15) * 14;
-        layers.forEach(L => L.arr.forEach(st => { st.y += 110 * L.sp * speed * dt; if (st.y > H + 6) { st.y = -6; st.x = Math.random() * W; } }));
+        const v = 70 * speed;                                    // backdrop speed in screen px/s
+        bg.tilePositionY -= v * dt / ts;
+        if (launch) { launch.y += v * 1.4 * dt; if (launch.y - launch.displayHeight / 2 > H) { launch.destroy(); launch = null; } }
+        sceneryT -= dt;
+        if (!scenery.visible && sceneryT <= 0) {
+          const k = Phaser.Utils.Array.GetRandom(["jupiter", "saturn", "mars", "neptune", "uranus", "moon"]);
+          scenery.setTexture(k).setVisible(true).setPosition(Math.random() < 0.5 ? 90 : W - 90, -200);
+          scenery.setScale(Phaser.Math.FloatBetween(140, 230) / Math.max(scenery.width, scenery.height));
+        }
+        if (scenery.visible) { scenery.y += v * 0.55 * dt; if (scenery.y > H + 200) { scenery.setVisible(false); sceneryT = 14 + Math.random() * 10; } }
+        layers.forEach(L => L.arr.forEach(st => { st.y += 260 * L.sp * speed * dt; if (st.y > H + 6) { st.y = -6; st.x = Math.random() * W; } }));
+        streaks.forEach(st => { st.y += 1500 * speed * dt; if (st.y > H + 80) { st.y = -150 - Math.random() * 900; st.x = Math.random() * W; } });
       },
     };
   }
@@ -233,6 +283,7 @@
       this.burst = 0; this.dust = 0; this.hits = 0; this.friends = 0;
       this.t = 0; this.spawnT = 1.5; this.ufoT = 9; this.cometT = 12;
       this.objs = []; this.beams = []; this.drops = []; this.ufos = []; this.comets = []; this.bossShots = [];
+      this.elites = []; this.shards = []; this.eliteQ = (this.L.elites || []).map(([t, k]) => ({ t, k }));
       this.state = "fly"; this.paused = false; this.inv = 0; this.fireT = 0; this.buddyT = 0; this.popT = 0;
       this.firstUfo = true;
     }
@@ -383,6 +434,8 @@
       this.tweens.add({ targets: ring, scale: 30, alpha: 0, duration: 700, onComplete: () => ring.destroy() });
       this.objs.slice().forEach(o => this.clean(o, true));
       if (this.boss) this.hitBoss(60);
+      this.elites.forEach(e => this.hitElite(e, e.max * 0.45));
+      this.shards.forEach(sh => sh.spr.destroy()); this.shards = [];
       this.bossShots.forEach(s => s.spr.destroy()); this.bossShots = [];
       this.updateHUD();
     }
@@ -423,6 +476,51 @@
       if (this.power > 1 + (this.sv.up.laser || 0)) this.power--;
       this.updateHUD();
       if (this.hearts <= 0) this.finish(false);
+    }
+
+    /* ---------- damaged meteors (mid / large "enemy ships") */
+    spawnElite(k) {
+      const E = ELITES[k];
+      const x = 140 + Math.random() * (W - 280);
+      const spr = fit(this.add.image(x, -E.size, E.tex), E.size).setDepth(6);
+      const hp = E.hp * (1 + this.li * 0.06);
+      const e = { k, E, spr, hp, max: hp, t: 0, x0: x, shotT: 1.4, phase: "in", base: spr.scale, cracked: false };
+      this.elites.push(e);
+      if (E.big) { S.whoosh(); this.toast("⚠ A giant cracked meteor is coming!", 2200, 300); this.cameras.main.shake(400, 0.004); }
+      else if (!this.eliteTip) { this.eliteTip = true; this.toast("A cracked meteor! Clean it before it flies away. Dodge its glowing pieces!", 3200, 300); }
+      return e;
+    }
+    eliteFire(e) {
+      const { x, y } = e.spr, E = e.E, sp = 205 + this.li * 6;
+      const shoot = a => { const sh = this.add.image(x + Math.cos(a) * E.size * 0.3, y + Math.sin(a) * E.size * 0.3, "shard").setTint(E.shard).setBlendMode("ADD").setDepth(9);
+        this.shards.push({ spr: sh, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp }); };
+      if (E.pattern === "spread") [-22, 0, 22].forEach(d => shoot(Phaser.Math.DegToRad(90 + d)));
+      else if (E.pattern === "aimed") { const a = Math.atan2(this.ship.y - y, this.ship.x - x); [-0.18, 0, 0.18].forEach(d => shoot(a + d)); }
+      else { const n = e.cracked ? 8 : 6, off = e.t; for (let i = 0; i < n; i++) shoot(off + i * Math.PI * 2 / n); }
+      this.tweens.add({ targets: e.spr, scale: e.base * 1.07, yoyo: true, duration: 120 });
+      this.fx.explode(6, x, y + E.size * 0.3);
+    }
+    hitElite(e, d) {
+      if (e.dead) return;
+      e.hp -= d; e.spr.setTintFill(0xfff1c2); this.time.delayedCall(40, () => e.spr.active && e.spr.clearTint());
+      if (Math.random() < 0.12) this.dropItem("dust", e.spr.x + (Math.random() - 0.5) * e.E.size * 0.5, e.spr.y + e.E.size * 0.3);
+      if (e.E.tex2 && !e.cracked && e.hp < e.max * 0.5) {
+        // the giant one breaks open: new look, two chunks fall off, more shards
+        e.cracked = true; e.spr.setTexture(e.E.tex2); e.base = e.spr.scale = e.E.size / Math.max(e.spr.width, e.spr.height);
+        S.rumble(); this.cameras.main.shake(300, 0.006); this.fx.explode(40, e.spr.x, e.spr.y);
+        [-1, 1].forEach(sg => this.spawnObj("rockM", e.spr.x + sg * 60, e.spr.y + 40, sg * 120, 160));
+        this.float(e.spr.x, e.spr.y - e.E.size * 0.55, "It's cracking!", "#ffd166", 28);
+      }
+      if (e.hp <= 0) {
+        e.dead = true; S.boom(); S.sparkle(); this.cameras.main.shake(e.E.big ? 500 : 250, e.E.big ? 0.012 : 0.006);
+        const { x, y } = e.spr;
+        for (let i = 0; i < (e.E.big ? 4 : 2); i++) this.time.delayedCall(i * 110, () => this.fx.explode(36, x + (Math.random() - 0.5) * e.E.size * 0.6, y + (Math.random() - 0.5) * e.E.size * 0.6));
+        for (let i = 0; i < e.E.dust; i++) this.dropItem("dust", x + (Math.random() - 0.5) * e.E.size * 0.7, y + (Math.random() - 0.5) * e.E.size * 0.5);
+        e.E.drops.forEach((k, i) => this.dropItem(k, x + (i - (e.E.drops.length - 1) / 2) * 70, y));
+        this.float(x, y - 40, e.E.big ? "Giant meteor cleaned! ✨" : "Meteor cleaned! ✨", "#ffe08a", e.E.big ? 34 : 28);
+        this.tweens.add({ targets: e.spr, scale: e.base * 1.35, alpha: 0, angle: 60, duration: 420, onComplete: () => e.spr.destroy() });
+        this.updateHUD();
+      }
     }
 
     /* ---------- boss */
@@ -482,11 +580,12 @@
       if (this.state === "fly") {
         this.t += dt;
         this.spawnT -= dt;
-        if (this.spawnT <= 0 && this.t < this.L.len - 3) { this.spawnObj(this.pick()); this.spawnT = this.L.rate * (0.6 + Math.random() * 0.8) * Math.max(0.65, 1 - this.t / this.L.len * 0.3); }
+        if (this.spawnT <= 0 && this.t < this.L.len - 3) { this.spawnObj(this.pick()); this.spawnT = this.L.rate * (0.6 + Math.random() * 0.8) * Math.max(0.65, 1 - this.t / this.L.len * 0.3) * (this.elites.length ? 1.7 : 1); }
+        while (this.eliteQ.length && this.eliteQ[0].t <= this.t) this.spawnElite(this.eliteQ.shift().k);
         if (this.L.ufo) { this.ufoT -= dt; if (this.ufoT <= 0) { this.spawnUfo(); this.ufoT = 14 + Math.random() * 8; } }
         if (this.L.comets) { this.cometT -= dt; if (this.cometT <= 0) { this.spawnComet(); this.cometT = 9 + Math.random() * 6; } }
         if ((this.hudT = (this.hudT || 0) + dt) > 0.3) { this.hudT = 0; this.updateHUD(); }
-        if (this.t >= this.L.len && !this.objs.length) this.L.boss ? this.startBoss() : this.arrive();
+        if (this.t >= this.L.len && !this.objs.length && !this.elites.length) this.L.boss ? this.startBoss() : this.arrive();
       }
       if (this.state === "boss" && this.boss && !this.boss.dead) {
         const b = this.boss; b.t += dt;
@@ -504,6 +603,29 @@
         this.bossBar.clear().fillStyle(0x1b1640, 0.7).fillRoundedRect(110, 190, 500, 22, 11).fillStyle(0xff7a59, 1).fillRoundedRect(114, 194, 492 * Math.max(0, b.hp / b.max), 14, 7);
       }
 
+      // damaged meteors: fly in, hover and sway, shed shards, then leave
+      for (const e of this.elites) {
+        if (e.dead) continue;
+        const E = e.E; e.t += dt;
+        if (e.phase === "in") { e.spr.y += 190 * dt; if (e.spr.y >= E.hoverY) { e.phase = "stay"; e.t = 0; } }
+        else if (e.phase === "stay") {
+          e.spr.x = Phaser.Math.Clamp(e.x0 + Math.sin(e.t * 0.8) * E.swing, E.size * 0.4, W - E.size * 0.4);
+          e.spr.y = E.hoverY + Math.sin(e.t * 1.3) * 18;
+          e.shotT -= dt; if (e.shotT <= 0 && this.state === "fly") { e.shotT = E.fire * (e.cracked ? 0.75 : 1); this.eliteFire(e); }
+          if (e.t > E.stay) { e.phase = "out"; this.float(e.spr.x, e.spr.y - E.size * 0.5, "It flew away!", "#c9f7ff", 24); }
+        } else { e.spr.y += 260 * dt; if (e.spr.y > H + E.size) { e.dead = true; e.spr.destroy(); } }
+        e.spr.rotation += dt * (E.big ? 0.15 : 0.35);
+        if (Math.random() < (e.cracked ? 0.5 : 0.2)) this.fx.explode(1, e.spr.x + (Math.random() - 0.5) * E.size * 0.6, e.spr.y + (Math.random() - 0.5) * E.size * 0.6);
+        if (!e.dead && Phaser.Math.Distance.Between(this.ship.x, this.ship.y, e.spr.x, e.spr.y) < E.size * 0.38 + 24) this.hurt();
+      }
+      this.elites = this.elites.filter(e => !e.dead);
+      for (const sh of this.shards) {
+        sh.spr.x += sh.vx * dt; sh.spr.y += sh.vy * dt; sh.spr.rotation += dt * 6;
+        if (sh.spr.y > H + 40 || sh.spr.y < -40 || sh.spr.x < -40 || sh.spr.x > W + 40) { sh.dead = true; sh.spr.destroy(); continue; }
+        if (Math.abs(sh.spr.x - this.ship.x) < 26 && Math.abs(sh.spr.y - this.ship.y) < 36) { sh.dead = true; sh.spr.destroy(); this.hurt(); }
+      }
+      this.shards = this.shards.filter(sh => !sh.dead);
+
       // beams
       for (const bm of this.beams) {
         bm.b.x += bm.vx * dt; bm.b.y += bm.vy * dt; if (bm.spin) bm.b.rotation += dt * 10;
@@ -517,6 +639,10 @@
             if (o.hp <= 0) this.clean(o);
             break;
           }
+        }
+        if (!bm.dead) for (const e of this.elites) {
+          if (e.dead || e.phase === "in" && e.spr.y < 40) continue;
+          if (Phaser.Math.Distance.Between(bm.b.x, bm.b.y, e.spr.x, e.spr.y) < e.E.size * 0.42) { bm.dead = true; bm.b.destroy(); this.hitElite(e, bm.dmg); this.fx.explode(2, bm.b.x, bm.b.y); break; }
         }
         if (!bm.dead && this.boss && !this.boss.dead && Phaser.Math.Distance.Between(bm.b.x, bm.b.y, this.boss.spr.x, this.boss.spr.y) < this.boss.spr.displayWidth * 0.4) {
           bm.dead = true; bm.b.destroy(); this.hitBoss(bm.dmg); this.fx.explode(3, bm.b.x, bm.b.y);
@@ -546,6 +672,14 @@
         if (c.spr.y > H + 260) { c.dead = true; c.spr.destroy(); }
       }
       this.comets = this.comets.filter(c => !c.dead);
+      // little health bars under the meteors
+      if (!this.eliteBars) this.eliteBars = this.add.graphics().setDepth(20);
+      this.eliteBars.clear();
+      for (const e of this.elites) {
+        if (e.dead || e.phase === "in") continue;
+        const w = e.E.size * 0.6, x = e.spr.x - w / 2, y = e.spr.y + e.E.size * 0.5 + 6;
+        this.eliteBars.fillStyle(0x1b1640, 0.7).fillRoundedRect(x - 3, y - 3, w + 6, 14, 6).fillStyle(0xffb04d, 1).fillRoundedRect(x, y, w * Math.max(0, e.hp / e.max), 8, 4);
+      }
       // ufos
       for (const u of this.ufos) {
         u.t += dt; u.spr.x += u.vx * dt; u.spr.y = u.y0 + Math.sin(u.t * 2) * 30;
@@ -577,6 +711,7 @@
       this.tweens.add({ targets: pl, y: 330, duration: 2600, ease: "Sine.out" });
       this.tweens.add({ targets: this.ship, x: W / 2, y: 820, duration: 1600, ease: "Sine.inOut" });
       this.drops.forEach(d => { d.spr.destroy(); this.dust++; }); this.drops = [];
+      this.shards.forEach(sh => sh.spr.destroy()); this.shards = [];
       this.time.delayedCall(2700, () => this.finish(true));
     }
     finish(win) {

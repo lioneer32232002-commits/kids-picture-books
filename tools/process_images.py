@@ -42,6 +42,9 @@ SHEETS: dict = {
               "rock_metal": ((0, .5, 1 / 3, 1), 240), "ice": ((1 / 3, .5, 2 / 3, 1), 140), "comet": ((2 / 3, .4, 1, 1), 380)},
     "items": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), 220) for n, c, r in
               [("ufo", 0, 0), ("buddy", 1, 0), ("shield", 2, 0), ("dust", 0, 1), ("magnet", 1, 1), ("power", 2, 1)]},
+    # damaged meteors = the game's mid/large "enemy ships" (the big one has a broken second stage)
+    "cracks": {"crack_m": ((0, 0, .5, .5), 300), "crack_l": ((.5, 0, 1, .5), 420),
+               "crack_l2": ((0, .5, .5, 1), 420), "crack_ice": ((.5, .5, 1, 1), 300)},
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket"}
