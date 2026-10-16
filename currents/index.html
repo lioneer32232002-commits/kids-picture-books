@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rivers in the Sea: Ocean Currents Around Taiwan | Interactive Picture Book + Game</title>
+<meta name="description" content="Ride along with Mo, a baby green sea turtle, and learn about the ocean currents around Taiwan: the warm Kuroshio, the cold winter current, flying fish and gray mullet. Then play Ride the Current! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rivers in the Sea 🐢🌊 Ocean currents around Taiwan: picture book + game">
+<meta property="og:description" content="Did you know the sea has rivers? Ride the Kuroshio with Mo the baby sea turtle, then play Ride the Current! For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/currents-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/currents/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐢</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #ff7f50; --accent-4: #3f8fd8;
+    --bg: radial-gradient(circle at 12% 8%, #d6f1ff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #dff7ea 0, transparent 45%), #eef8ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); animation: idle 2.4s ease-in-out infinite; }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .card { display: none; background: #fff; border-radius: 18px; padding: 12px 16px; margin: 8px 0; border: 3px solid var(--paper-2); font-size: .85em; }
+  .card.on { display: block; animation: pop .3s; }
+  .card h3 { margin: 0 0 4px; font-size: 1.15em; }
+  .card .tag { display: inline-block; border-radius: 999px; padding: 0 10px; font-weight: 800; margin-right: 6px; font-size: .9em; color: #fff; }
+  .tag.warm { background: #ff7f50; } .tag.cold { background: #3f8fd8; }
+  /* season map */
+  .mapstage { background: linear-gradient(#bfe6fb, #9fd3f2); }
+  .mapstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mapstage .land { fill: #cfe7a6; stroke: #8dbb6a; stroke-width: 3; stroke-linejoin: round; }
+  .mapstage .land.far { fill: #e3dcc0; stroke: #c3b78f; }
+  .mapstage .flow { fill: none; stroke-linecap: round; animation: flow 1.4s linear infinite; }
+  .mapstage .glow { fill: none; stroke-linecap: round; opacity: .28; }
+  .mapstage .hit { fill: none; stroke: transparent; stroke-width: 46; stroke-linecap: round; cursor: pointer; pointer-events: stroke; }
+  .mapstage .lbl { font: 800 34px "Baloo 2", sans-serif; fill: #3b2f4a; paint-order: stroke; stroke: #fff; stroke-width: 6px; pointer-events: none; }
+  .mapstage .lbl.sea { fill: #2f6f9f; font-weight: 700; font-style: italic; font-size: 30px; stroke-width: 6px; }
+  .mapstage .lbl.big { font-size: 46px; }
+  .mapstage .lbl.dot { font-size: 27px; font-weight: 700; }
+  .mapstage .cname { font: 800 32px "Baloo 2", sans-serif; paint-order: stroke; stroke: #fff; stroke-width: 6px; pointer-events: none; }
+  @keyframes flow { to { stroke-dashoffset: -60; } }
+  .season { position: absolute; right: 2%; top: 4%; z-index: 4; display: flex; flex-direction: column; gap: 8px; }
+  .season button { border: 3px solid transparent; background: #fff; border-radius: 18px; padding: 6px 14px; font: 800 clamp(14px, 1.9vw, 22px) "Baloo 2", sans-serif; color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 rgba(59,47,74,.15); }
+  .season button.on { border-color: var(--accent); background: #fff3ea; }
+  .legend { position: absolute; right: 2%; bottom: 4%; z-index: 4; background: rgba(255,255,255,.92); border-radius: 16px; padding: 8px 12px; font-size: clamp(12px, 1.5vw, 17px); font-weight: 700; line-height: 1.5; pointer-events: none; }
+  .legend i { display: inline-block; width: 34px; height: 8px; border-radius: 4px; vertical-align: middle; margin-right: 6px; }
+  .wind { position: absolute; left: 3%; top: 4%; z-index: 4; background: rgba(255,255,255,.92); border-radius: 16px; padding: 6px 12px; font-size: clamp(12px, 1.6vw, 18px); font-weight: 800; pointer-events: none; }
+  @media (max-width: 640px) {
+    .season { gap: 4px; } .season button { font-size: 12px; padding: 2px 8px; border-width: 2px; border-radius: 12px; }
+    .legend { font-size: 10px; padding: 3px 8px; line-height: 1.35; border-radius: 10px; } .legend i { width: 18px; height: 6px; }
+    .wind { font-size: 10px; padding: 3px 8px; border-radius: 10px; }
+  }
+  /* how-to-play band */
+  .band { position: absolute; left: 24%; top: -10%; width: 20%; height: 120%; transform: rotate(10deg); pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='56'%3E%3Cpath d='M14 36 L30 22 L46 36' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' opacity='.7'/%3E%3C/svg%3E") 50% 0 / 60px 56px repeat-y,
+      linear-gradient(90deg, rgba(255,140,80,0), rgba(255,150,90,.42) 50%, rgba(255,140,80,0));
+    animation: bandflow .9s linear infinite; }
+  @keyframes bandflow { to { background-position: 50% -56px, 0 0; } }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #2fb6c9; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #1f8797; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🐢</span>Rivers in the Sea</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Kai waves from the sea near Taiwan's green mountains while Mo the baby sea turtle swims in a glowing blue ribbon of water and two flying fish glide above the waves."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Rivers in the Sea</h1>
+        <p>This is Kai, and this is Mo, a baby <b>green sea turtle</b>. Mo is about to take a big trip around Taiwan by riding the <span class="hl">rivers in the sea</span>!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 WHAT IS A CURRENT -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Underwater, Mo rides a wavy ribbon of darker blue water next to a floating clump of golden seaweed while Kai snorkels above."><div class="layer"></div></div>
+      <div class="text">
+        <p>Did you know the sea has rivers? They are called <b>ocean currents</b>. A current is a giant stream of water that keeps flowing the same way, right in the middle of the sea.</p>
+        <p>Baby sea turtles swim hard, and they can also ride currents to travel far. Mo is ready. Let's go!</p>
+        <span class="fact">🔬 Scientists once thought baby sea turtles just floated wherever the water took them. Then they put tiny trackers on them, and found out the babies are <b>busy swimmers</b> too!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 SEASON MAP -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage mapstage" id="map">
+        <div class="wind" id="wind"></div>
+        <div class="season" data-noread>
+          <button data-season="winter" class="on">❄️ Winter</button>
+          <button data-season="summer">☀️ Summer</button>
+        </div>
+        <div class="legend"><div><i style="background:#ff7f50"></i>Warm water</div><div><i style="background:#3f8fd8"></i>Cold water</div></div>
+      </div>
+      <div class="text">
+        <p>Here are the big currents around Taiwan. <span class="hl">Warm</span> water comes from the south. In winter, <span class="hl">cold</span> water comes down from the north. Press <b>❄️ Winter</b> and <b>☀️ Summer</b> to see the sea change!</p>
+        <div class="card" id="curCard" data-noread></div>
+        <span class="fact">🌬️ The wind helps decide where the water goes. In winter, the wind blows from the <b>northeast</b>. In summer, it turns around and blows from the <b>southwest</b>. 👆 Tap a current to learn its name.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 KUROSHIO -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="Kai leans over the side of a little white boat and looks down into very clear, dark blue water where Mo is swimming. Near the coast the water is greener."><div class="layer"></div></div>
+      <div class="text">
+        <p>The biggest current near Taiwan is the <b>Kuroshio</b>. Its name means "black current." Its water is so clear and deep blue that it looks almost black!</p>
+        <p>It flows north past Taiwan's east coast about as fast as you walk, and it never stops. It's about <span class="big">100 km</span> wide. Walking across it would take you more than a whole day!</p>
+        <span class="fact">🌊 The Kuroshio carries more water than all the rivers in the world put together, many times over. It's warm, too: about 24 to 27°C at the top near Taiwan.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 FLYING FISH -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="A school of flying fish glides over the waves near the green, rocky Orchid Island while Kai and Mo cheer. A small painted wooden boat sits near the shore."><div class="layer"></div></div>
+      <div class="text">
+        <p>Every spring, the Kuroshio brings <b>flying fish</b> to Orchid Island (Lanyu). They spread their big fins like wings and glide over the waves. Whoosh!</p>
+        <p>The <b>Tao</b> people of Orchid Island have welcomed the flying fish for a very long time, with hand-built wooden boats and special celebrations.</p>
+        <span class="fact">🐟 One flying fish glide can go about <b>200 meters</b>. That's as long as two soccer fields! Flying fish season on Orchid Island is about March to June.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 WINTER -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="On a windy winter day Kai stands on a wooden pier in a yellow raincoat, pointing at the sea. Mo peeks out wearing a red scarf, and a school of gray mullet swims underwater."><div class="layer"></div></div>
+      <div class="text">
+        <p>In winter, a cold wind blows from the northeast. It pushes cold water south along the coast of China and into the Taiwan Strait. This is the <b>China Coastal Current</b>.</p>
+        <p>Around the coldest days of the year, schools of <b>gray mullet</b> swim south with the cool water to lay their eggs near southwestern Taiwan. Fishermen call them "black gold"!</p>
+        <span class="fact">❄️ Brrr! Sea turtles like warm water. If the sea gets too cold, they get slow and sleepy, so they move to warmer places. (Mo's scarf is just for fun!)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 WARM MEETS COLD -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p07.webp" alt="Underwater, warm peach-colored water on the left swirls into cool blue water on the right. Glowing green plankton fill the swirl and many colorful fish gather there. A fishing boat floats above."><div class="layer"></div></div>
+      <div class="text">
+        <p>Where warm water and cold water meet, they swirl and mix. The mixing stirs up food from deep down. Tiny <b>plankton</b> grow, little fish come to eat them, and bigger fish follow!</p>
+        <p>That's why fishing boats love these places. And in summer? The wind turns around, and warm water from the south flows <span class="hl">north</span> through the Taiwan Strait instead.</p>
+        <span class="fact">🔁 Same sea, different season, different direction! <a href="#p3">Go back to the map</a> and press ☀️ and ❄️ to see it.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 TRASH -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p08.webp" alt="Mo looks puzzled between a pink jellyfish and a floating white plastic bag. Kai scoops up a plastic bottle with a net."><div class="layer"></div></div>
+      <div class="text">
+        <p>Currents carry everything that floats, even trash. A plastic bag dropped in one place can travel far, far across the sea.</p>
+        <p>Can you help Mo? <b>Which one is the jellyfish?</b> 👆 Tap it in the picture!</p>
+        <span class="fact">🐢 To a sea turtle, a floating plastic bag can look just like a jellyfish, one of its favorite snacks. You can help: carry a reusable bag, and pick up trash at the beach.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HOW TO PLAY -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="how"><img class="art" src="img/bg_sea.webp" alt="Painted blue sea seen from above.">
+        <div class="layer">
+          <div class="band"></div>
+          <button class="actor" style="left:34%;top:62%;width:9%" data-say="Hold your finger where you want me to swim. Ride the glowing current to go super fast!"><img src="img/mo_top.webp" alt="Mo"></button>
+          <button class="actor" style="left:33%;top:22%;width:5%;animation-delay:.3s" data-say="Shells are on the fast currents. Collect them to help Mo grow stronger!"><img src="img/shell.webp" alt="Shell"></button>
+          <button class="actor" style="left:57%;top:38%;width:8%;animation-delay:.6s" data-say="Tap me to scoop me out with Kai's net. Don't let Mo eat me!"><img src="img/bag.webp" alt="Plastic bag"></button>
+          <button class="actor" style="left:72%;top:70%;width:7%;animation-delay:.9s" data-say="Crunch! Seagrass charges your ⚡ Turbo."><img src="img/seagrass.webp" alt="Seagrass"></button>
+          <button class="actor" style="left:86%;top:34%;width:13%;animation-delay:1.2s" data-say="An old fishing net! Swim around it, or tap it three times to pull it out."><img src="img/net.webp" alt="Old fishing net"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Ride the Current!</h2>
+        <ol class="steps">
+          <li><b>Hold your finger</b> where you want Mo to swim (or use the arrow keys).</li>
+          <li>Find the <b>glowing currents</b> and ride them to zoom! Swimming against a current is very slow.</li>
+          <li><b>Tap</b> plastic bags and bottles to scoop them out. Swim around old fishing nets.</li>
+          <li>Eat 🌿 seagrass for <b>⚡ Turbo</b>. Collect 🐚 shells to help Mo grow stronger.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Ride the Current!</a>
+        <span class="fact" data-noread>8 trips around Taiwan, from Orchid Island all the way toward Japan, plus <b>Endless Kuroshio</b> mode. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 QUIZ + SOURCES -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Kai and Mo in the sea near Taiwan."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Rode the Rivers in the Sea!</h2>
+        <p>Warm currents, cold currents, flying fish, gray mullet and a brave little turtle. The sea around Taiwan is always on the move!</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What is an ocean current?</div>
+          <div class="choice-row"><button class="choice" data-ok>🌊 A river of water in the sea</button><button class="choice">🐙 A sea monster</button><button class="choice">🐟 A kind of fish</button></div>
+          <div class="q">2. Which way does the Kuroshio flow past Taiwan's east coast?</div>
+          <div class="choice-row"><button class="choice" data-ok>⬆️ North</button><button class="choice">⬇️ South</button><button class="choice">⏸️ It doesn't move</button></div>
+          <div class="q">3. What can a sea turtle mistake for a jellyfish?</div>
+          <div class="choice-row"><button class="choice">🐚 A seashell</button><button class="choice" data-ok>🛍️ A plastic bag</button><button class="choice">🐟 A flying fish</button></div>
+        </div>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Science sources:</b>
+          <a href="https://scholars.ncu.edu.tw/zh/publications/large-variability-of-the-kuroshio-at-2375n-east-of-taiwan/" target="_blank" rel="noopener">Large variability of the Kuroshio east of Taiwan (speed, width)</a> ·
+          <a href="https://repository.lsu.edu/oceanography_coastal_pubs/930" target="_blank" rel="noopener">Review on currents through the Taiwan Strait (summer and winter)</a> ·
+          <a href="https://doaj.org/article/2d6d7135d50e47e2a90c131b93fd0461" target="_blank" rel="noopener">Xuan et al. 2017, Ocean Science (winter monsoon and the coastal current)</a> ·
+          <a href="https://www.moa.gov.tw/ws.php?id=2507774" target="_blank" rel="noopener">Ministry of Agriculture, gray mullet and the winter solstice</a> ·
+          <a href="https://www.cw.com.tw/article/5126174" target="_blank" rel="noopener">CommonWealth Magazine, flying fish season on Orchid Island</a> ·
+          <a href="https://www.nationalgeographic.com/animals/fish/facts/flying-fish" target="_blank" rel="noopener">National Geographic, Flying fish</a> ·
+          <a href="https://www.fisheries.noaa.gov/media-release/ocean-myth-busted-toddler-sea-turtles-are-very-active-swimmers" target="_blank" rel="noopener">NOAA Fisheries, baby sea turtles are active swimmers</a> ·
+          <a href="https://blog.marinedebris.noaa.gov/node/181" target="_blank" rel="noopener">NOAA Marine Debris Program, plastic bags and sea turtles</a><br>
+          The map is simplified: real currents wiggle, split into branches and change from day to day. The game makes the sea busier so it's fun to play.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Ride the Current!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script src="geo.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx, G = TaiwanGeo;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "bubbles", .5); build(1, st => {
+    say(st, 72, 30, 13, 26, "Kai", "<b>Hi, I'm Kai!</b>I live in Taiwan, an island in the big blue sea.", S.chirp, 4, 6);
+    say(st, 73, 76, 14, 20, "Mo", "<b>I'm Mo!</b>I hatched on a sandy beach on Orchid Island. Now I'm going on an adventure!", S.pop, 4, 40);
+    say(st, 48, 31, 14, 12, "Flying fish", "<b>Flying fish!</b>They glide over the waves like little airplanes.", S.whoosh, 4, 50);
+    say(st, 62, 92, 12, 12, "Glowing river", "<b>A river in the sea?</b>Let's find out what it is!", S.sparkle, 98, 6, true);
+    say(st, 87, 18, 14, 14, "Mountains", "<b>Taiwan</b> has tall green mountains, and the sea all around it.", S.ding, 98, 40, true);
+  }); });
+
+  /* -------- 2 what is a current -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "bubbles", .6); build(2, st => {
+    B.hot(st, 25, 42, 16, 22, "The current", () => {
+      S.whoosh(); const [w, h] = B.px(st, 100, 100);
+      for (let i = 0; i < 12; i++) setTimeout(() => F.sparkles(st, w * (0.05 + i * 0.08), h * (0.42 + Math.sin(i * 0.7) * 0.08), 8), i * 70);
+      B.bubble(st, 4, 64, "<b>Swoosh!</b>A current is like a slide in the water. It carries Mo along.");
+    });
+    say(st, 77, 54, 14, 18, "Seaweed", "<b>Sargassum</b> is seaweed that floats. Baby turtles hide and rest in it, like a little raft.", S.pop, 98, 64, true);
+    say(st, 60, 50, 12, 18, "Mo", "<b>Mo:</b> Wheee! I'm swimming AND riding!", S.chirp, 4, 6);
+    say(st, 85, 22, 12, 22, "Kai", "<b>Kai:</b> Mo, wait for me!", S.splash, 50, 70);
+  }); });
+
+  /* -------- 3 season map -------- */
+  const INFO = {
+    kuroshio: { warm: true, title: "The Kuroshio", text: "A big, warm, deep-blue current. It flows north past Taiwan's east coast all year long, then keeps going toward Japan." },
+    coastal: { warm: false, title: "China Coastal Current", text: "In winter, the northeast wind pushes cold water south along the coast of China, into the Taiwan Strait." },
+    straitWinter: { warm: true, title: "A little warm water", text: "Even in winter, a thin stream of warm water still sneaks north on Taiwan's side of the strait, near Penghu." },
+    scs: { warm: true, title: "South China Sea Warm Current", text: "In summer, the southwest wind helps push warm water north through the Taiwan Strait." },
+  };
+  let season = "winter", svg = null;
+  const P = G.projector(900, 30);
+  const OX = 250;
+  const path = (pts, closed) => {
+    const sm = G.smooth(pts.map(P), closed, 5);
+    return "M" + sm.map(p => (p[0] + OX).toFixed(1) + "," + p[1].toFixed(1)).join("L") + (closed ? "Z" : "");
+  };
+  function drawMap() {
+    const st = stageOf(3);
+    const NS = "http://www.w3.org/2000/svg";
+    const H = Math.round(P.h);
+    let h = '<svg viewBox="0 0 1600 ' + H + '" preserveAspectRatio="xMinYMid meet" xmlns="' + NS + '">';
+    h += '<defs><marker id="ah-w" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ff7f50"/></marker>' +
+         '<marker id="ah-c" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f8fd8"/></marker></defs>';
+    for (const k in G.LAND) h += '<path class="land' + (["taiwan", "penghu", "lanyu", "green", "turtle", "liuqiu"].includes(k) ? "" : " far") + '" d="' + path(G.LAND[k], true) + '"/>';
+    h += '<g id="flows"></g>';
+    for (const k in G.PLACES) {
+      const pl = G.PLACES[k], [x, y] = P(pl.at);
+      if (pl.dot) {
+        if (["hualien", "keelung", "kaohsiung", "taichung", "matsu"].includes(k)) continue;
+        h += '<text class="lbl dot" x="' + (x + OX + (k === "penghu" ? -40 : 14)) + '" y="' + (y + (k === "penghu" ? 34 : 6)) + '"' + (k === "penghu" ? ' text-anchor="middle"' : "") + '>' + pl.name + '</text>';
+      } else {
+        h += '<text class="lbl' + (pl.big ? " big" : "") + (pl.sea ? " sea" : "") + '" x="' + (x + OX) + '" y="' + y + '" text-anchor="middle"' + (pl.rot ? ' transform="rotate(' + pl.rot + ' ' + (x + OX) + ' ' + y + ')"' : "") + '>' + pl.name + '</text>';
+      }
+    }
+    h += '<image href="img/mo_top.webp" id="mapMo" width="84" height="84" x="-200" y="-100"/>';
+    h += '</svg>';
+    st.insertAdjacentHTML("afterbegin", h);
+    svg = st.querySelector("svg");
+    paintFlows();
+  }
+  function paintFlows() {
+    const g = svg.querySelector("#flows");
+    let h = "";
+    for (const k in G.CURRENTS) {
+      const c = G.CURRENTS[k];
+      if (!c.seasons.includes(season)) continue;
+      const col = c.warm ? "#ff7f50" : "#3f8fd8", w = 8 + 12 * c.strength, d = path(c.pts, false);
+      if (k === "kuroshio") h += '<path class="glow" d="' + d + '" stroke="#1d2a6b" stroke-width="' + (w * 4.5) + '"/>';
+      h += '<path class="glow" d="' + d + '" stroke="' + col + '" stroke-width="' + (w * 2.4) + '"/>';
+      h += '<path class="flow" d="' + d + '" stroke="' + col + '" stroke-width="' + w + '" stroke-dasharray="34 26" marker-end="url(#ah-' + (c.warm ? "w" : "c") + ')" style="animation-duration:' + (2.2 - c.strength) + 's"/>';
+      h += '<path class="hit" data-cur="' + k + '" d="' + d + '"/>';
+      const lab = G.along(c.pts, k === "kuroshio" ? 0.5 : k === "coastal" ? 0.3 : 0.75);
+      const [lx, ly] = P([lab.x, lab.y]);
+      const nm = { kuroshio: "Kuroshio", coastal: "Cold current", straitWinter: "", scs: "Warm current" }[k];
+      if (nm) h += '<text class="cname" fill="' + col + '" x="' + (lx + OX + (k === "kuroshio" ? 48 : k === "coastal" ? 40 : -30)) + '" y="' + ly + '" text-anchor="' + (k === "scs" ? "end" : "start") + '">' + nm + '</text>';
+    }
+    g.innerHTML = h;
+    g.querySelectorAll(".hit").forEach(p => p.addEventListener("click", e => {
+      const k = p.dataset.cur, I = INFO[k], card = $("#curCard");
+      card.innerHTML = "<h3>" + I.title + "</h3><p style='margin:0'><span class='tag " + (I.warm ? "warm" : "cold") + "'>" + (I.warm ? "Warm" : "Cold") + "</span>" + I.text + "</p>";
+      card.classList.remove("on"); void card.offsetWidth; card.classList.add("on");
+      I.warm ? S.sparkle() : S.wind(); B.speak(I.title + ". " + I.text);
+      const st = stageOf(3), r = st.getBoundingClientRect();
+      F.sparkles(st, e.clientX - r.left, e.clientY - r.top, 20);
+    }));
+    $("#wind").textContent = season === "winter" ? "🌬️ Wind from the northeast ↙" : "🌬️ Wind from the southwest ↗";
+  }
+  // Mo rides the Kuroshio on the map
+  let moT = 0, moRaf = 0;
+  function moLoop() {
+    const mo = svg && svg.querySelector("#mapMo");
+    if (mo) {
+      moT = (moT + 0.0016) % 1;
+      const a = G.along(G.CURRENTS.kuroshio.pts, moT), [x, y] = P([a.x, a.y]);
+      mo.setAttribute("x", x + OX - 42); mo.setAttribute("y", y - 42);
+      mo.setAttribute("transform", "rotate(" + (90 - a.ang * 180 / Math.PI) + " " + (x + OX) + " " + y + ")");
+    }
+    moRaf = requestAnimationFrame(moLoop);
+  }
+  document.querySelectorAll("[data-season]").forEach(b => b.onclick = () => {
+    season = b.dataset.season;
+    document.querySelectorAll("[data-season]").forEach(o => o.classList.toggle("on", o === b));
+    paintFlows(); $("#curCard").classList.remove("on");
+    season === "winter" ? (S.wind(), F.weather(stageOf(3), "snow", .35)) : (S.sparkle(), F.weather(stageOf(3), "pollen", .4));
+  });
+  B.on(3, () => { build(3, drawMap); F.weather(stageOf(3), season === "winter" ? "snow" : "pollen", .35); if (!moRaf) moLoop(); },
+          () => { cancelAnimationFrame(moRaf); moRaf = 0; });
+
+  /* -------- 4 kuroshio -------- */
+  B.on(4, () => { const st = stageOf(4); F.weather(st, "bubbles", .4); build(4, st => {
+    say(st, 72, 72, 16, 22, "Deep blue water", "<b>So clear!</b>The Kuroshio has very little mud and very few tiny plankton, so sunlight goes deep and the sea looks dark blue.", S.sparkle, 4, 6);
+    say(st, 14, 62, 16, 26, "Green water", "<b>Greener water</b> near the coast has more plankton and sand floating in it.", S.splash, 98, 6, true);
+    say(st, 78, 20, 12, 22, "Kai", "<b>Kai:</b> Wow, it looks like ink! But it's so clear I can see Mo!", S.chirp, 4, 50);
+    say(st, 62, 72, 10, 16, "Mo", "<b>Mo:</b> The water is warm and cozy here!", S.pop, 4, 30);
+  }); });
+
+  /* -------- 5 flying fish -------- */
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "bubbles", .3); build(5, st => {
+    B.hot(st, 60, 55, 24, 30, "Flying fish", () => {
+      S.whoosh(); const [w, h] = B.px(st, 100, 100);
+      for (let i = 0; i < 8; i++) setTimeout(() => F.sparkles(st, w * (0.4 + i * 0.06), h * (0.48 + i * 0.04), 8), i * 90);
+      B.bubble(st, 4, 6, "<b>Whoosh!</b>Flying fish leap out of the water to escape from bigger fish, then glide away.");
+    });
+    say(st, 87, 48, 9, 12, "Wooden boat", "<b>A tatala!</b>The Tao people of Orchid Island build these boats by hand from wooden planks.", S.splash, 98, 6, true);
+    say(st, 82, 22, 18, 24, "Orchid Island", "<b>Orchid Island (Lanyu)</b> is a green volcanic island in the Kuroshio, southeast of Taiwan.", S.ding, 40, 4);
+    say(st, 20, 72, 14, 26, "Kai and Mo", "<b>Kai:</b> They're flying! <b>Mo:</b> I wish I could fly too!", S.chirp, 30, 30);
+  }); });
+
+  /* -------- 6 winter -------- */
+  B.on(6, () => { const st = stageOf(6); F.weather(st, "rain", .35); build(6, st => {
+    say(st, 36, 82, 30, 18, "Gray mullet", "<b>Gray mullet!</b>They travel south in big schools every winter to lay their eggs.", S.splash, 4, 6);
+    say(st, 61, 61, 10, 16, "Mo", "<b>Mo:</b> Brrr! This water is chilly. Time to swim somewhere warmer!", S.snore, 4, 40);
+    say(st, 79, 26, 12, 26, "Kai", "<b>Kai:</b> Look! The fish are coming, right on time for winter!", S.chirp, 98, 50, true);
+    say(st, 88, 10, 12, 14, "Wind", "<b>Whoosh!</b>The northeast wind pushes the cold water south.", S.wind, 50, 4, true);
+  }); });
+
+  /* -------- 7 warm meets cold -------- */
+  B.on(7, () => { const st = stageOf(7); F.weather(st, "pollen", .6); build(7, st => {
+    say(st, 46, 45, 16, 24, "Plankton", "<b>Plankton</b> are tiny living things floating in the sea. Lots of animals eat them!", S.sparkle, 4, 6);
+    say(st, 14, 45, 14, 26, "Warm water", "<b>Warm water</b> from the south.", S.pop, 4, 60);
+    say(st, 86, 62, 14, 24, "Cold water", "<b>Cool water</b> from the north or from deep down.", S.splash, 98, 6, true);
+    say(st, 48, 8, 16, 14, "Fishing boat", "<b>Fishing boats</b> look for places where warm and cold water meet.", S.ding, 4, 30);
+    say(st, 50, 82, 12, 16, "Mo", "<b>Mo:</b> Munch, munch! Yummy seaweed.", S.munch, 30, 50);
+  }); });
+
+  /* -------- 8 jellyfish or bag -------- */
+  B.on(8, () => { const st = stageOf(8); F.weather(st, "bubbles", .4); build(8, st => {
+    B.hot(st, 39, 47, 14, 32, "Jellyfish", () => { S.yay(); F.sparkles(st, ...B.px(st, 39, 45), 40); B.confetti(60); B.bubble(st, 4, 6, "<b>You found it!</b>That's the real jellyfish. Great eyes!"); });
+    B.hot(st, 67, 57, 12, 32, "Plastic bag", () => { S.oops(); B.bubble(st, 98, 6, "<b>Oops, that's a plastic bag!</b>It looks like a jellyfish, but it isn't food. Let's scoop it out!", { right: true }); });
+    say(st, 82, 40, 14, 30, "Kai", "<b>Kai:</b> I'll scoop up the trash so Mo stays safe!", S.splash, 50, 70, true);
+  }); });
+
+  /* -------- 9 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(9), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : x, Math.min(70, y + 10), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(9, () => F.weather(stageOf(9), "bubbles", .4));
+
+  /* -------- 10 -------- */
+  B.on(10, () => { const st = stageOf(10); F.weather(st, "bubbles", .5); build(10, st => {
+    say(st, 73, 76, 14, 20, "Mo", "<b>Mo:</b> Thanks for riding with me! See you in the game!", S.yay, 4, 40);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

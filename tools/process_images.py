@@ -13,7 +13,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -45,9 +45,23 @@ SHEETS: dict = {
     # damaged meteors = the game's mid/large "enemy ships" (the big one has a broken second stage)
     "cracks": {"crack_m": ((0, 0, .5, .5), 300), "crack_l": ((.5, 0, 1, .5), 420),
                "crack_l2": ((0, .5, .5, 1), 420), "crack_ice": ((.5, .5, 1, 1), 300)},
+    # ocean currents book + Ride the Current! game (top-down sprites point up)
+    "cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+             [("kai", 0, 0, 320), ("mo", 1, 0, 320), ("mo_top", 2, 0, 240),
+              ("pal", 0, 1, 240), ("dolphin", 1, 1, 240), ("flyfish", 2, 1, 220)]},
+    "sea": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+            [("mullet", 0, 0, 150), ("seagrass", 1, 0, 160), ("shell", 2, 0, 120),
+             ("bag", 0, 1, 160), ("bottle", 1, 1, 140), ("net", 2, 1, 220)]},
+    "big": {"boat": ((0, 0, .5, .5), 300), "bignet": ((.5, 0, 1, .5), 460),
+            "log": ((0, .5, .5, 1), 260), "sargassum": ((.5, .5, 1, 1), 240)},
+    "islands": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), 440) for n, c, r in
+                [("is_lanyu", 0, 0), ("is_green", 1, 0), ("is_turtle", 2, 0),
+                 ("is_penghu", 0, 1), ("is_harbor", 1, 1), ("is_palm", 2, 1)]},
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket"}
+# see-through sprites (nets): white holes inside the shape are cleared too
+HOLES = {"net", "bignet"}
 
 
 def page(src: Path, dst: Path, width=1600):
@@ -115,6 +129,10 @@ def sheet_sprites(src: Path, out_dir: Path, parts: dict):
                 best, best_size = i + 1, sizes[i]
         mask = Image.fromarray(((labels == best) * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(1))
         a = Image.fromarray(np.minimum(np.array(mask), np.array(full.getchannel("A"))))
+        if name in HOLES:
+            rgb = np.array(full.convert("RGB")).astype(int)
+            white = (rgb.min(axis=2) > 222) & (rgb.max(axis=2) - rgb.min(axis=2) < 28)
+            a = Image.fromarray(np.where(white, 0, np.array(a)).astype("uint8"))
         piece = full.copy(); piece.putalpha(a)
         piece = piece.crop(piece.getbbox())
         piece.thumbnail((size, size), Image.LANCZOS)

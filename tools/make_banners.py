@@ -2,9 +2,10 @@
 
 Needs the local server (python -m http.server 8080 at the repo root) running.
 Outputs banners/<book>-fb.jpg (1200x630) and banners/<book>-square.jpg (1080x1080).
-usage: python tools/make_banners.py
+usage: python tools/make_banners.py [book ...]   (no args = all books)
 """
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -22,6 +23,8 @@ JOBS = [
     ("immune", "square", "immune-square", (1080, 1080)),
     ("space", "wide", "space-fb", (1200, 630)),
     ("space", "square", "space-square", (1080, 1080)),
+    ("currents", "wide", "currents-fb", (1200, 630)),
+    ("currents", "square", "currents-square", (1080, 1080)),
 ]
 
 
@@ -29,6 +32,8 @@ def main():
     OUT.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         for book, size, name, (w, h) in JOBS:
+            if sys.argv[1:] and book not in sys.argv[1:]:
+                continue
             png = Path(tmp) / f"{name}.png"
             url = f"http://localhost:8080/tools/banners/banner.html?book={book}&size={size}"
             subprocess.run([

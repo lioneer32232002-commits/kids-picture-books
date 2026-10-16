@@ -177,7 +177,7 @@
         color: "#ff6b8b", glow: true
       });
     },
-    /** weather: "ash" | "snow" | "stars" | "pollen" | "rain" | null */
+    /** weather: "ash" | "snow" | "stars" | "pollen" | "rain" | "bubbles" | null */
     weather(stage, kind, density) {
       const st = fx(stage);
       if (!kind) { st.weather = null; return; }
@@ -189,13 +189,16 @@
         const g = s.g;
         for (const q of pool) {
           q.t += 1; q.x += q.vx + Math.sin(q.t * q.wob) * q.sway; q.y += q.vy;
-          if (q.y > s.h + 10 || q.x < -20 || q.x > s.w + 20) Object.assign(q, spawn(s, false));
+          if (q.y > s.h + 10 || q.y < -20 || q.x < -20 || q.x > s.w + 20) Object.assign(q, spawn(s, false));
           let a = q.a;
           if (kind === "stars") a = q.a * (0.4 + 0.6 * Math.abs(Math.sin(q.t * q.wob * 3)));
           g.globalAlpha = a; g.fillStyle = q.col;
           if (kind === "rain") {
             g.strokeStyle = q.col; g.lineWidth = 1.5; g.beginPath();
             g.moveTo(q.x, q.y); g.lineTo(q.x - q.vx * 2, q.y - q.vy * 2); g.stroke();
+          } else if (kind === "bubbles") {
+            g.strokeStyle = q.col; g.lineWidth = 1.5; g.beginPath(); g.arc(q.x, q.y, q.r, 0, 6.283); g.stroke();
+            g.beginPath(); g.arc(q.x - q.r * .35, q.y - q.r * .35, q.r * .25, 0, 6.283); g.fill();
           } else { g.beginPath(); g.arc(q.x, q.y, q.r, 0, 6.283); g.fill(); }
         }
         g.globalAlpha = 1;
@@ -208,6 +211,7 @@
           case "pollen": return Object.assign(base, { vx: rnd(-.3, .3), vy: rnd(-.4, .3), r: rnd(1.5, 3), sway: .7, a: rnd(.4, .9), col: "#fff3a8", y: rnd(0, s.h) });
           case "rain": return Object.assign(base, { vx: -1.5, vy: rnd(7, 11), r: 1, sway: 0, a: .45, col: "#cfe6ff" });
           case "stars": return Object.assign(base, { vx: 0, vy: 0, r: rnd(.8, 2.2), sway: 0, a: rnd(.5, 1), col: "#ffffff", y: rnd(0, s.h) });
+          case "bubbles": return Object.assign(base, { vx: rnd(-.1, .1), vy: rnd(-1.2, -.4), r: rnd(2, 6), sway: .5, a: rnd(.35, .75), col: "#ffffff", y: first ? rnd(0, s.h) : s.h + 8 });
         }
       }
       st.kick();

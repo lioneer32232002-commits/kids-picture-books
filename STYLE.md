@@ -10,7 +10,7 @@
 - **對象**：5–7 歲孩子，由家長陪著玩。
 - **語言**：內容全英文（句子短、白話），每頁有「📖 Read to me」用瀏覽器語音朗讀。
 - **調性**：可愛，但不陽春；有科學根據，不誇大。
-- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊）。
+- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊、洋流游泳）。
 - **上線**：GitHub Pages（`lioneer32232002-commits/kids-picture-books`），**不用 Cloudflare**。
 
 ---
@@ -46,6 +46,8 @@
 | 免疫 | Bella | round mint-green cell holding a little Y-shaped toy blaster |
 | 免疫 | Captain T | brave orange cell with a small silver knight helmet and a round shield |
 | 免疫 | Leo | cheerful 6-year-old, short black hair, yellow hoodie |
+| 洋流 | Kai | cheerful 6-year-old Taiwanese kid, short straight black hair, teal-and-white striped swim shirt, red swim shorts, small yellow snorkel mask pushed up on the forehead |
+| 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
 
@@ -53,6 +55,10 @@
 - **角色會漂移**：Nova 曾被畫成長髮，要求「exactly like the earlier pages: SHORT curly brown hair」重畫。
 - **會被打掉的東西不能有臉**：太空垃圾、隕石、垃圾球魔王都要求 `NO faces, NO eyes`。病毒是例外（塔防裡是擬人角色，但書中註明「真的病毒沒有臉」）。
 - Gemini 的 Pro 模型出圖常失敗，改用 Flash。
+- **提示詞不要有換行**：在輸入框打 `
+` 會直接送出前半段，Gemini 會照半段提示亂畫（曾畫出熊和兔子野餐）。整段寫成一行。
+- **地圖不要叫 Gemini 畫**：地理位置一定會錯。洋流書的地圖是 `currents/geo.js` 用經緯度手動簡化海岸線，再用 SVG／Phaser 畫，洋流箭頭才對得準。
+- 白底素材表裡「白色或透明」的東西（塑膠袋、寶特瓶）要指定淡紫灰、淡藍等顏色，不然去背會被吃掉；網子這類有破洞的東西在 `process_images.py` 的 `HOLES` 加名字，會把洞裡的白色一起去掉。
 
 ### 2.5 取圖
 
@@ -60,6 +66,7 @@ Chrome 會擋 Gemini 連續自動下載：
 - 重新整理頁面後，通常第一張可以下載；或請使用者在 Chrome 允許 gemini.google.com 自動下載。
 - 被擋時改用 `tools/dev/gemini_capture.js`：在頁面內載入原圖、分段截圖，再用 `tools/dev/stitch_tiles.py` 拼回來，約 1550px 寬，網頁用足夠。
 - **不要撿下載資料夾裡舊的 `Gemini_Generated_Image_*`**：曾經撿錯一張使用者自己的圖。
+- 不按下載鈕的取圖法（洋流書用這個）：頁面裡的預覽圖是 1024 px 的 blob，在頁面內用全螢幕 overlay 以 1:1 顯示，再用 zoom 截圖（`scale: 1`、`save_to_disk`）存下來，直式圖分兩段截再拼。網頁用夠了，也不會觸發瀏覽器下載。
 
 ---
 
@@ -96,12 +103,15 @@ Chrome 會擋 Gemini 連續自動下載：
   - 血量給多一點（射擊遊戲 5 顆心）。
   - 小碎片撞到只會「Bonk!」彈開，只有大東西會扣血。
   - 一定要閃的東西（彗星）會先出現 ⚠ 警告。
+- **會被打掉／撈走的只有垃圾**：洋流遊戲裡塑膠袋、寶特瓶點一下用 Kai 的網子撈走，漁網要點三下；海龜、飛魚、海豚、烏魚都是朋友，游過去打招呼。救援關是「剪斷漁網救海龜」，不是打倒魔王。
+- **一定要閃的東西要能閃**：洋流遊戲的船一開始是橫向穿越，但 Mo 在強流裡停不下來，等於閃不掉；改成沿著紅色警示直線開過來，往旁邊游就能閃（跟太空遊戲的彗星同一招）。
 - **耐玩**：
   - 8 關＋星等評分，進度存在本機。
   - 永久升級：塔防的記憶細胞、射擊遊戲的火箭機庫。
   - 無限模式、中大型敵人（破損隕石）、魔王。
-- **教育連結**：遊戲機制對應真實科學，例如免疫記憶給傷害加成、吃彩虹蔬果觸發彩虹力量、垃圾食物會讓英雄血糖崩盤。
+- **教育連結**：遊戲機制對應真實科學，例如免疫記憶給傷害加成、吃彩虹蔬果觸發彩虹力量、垃圾食物會讓英雄血糖崩盤、順著洋流游超快而逆流幾乎游不動、冬天和夏天台灣海峽的流向相反。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
+  - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。
 - 測試時先 `localStorage.setItem('pb-muted','1')` 靜音；測完關掉測試分頁和伺服器。
 
 ---
