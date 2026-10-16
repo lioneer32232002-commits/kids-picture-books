@@ -25,6 +25,8 @@ JOBS = [
     ("space", "square", "space-square", (1080, 1080)),
     ("currents", "wide", "currents-fb", (1200, 630)),
     ("currents", "square", "currents-square", (1080, 1080)),
+    ("ridecurrent", "wide", "ridecurrent-fb", (1200, 630)),
+    ("ridecurrent", "square", "ridecurrent-square", (1080, 1080)),
 ]
 
 

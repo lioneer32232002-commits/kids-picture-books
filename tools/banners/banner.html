@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -83,6 +83,19 @@
   .currents.square .art { background-position: 78% 50%; }
   .currents.square .veil { background: linear-gradient(180deg, rgba(228,245,255,0) 0%, #e4f5ff 25%); }
 
+  /* ---------- ride the current (game) ---------- */
+  .ridecurrent .art { background-image: url(../../_raw/currents/p02.jpg); }
+  .ridecurrent.wide .art { background-size: cover; background-position: 75% 50%; }
+  .ridecurrent .veil { background: linear-gradient(90deg, rgba(10,48,82,.9) 0%, rgba(14,60,100,.66) 36%, rgba(14,60,100,0) 56%); }
+  .ridecurrent .copy { color: #fff; }
+  .ridecurrent .kicker { background: #ffd166; color: #123a5a; }
+  .ridecurrent h1 { color: #fff; text-shadow: 0 4px 0 #123a5a, 0 8px 24px rgba(0,0,0,.45); }
+  .ridecurrent h1 span { color: #ffb27a; }
+  .ridecurrent .chip { background: rgba(255,255,255,.95); color: #123a5a; }
+  .ridecurrent .cta { background: #ff7f50; box-shadow: 0 6px 0 #d4582f; }
+  .ridecurrent.square .art { background-position: 70% 50%; }
+  .ridecurrent.square .veil { background: linear-gradient(180deg, rgba(14,60,100,0) 0%, #0f3d63 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -140,6 +153,13 @@
       sub: "Ride the ocean currents around Taiwan with Mo the baby sea turtle!",
       chips: ["🌊 Warm & cold currents", "🐢 Turtle game", "🧒 Ages 5–7"],
       cta: "Read & play free ▶",
+    },
+    ridecurrent: {
+      kicker: "FREE SEA TURTLE GAME FOR KIDS",
+      title: "Ride the <span>Current!</span>",
+      sub: "Swim around Taiwan with Mo, scoop up plastic, and say hi to flying fish and dolphins!",
+      chips: ["🌊 8 trips", "🐢 Help Mo grow", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
     },
     planet: {
       kicker: "FREE INTERACTIVE PICTURE BOOK",
