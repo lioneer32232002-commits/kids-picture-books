@@ -2,3 +2,4 @@ _raw/
 .claude/
 __pycache__/
 *.pyc
+_private/

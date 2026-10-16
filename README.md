@@ -8,6 +8,8 @@ Two free, interactive English science picture books for kids aged 5–7.
 
 Live: https://lioneer32232002-commits.github.io/kids-picture-books/
 
+Art style, characters, writing and game-design rules: see **`STYLE.md`**.
+
 ## Structure
 
 | Path | What |
@@ -18,6 +20,7 @@ Live: https://lioneer32232002-commits.github.io/kids-picture-books/
 | `tools/process_images.py` | Raw Gemini images in `_raw/` (not committed) → WebP pages + transparent sprites |
 | `immune/game.js` | Tower defense game (Phaser 3 from jsDelivr). `?unlock=1` unlocks all levels; `?timer=1` runs the loop on setTimeout for automated testing |
 | `planets/space.js` | Space Clean-Up! shooter (Phaser 3). Same `?unlock=1` / `?timer=1` test flags. Friendly aliens can't be hit by design |
+| `tools/dev/` | Helpers: Gemini in-page capture + tile stitching (when Chrome blocks downloads), contact sheets, auto-play bots for balancing both games |
 | `tools/make_banners.py` | Renders banners from `tools/banners/banner.html` with headless Chrome (needs `python -m http.server 8080`) |
 
 Illustrations generated with Google Gemini.
