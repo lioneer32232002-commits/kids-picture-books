@@ -1,4 +1,4 @@
-// Auto-pilot for testing Puff Racer! (not shipped).
+// Auto-pilot for testing Blast Racer! (not shipped).
 // Open aircar/play.html?unlock=1, load this file, then:
 //   puffGo(levelIndex)          start a level with the bot driving (-1 = endless); the game loop is paused
 //   puffStep(frames)            advance by hand (works in hidden tabs, which the browser throttles)

@@ -1,6 +1,6 @@
-/* Puff Racer! — Rio's little air car Zip races Dash on a side-view track (Phaser 3).
+/* Blast Racer! — Rio's little air car Zip races Dash on a side-view track (Phaser 3).
    Physics and tracks live in sim.js. Three buttons, three real ideas:
-   HOP puffs air down (car goes up), ZOOM puffs air back (car goes forward), STICK is a fan that
+   HOP blasts air down (car goes up), ZOOM blasts air back (car goes forward), STICK is a fan that
    sucks air from under the car so it's pressed onto the road, even upside down.
    Nothing gets hurt: bumping a cone or truck just says "Bonk!", and a helper drone fishes Zip out of the water. */
 (function () {
@@ -21,7 +21,7 @@
   };
   const GARAGE = [
     { k: "tank", name: "Bigger Tank", desc: "Holds more squeezed air", costs: [40, 110], icon: "bubble" },
-    { k: "puff", name: "Puff Power", desc: "Hop and Zoom push harder", costs: [50, 130], icon: "bolt" },
+    { k: "puff", name: "Blast Power", desc: "Hop and Zoom push harder", costs: [50, 130], icon: "bolt" },
     { k: "soft", name: "Soft Springs", desc: "Land harder without a Bonk", costs: [40, 110], icon: "zip" },
   ];
   const TIPS = [
@@ -121,7 +121,7 @@
     create() {
       this.bg = sky(this);
       const sv = save.get(), all = /[?&]unlock=1/.test(location.search);
-      const logo = txt(this, W / 2, 70, "Puff Racer!", 82, "#ffffff", { strokeThickness: 12 });
+      const logo = txt(this, W / 2, 70, "Blast Racer!", 82, "#ffffff", { strokeThickness: 12 });
       this.tweens.add({ targets: logo, y: 78, yoyo: true, repeat: -1, duration: 1300, ease: "Sine.inOut" });
       txt(this, W / 2, 132, "Race Zip, the little car that blasts air!", 28, "#fff1b8");
       const zip = fit(this.add.image(190, 210, "zip"), 210);
@@ -560,7 +560,7 @@
       btns.push(["🔧 Garage", 0x9b6cf2, () => this.scene.start("garage")]);
       btns.forEach((b, i) => c.add(button(this, W / 2 + (i - (btns.length - 1) / 2) * 200, 572, 184, 74, b[0], b[1], b[2], 26)));
       c.iterate(o => o.setScrollFactor && o.setScrollFactor(0));
-      if (win && this.li === LEVELS.length - 1 && stars === 3) this.time.delayedCall(700, () => this.toast("🏆 Grand Puff Prix champion! You know how air can push a car!", 5000));
+      if (win && this.li === LEVELS.length - 1 && stars === 3) this.time.delayedCall(700, () => this.toast("🏆 Grand Blast Prix champion! You know how air can push a car!", 5000));
     }
   }
 

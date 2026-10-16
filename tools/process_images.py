@@ -54,7 +54,7 @@ SHEETS: dict = {
              ("bag", 0, 1, 160), ("bottle", 1, 1, 140), ("net", 2, 1, 220)]},
     "big": {"boat": ((0, 0, .5, .5), 300), "bignet": ((.5, 0, 1, .5), 460),
             "log": ((0, .5, .5, 1), 260), "sargassum": ((.5, .5, 1, 1), 240)},
-    # air car book + Puff Racer! (side-view sprites face right)
+    # air car book + Blast Racer! (side-view sprites face right)
     "sheet_cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
                    [("zip", 0, 0, 360), ("dash", 1, 0, 360), ("rio", 2, 0, 300),
                     ("drone", 0, 1, 240), ("pump", 1, 1, 300), ("truck", 2, 1, 420)]},

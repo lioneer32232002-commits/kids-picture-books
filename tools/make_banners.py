@@ -30,8 +30,8 @@ JOBS = [
     ("ridecurrent", "square", "ridecurrent-square", (1080, 1080)),
     ("aircar", "wide", "aircar-fb", (1200, 630)),
     ("aircar", "square", "aircar-square", (1080, 1080)),
-    ("puffracer", "wide", "puffracer-fb", (1200, 630)),
-    ("puffracer", "square", "puffracer-square", (1080, 1080)),
+    ("blastracer", "wide", "blastracer-fb", (1200, 630)),
+    ("blastracer", "square", "blastracer-square", (1080, 1080)),
 ]
 
 

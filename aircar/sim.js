@@ -1,11 +1,11 @@
-/* Puff Racer! physics + tracks (no drawing; shared by the game and the balance bot).
+/* Blast Racer! physics + tracks (no drawing; shared by the game and the balance bot).
    The car is a point that either rides a track surface (s = distance along it) or flies.
    Real ideas inside, kept simple:
    - Hop and Zoom push air out one way, so the car goes the other way. They use up the air tank.
    - Stick is a fan that sucks air from under the car, so the air around presses it onto the road:
      it can hold the car upside down, but while it's on the car can't hop.
    - On a loop the road only pushes back if the car is fast enough (or sticking). Otherwise it falls.
-   - A puff of air downward just before touching down makes a soft landing. */
+   - A blast of air downward just before touching down makes a soft landing. */
 (function (root) {
   "use strict";
   const DS = 6;                 // track point spacing (px of arc length)
@@ -342,7 +342,7 @@
 
   /* ================================================================ LEVELS */
   const LEVELS = [
-    { name: "First Puffs", btn: "h", tip: "Tap ⬆ HOP. Action: air blasts down. Reaction: Zip jumps up! Hop over the cones.",
+    { name: "First Blasts", btn: "h", tip: "Tap ⬆ HOP. Action: air blasts down. Reaction: Zip jumps up! Hop over the cones.",
       fact: "Action and reaction: Zip pushes air down, and the air pushes Zip up. That's how it hops!", dash: 1.18,
       build: b => b.flat(900, "bolt").cones(3).flat(500, "bubble").gap(170).cones(2, 520).flat(500, "bolt").gap(200).cones(2).finish() },
     { name: "Hop the Trucks", btn: "h", tip: "Big trucks ahead! Tap HOP, then keep holding it to fly higher.",
@@ -363,7 +363,7 @@
     { name: "Spiral Mountain", btn: "hzs", tip: "A spiral is loop after loop. Keep holding STICK all the way through!",
       fact: "Inside a loop, the road pushes on the car. That push is what keeps it going around.", dash: 1.08,
       build: b => b.flat(800, "bolt").spiral(150, 2).drop(260).twist(900).station().spiral(150, 3).gap(240).hill(700, 18, "bolt").ceiling(900).finish() },
-    { name: "Grand Puff Prix", btn: "hzs", tip: "Everything at once! Watch your 💨 air, and grab bubbles and pumps.",
+    { name: "Grand Blast Prix", btn: "hzs", tip: "Everything at once! Watch your 💨 air, and grab bubbles and pumps.",
       fact: "The real car's tanks hold about 600 liters of squeezed air. When it runs out, it has to be filled up again.", dash: 1.06,
       build: b => b.flat(700, "bolt").cones(2).loop(150).truck().station().ceiling(1000).twist(900).gap(260).spiral(150, 2).station().drop(320).truck().loop(160).ceiling(1100).finish() },
   ];
