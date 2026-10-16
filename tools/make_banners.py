@@ -12,7 +12,8 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME = next((c for c in [r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"] if Path(c).exists()), "chrome")
 OUT = ROOT / "banners"
 JOBS = [
     ("dino", "wide", "dinosaurs-fb", (1200, 630)),
@@ -27,6 +28,10 @@ JOBS = [
     ("currents", "square", "currents-square", (1080, 1080)),
     ("ridecurrent", "wide", "ridecurrent-fb", (1200, 630)),
     ("ridecurrent", "square", "ridecurrent-square", (1080, 1080)),
+    ("aircar", "wide", "aircar-fb", (1200, 630)),
+    ("aircar", "square", "aircar-square", (1080, 1080)),
+    ("puffracer", "wide", "puffracer-fb", (1200, 630)),
+    ("puffracer", "square", "puffracer-square", (1080, 1080)),
 ]
 
 

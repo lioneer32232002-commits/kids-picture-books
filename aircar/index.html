@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Car That Puffs Air: How Tesla's New Roadster Hops, Flips and Lands | Picture Book + Game</title>
+<meta name="description" content="How can a car hop over a truck, drive upside down and land softly? Learn the simple science of air power behind Tesla's new Roadster with Rio and Zip, then race in Puff Racer! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Car That Puffs Air 🏎️💨 How Tesla's new Roadster hops and lands: picture book + game">
+<meta property="og:description" content="Push air down, go up! Learn the air science behind Tesla's new Roadster with Rio and Zip, then race in Puff Racer! For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/aircar-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/aircar/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #ff8a3d; --accent-4: #4f86f7;
+    --bg: radial-gradient(circle at 12% 8%, #dff3ff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #efe6ff 0, transparent 45%), #f2f7ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  /* page 3: nozzles */
+  .zipbox { position: absolute; left: 50%; top: 62%; width: 30%; transform: translate(-50%, -50%); transition: transform .55s cubic-bezier(.2,.9,.3,1.2); z-index: 2; }
+  .zipbox img { width: 100%; display: block; filter: drop-shadow(0 8px 6px rgba(0,0,0,.22)); }
+  .noz { position: absolute; width: 17%; aspect-ratio: 1; border-radius: 50%; border: 4px solid #fff; background: rgba(79,134,247,.85); color: #fff; font: 800 clamp(12px, 1.8vw, 20px) "Baloo 2", sans-serif;
+    transform: translate(-50%, -50%); cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.2); animation: pulse 1.6s ease-in-out infinite; display: grid; place-items: center; padding: 0; }
+  @keyframes pulse { 50% { transform: translate(-50%, -50%) scale(1.12); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; }
+  /* page 5: soft landing mini-game */
+  .dropzip { position: absolute; left: 50%; width: 22%; transform: translate(-50%, -100%); z-index: 2; top: 36%; }
+  .dropzip img { width: 100%; display: block; filter: drop-shadow(0 8px 6px rgba(0,0,0,.22)); }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 10px; right: 3%; bottom: 5%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 10px 22px; color: #fff; font: 800 clamp(15px, 2.2vw, 26px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.drop { background: #9b6cf2; } .bigbtn.puff { background: #3fa9f5; }
+  .bigbtn[disabled] { opacity: .45; }
+  /* page 7: race to 100 km/h */
+  .race { position: absolute; left: 3%; right: 3%; bottom: 6%; z-index: 4; background: rgba(255,255,255,.93); border-radius: 18px; padding: 8px 14px; font-weight: 800; font-size: clamp(12px, 1.7vw, 19px); }
+  .lane { display: grid; grid-template-columns: 9em 1fr 4.5em; align-items: center; gap: 8px; margin: 4px 0; }
+  .track { height: 16px; background: #e8e3f1; border-radius: 8px; overflow: hidden; }
+  .track i { display: block; height: 100%; width: 0; border-radius: 8px; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #ff8a3d; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #d16a24; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#bfe6fb, #e8f7ff 70%, #9fd98a 70%); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🏎️</span>The Car That Puffs Air</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Rio cheers on a sunny race track while Zip, a chubby mint-green toy race car with a friendly face, hops into the air on a puff of white air."><div class="layer"></div></div>
+      <div class="text">
+        <h1>The Car That Puffs Air</h1>
+        <p>On October 15, 2026, the car company <b>Tesla</b> showed a new sports car called the <b>Roadster</b>. It could hop over trucks, flip in the air, and drive <span class="hl">upside down</span>. How? By pushing <span class="hl">air</span>!</p>
+        <p>This is Rio, and this is Zip, Rio's little race car. Zip can blast air too. Let's find out how it works!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 SQUEEZED AIR -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="In a cozy workshop, Rio holds a big pink balloon. Zip has a little window in its side showing round blue air tanks inside."><div class="layer"></div></div>
+      <div class="text">
+        <p>What is inside Zip? Strong tanks full of <b>squeezed air</b>. When you squeeze lots of air into a small tank, the air really, really wants to rush out!</p>
+        <p>A balloon is the same. Blow it up and let it go. <b>Whoosh!</b> It zooms all around the room. 👆 Tap the balloon!</p>
+        <span class="fact">🫙 Tesla says the real car's tanks hold about <b>600 liters</b> of squeezed air. That much space would fill about three bathtubs!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 PUSH ONE WAY, GO THE OTHER -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="noz"><img class="art" src="img/p03.webp" alt="A bright, empty garage floor with tools on the walls.">
+        <div class="readout" id="nozOut">👆 Tap a blue button to puff!</div>
+        <div class="zipbox" id="zipbox"><img src="img/zip.webp" alt="Zip"></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Zip has little holes called <b>nozzles</b>. Here is the big secret, called <b>action and reaction</b>: when Zip pushes air one way (<b>action</b>), <span class="hl">the air pushes Zip back the other way</span> (<b>reaction</b>).</p>
+        <p>Air out the back? Zip goes forward. Air out the bottom? Zip goes up! 👆 Tap the buttons and watch where Zip goes.</p>
+        <span class="fact">🔬 Every push has a push back, just as strong, the other way. A scientist named <b>Isaac Newton</b> wrote this down more than 300 years ago. Rockets use it, a swimmer pushing water back uses it, and so do the real Roadster's thrusters!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 HOP -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="Zip hops high over a big blue truck, with a puff of white air blowing down from underneath. Rio cheers with both arms up."><div class="layer"></div></div>
+      <div class="text">
+        <p>To jump, Zip blasts a jet of air <b>down</b>, hard and fast. <b>Action:</b> the air goes down. <b>Reaction:</b> the air pushes Zip <span class="big">up!</span></p>
+        <p>At the show, the real car hopped over a pickup truck and even a giant <b>semi truck</b>, one after another!</p>
+        <span class="fact">🚀 These puffers are called <b>cold-gas thrusters</b>. Spaceships use thrusters like them to turn and steer in space.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 SOFT LANDING -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="land"><img class="art" src="img/p05.webp" alt="A soft green landing pad on a sunny field, with Rio watching from the side.">
+        <div class="readout" id="landOut">Press <b>Drop</b>, then <b>Puff!</b> just before Zip lands.</div>
+        <div class="dropzip" id="dropzip"><img src="img/zip.webp" alt="Zip"></div>
+        <div class="ctl" data-noread><button class="bigbtn drop" id="dropBtn">⬇ Drop</button><button class="bigbtn puff" id="puffBtn" disabled>💨 Puff!</button></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>What goes up must come down. Falling fast makes a big <b>BONK!</b></p>
+        <p>So just before the wheels touch the ground, Zip blasts air down again. Action and reaction: the air pushes Zip up, and that slows the fall. <span class="hl">Soft landing!</span> 👆 Can you do it?</p>
+        <span class="fact">🚀 Some rockets land the same way! As they come down, they push fire and gas toward the ground to slow down, then touch down gently.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 UPSIDE DOWN -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="Zip drives upside down along the underside of a curved purple ramp, with little swirls of air being pulled in underneath it. Rio watches and presses a suction cup toy onto a window."><div class="layer"></div></div>
+      <div class="text">
+        <p>Driving upside down needs a different trick: <b>air pressure</b>. Zip has a <b>fan</b> underneath. It sucks the air out from under the car. Then the air all around pushes Zip onto the road, so hard that it can drive <span class="hl">upside down</span>!</p>
+        <p>It's like a suction cup: push the air out, and it sticks to the window.</p>
+        <span class="fact">🌀 Tesla says the real car's fans can hold it upside down, even when it's standing still. A few race cars have used fans like this to stick to the track in fast turns.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 ZOOM -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="zoom"><img class="art" src="img/p07.webp" alt="Zip zooms down a race track with a long puff of air streaming out of the back, next to a friendly cheetah running fast.">
+        <div class="race" data-noread>
+          <div class="lane"><span>🏎️ Roadster*</span><div class="track"><i style="background:#5fd6a8"></i></div><span class="tm">0.6 s</span></div>
+          <div class="lane"><span>🐆 Cheetah</span><div class="track"><i style="background:#ffc44d"></i></div><span class="tm">2.5 s</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px"><span style="font-size:.8em;color:var(--ink-soft)">Roadster: stopped ➜ about 100 km/h. Cheetah: stopped ➜ 72 km/h. *What Tesla says.</span><button class="bigbtn puff" id="raceBtn" style="font-size:clamp(13px,1.8vw,20px);padding:4px 16px">🏁 Go!</button></div>
+        </div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Now Zip blasts air out the <b>back</b>, really hard. <b>Action:</b> the air shoots back. <b>Reaction:</b> Zip zooms <span class="big">forward!</span></p>
+        <p>Tesla says its fastest Roadster can go from standing still to about 100 km/h in less than <b>0.6 seconds</b>. A cheetah, the fastest runner on land, needs about 2.5 seconds just to reach 72 km/h. 👆 Press <b>Go!</b></p>
+        <span class="fact">🛞 Tires can only grip the road so much. Push too hard and they just spin. Thrusters push on the air instead, so they don't need the tires to grip.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 IS IT REAL? -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p08.webp" alt="At sunset, Zip rests next to a sky-blue air pump with its hose plugged in, while Rio holds a little wrench and smiles."><div class="layer"></div></div>
+      <div class="text">
+        <p>So is it a flying car? <b>Not really.</b> The squeezed air runs out after a few hops, and then the tanks have to be filled up again. It can hop and flip, but it can't fly like an airplane.</p>
+        <p>Tesla says it will start making the Roadster in <b>2028</b>. Lots of people want to see if it is safe on real roads first. Tanks of squeezed air are very strong, so only trained grown-ups work with them.</p>
+        <span class="fact">🎈 Try it at home with a grown-up: tape a blown-up balloon to a straw, thread a long string through the straw, and let go. Watch your <b>balloon rocket</b> zoom along the string!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HOW TO PLAY -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:22%;top:58%;width:22%" data-say="I'm Zip! Use my three buttons to puff air. Let's race Dash!"><img src="img/zip.webp" alt="Zip"></button>
+          <button class="actor idle" style="left:50%;top:60%;width:20%;animation-delay:.4s" data-say="I'm Dash! I know the fastest way around every track. Can you beat me?"><img src="img/dash.webp" alt="Dash"></button>
+          <button class="actor idle" style="left:79%;top:52%;width:13%;animation-delay:.8s" data-say="Grab the 🔩 bolts! Bring them to my garage, and I'll make Zip even better."><img src="img/rio.webp" alt="Rio"></button>
+          <button class="actor idle" style="left:50%;top:20%;width:14%;animation-delay:1.2s" data-say="If Zip falls in the water, don't worry! I'll fly it back to the track."><img src="img/drone.webp" alt="Helper drone"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Puff Racer!</h2>
+        <ol class="steps">
+          <li><b>⬆ HOP</b> blasts air down, and the reaction pushes Zip up! Hold it again just before landing for a <b>smooth landing</b>.</li>
+          <li><b>➡ ZOOM</b> blasts air out the back, and the reaction pushes Zip forward.</li>
+          <li><b>🌀 STICK</b> turns on the fan, so Zip stays on loops and upside-down roads.</li>
+          <li>Every blast uses <b>💨 air</b>. Grab bubbles and AIR pumps to fill up.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Puff Racer!</a>
+        <span class="fact" data-noread>8 tracks with loops, corkscrews and an upside-down road, plus <b>Endless Rally</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 QUIZ + SOURCES -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Rio and Zip on a sunny race track."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know How Air Can Push a Car!</h2>
+        <p><b>Action and reaction:</b> push air down, go up. Push air back, go forward. <b>Air pressure:</b> suck the air out from under, and stick to the road!</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Action and reaction! Zip blasts air DOWN. Which way does Zip go?</div>
+          <div class="choice-row"><button class="choice" data-ok>⬆️ Up</button><button class="choice">⬇️ Down</button><button class="choice">↩️ Backward</button></div>
+          <div class="q">2. What does the fan under the car do?</div>
+          <div class="choice-row"><button class="choice">🎵 Plays music</button><button class="choice" data-ok>🌀 Sucks air out so the car sticks</button><button class="choice">❄️ Keeps Rio cool</button></div>
+          <div class="q">3. How does Zip make a soft landing?</div>
+          <div class="choice-row"><button class="choice">🙈 Closes its eyes</button><button class="choice">🏎️ Goes faster</button><button class="choice" data-ok>💨 Puffs air down just before landing</button></div>
+        </div>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://techcrunch.com/2026/10/15/tesla-reveals-spacex-powered-roadster-that-flies-and-falls-with-style/" target="_blank" rel="noopener">TechCrunch, the Roadster show (thrusters, 600 liters of air, the upside-down ramp)</a> ·
+          <a href="https://electrek.co/2026/10/15/tesla-unveils-cyberfied-new-roadster-kickflip/" target="_blank" rel="noopener">Electrek, fans, thrusters and 0-60 times</a> ·
+          <a href="https://www.cnn.com/2026/10/15/business/tesla-unveils-what-it-says-is-a-flying-car" target="_blank" rel="noopener">CNN, hopping over trucks, and 2028</a> ·
+          <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/newtons-laws-of-motion/" target="_blank" rel="noopener">NASA Glenn, Newton's laws of motion</a> ·
+          <a href="https://www.spacex.com/vehicles/falcon-9/" target="_blank" rel="noopener">SpaceX, Falcon 9 booster landings</a> ·
+          <a href="https://nationalzoo.si.edu/animals/cheetah" target="_blank" rel="noopener">Smithsonian's National Zoo, cheetah (0 to 72 km/h in 2.5 seconds)</a><br>
+          Zip and Dash are pretend cars, and the real Roadster looks different. The Roadster's speed and tank numbers are what Tesla says; other people haven't tested them yet.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Puff Racer!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  // a puff of air: little white clouds flying in direction (dx, dy)
+  const puffAt = (st, x, y, dx, dy, n) => {
+    for (let i = 0; i < 3; i++) setTimeout(() => F.jet(st, x, y, dx, dy, (n || 6) * 4), i * 60);
+  };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .3); build(1, st => {
+    say(st, 50, 28, 18, 26, "Zip", "<b>Hi, I'm Zip!</b>I can puff air to hop, zoom and stick. Want to see?", S.puff, 4, 6);
+    say(st, 87, 70, 12, 32, "Rio", "<b>I'm Rio!</b>I love cars. Today we're going to learn how air can push a car.", S.chirp, 98, 6, true);
+    say(st, 55, 66, 12, 18, "Jet of air", "<b>Action and reaction!</b>See the jet under Zip? Air blasts down, so the air pushes Zip up!", S.whoosh, 4, 50);
+  }); });
+
+  /* -------- 2 balloon -------- */
+  B.on(2, () => build(2, st => {
+    B.hot(st, 34, 20, 16, 28, "Balloon", () => {
+      S.whoosh(); S.puff(); const [w, h] = B.px(st, 100, 100);
+      const path = [[34, 20], [55, 12], [75, 30], [60, 50], [85, 18], [45, 10], [22, 36]];
+      path.forEach((p, i) => setTimeout(() => { const q = path[Math.max(0, i - 1)]; F.jet(st, w * p[0] / 100, h * p[1] / 100, q[0] - p[0] || -1, q[1] - p[1], 14); }, i * 110));
+      B.bubble(st, 4, 6, "<b>Whoosh!</b>The air rushes out the back of the balloon, so the balloon zooms the other way!");
+    });
+    say(st, 68, 68, 10, 16, "Zip's tanks", "<b>Zip's tanks</b> are like super-strong balloons. They hold the air until Zip needs a puff.", S.ding, 98, 6, true);
+    say(st, 24, 58, 12, 30, "Rio", "<b>Rio:</b> If I squeeze air in, it wants to push its way out!", S.chirp, 4, 50);
+  }));
+
+  /* -------- 3 nozzles -------- */
+  const NOZ = [
+    { label: "Back", x: 23, y: 58, out: [-1, 0], move: [1, 0], say: "<b>Action:</b> air goes out the back ⬅. <b>Reaction:</b> Zip goes forward ➡!" },
+    { label: "Bottom", x: 50, y: 88, out: [0, 1], move: [0, -1], say: "<b>Action:</b> air goes down ⬇. <b>Reaction:</b> Zip goes up ⬆!" },
+    { label: "Front", x: 77, y: 58, out: [1, 0], move: [-1, 0], say: "<b>Action:</b> air goes out the front ➡. <b>Reaction:</b> Zip goes backward ⬅!" },
+    { label: "Top", x: 50, y: 30, out: [0, -1], move: [0, 1], say: "<b>Action:</b> air goes up ⬆. <b>Reaction:</b> Zip gets pushed down ⬇ onto the floor!" },
+  ];
+  B.on(3, () => build(3, st => {
+    const zb = $("#zipbox"), out = $("#nozOut");
+    NOZ.forEach(n => {
+      const b = document.createElement("button");
+      b.className = "noz"; b.style.left = n.x + "%"; b.style.top = n.y + "%"; b.style.width = "7%"; b.textContent = "💨";
+      b.setAttribute("aria-label", "Puff air out the " + n.label);
+      b.onclick = e => {
+        e.stopPropagation(); S.puff();
+        const [px, py] = B.px(st, n.x, n.y); puffAt(st, px, py, n.out[0], n.out[1], 7);
+        zb.style.transform = "translate(calc(-50% + " + n.move[0] * 70 + "%), calc(-50% + " + n.move[1] * 45 + "%))" + (n.move[1] > 0 ? " scaleY(.92)" : "");
+        setTimeout(() => { zb.style.transform = ""; }, 700);
+        out.innerHTML = n.say; B.speak(out.innerText);
+      };
+      st.appendChild(b);
+    });
+  }));
+
+  /* -------- 4 hop -------- */
+  B.on(4, () => { const st = stageOf(4); build(4, st => {
+    say(st, 50, 28, 16, 24, "Zip", "<b>Zip:</b> Wheee! Air goes down, I go up!", S.puff, 4, 6);
+    say(st, 47, 78, 22, 18, "Truck", "<b>A big truck!</b>The real Roadster hopped over five cars and trucks at the show.", S.ding, 98, 6, true);
+    say(st, 88, 60, 12, 32, "Rio", "<b>Rio:</b> Wow! It's like a jumping bean!", S.chirp, 98, 40, true);
+    say(st, 58, 55, 10, 14, "Jet of air", "<b>Whoosh!</b>A powerful jet of air blasts straight down.", S.whoosh, 4, 50);
+  }); });
+
+  /* -------- 5 soft landing -------- */
+  let fall = null;
+  B.on(5, () => build(5, st => {
+    const z = $("#dropzip"), out = $("#landOut"), drop = $("#dropBtn"), puff = $("#puffBtn");
+    const GROUND = 81;
+    const reset = () => { z.style.top = "36%"; z.style.transform = "translate(-50%, -100%)"; };
+    drop.onclick = () => {
+      if (fall) return;
+      reset(); S.whoosh(); drop.disabled = true; puff.disabled = false;
+      out.innerHTML = "Falling... get ready to <b>Puff!</b>";
+      fall = { y: 36, v: 0, puffed: 0, t: performance.now() };
+      const tick = now => {
+        if (!fall) return;
+        const dt = Math.min(0.05, (now - fall.t) / 1000); fall.t = now;
+        const near = GROUND - fall.y;
+        fall.v += (fall.puffed > 0 ? -150 : 120) * dt; fall.puffed -= dt;
+        fall.v = Math.max(fall.v, 6);
+        fall.y += fall.v * dt;
+        z.style.top = fall.y + "%";
+        if (fall.y >= GROUND) {
+          const soft = fall.v < 40, [x, y] = B.px(st, 50, GROUND);
+          z.style.top = GROUND + "%";
+          if (soft) { S.yay(); F.sparkles(st, x, y, 30); out.innerHTML = "✨ <b>Soft landing!</b> Great puffing!"; }
+          else { S.oops(); F.dust(st, x, y, 24); F.shake(st); z.style.transform = "translate(-50%, -100%) scaleY(.82)"; out.innerHTML = "💥 <b>BONK!</b> Try pressing Puff a little earlier."; }
+          B.speak(out.innerText);
+          fall = null; drop.disabled = false; puff.disabled = true; drop.textContent = "🔁 Again";
+          return;
+        }
+        if (near < 12 && near > 0 && fall.puffed <= 0 && !fall.hinted) { fall.hinted = true; }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    puff.onclick = () => {
+      if (!fall) return;
+      S.puff(); fall.puffed = 0.35;
+      const [x, y] = B.px(st, 50, fall.y); puffAt(st, x, y, 0, 1, 6);
+    };
+  }), () => { fall = null; });
+
+  /* -------- 6 upside down -------- */
+  B.on(6, () => { const st = stageOf(6); build(6, st => {
+    say(st, 62, 32, 20, 24, "Zip upside down", "<b>Zip:</b> Look, I'm upside down! My fan pulls the air out from under me.", S.hum, 4, 50);
+    say(st, 7, 36, 8, 14, "Suction cup", "<b>A suction cup</b> sticks when you push the air out from under it. The air outside pushes it onto the window!", S.pop, 98, 6, true);
+    say(st, 22, 62, 12, 30, "Rio", "<b>Rio:</b> It's like Zip is a giant suction cup!", S.chirp, 4, 6);
+  }); });
+
+  /* -------- 7 race -------- */
+  B.on(7, () => build(7, st => {
+    const bars = st.querySelectorAll(".track i"), T = [0.6, 2.5];
+    $("#raceBtn").onclick = () => {
+      S.whoosh();
+      bars.forEach((b, i) => { b.style.transition = "none"; b.style.width = "0"; void b.offsetWidth;
+        b.style.transition = "width " + T[i] + "s linear"; b.style.width = "100%"; });
+      setTimeout(() => { S.ding(); const [x, y] = B.px(st, 90, 72); F.sparkles(st, x, y, 20); }, 600);
+    };
+    say(st, 53, 50, 14, 20, "Zip zooming", "<b>Action and reaction!</b>Air shoots out the back, so the air pushes Zip forward.", S.whoosh, 4, 6);
+    say(st, 29, 50, 14, 20, "Cheetah", "<b>Cheetahs</b> are the fastest runners on land. Zip says hi!", S.roar, 98, 6, true);
+  }));
+
+  /* -------- 8 real? -------- */
+  B.on(8, () => { const st = stageOf(8); F.weather(st, "pollen", .3); build(8, st => {
+    say(st, 59, 50, 10, 30, "Air pump", "<b>Fill her up!</b>The pump squeezes air back into the tanks.", S.hiss, 4, 6);
+    say(st, 18, 68, 18, 22, "Zip", "<b>Zip:</b> Ahh, my tanks are full again. Ready to race!", S.puff, 4, 40);
+    say(st, 84, 64, 10, 30, "Rio", "<b>Rio:</b> Real engineers test their cars again and again to keep everyone safe.", S.chirp, 98, 6, true);
+  }); });
+
+  /* -------- 9 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(9), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(9, () => F.weather(stageOf(9), "pollen", .3));
+
+  /* -------- 10 -------- */
+  B.on(10, () => { const st = stageOf(10); F.weather(st, "pollen", .4); build(10, st => {
+    say(st, 50, 28, 18, 26, "Zip", "<b>Zip:</b> Thanks for learning with me! See you on the race track!", S.yay, 4, 6);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

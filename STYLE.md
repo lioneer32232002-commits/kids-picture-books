@@ -47,6 +47,9 @@
 | 免疫 | Captain T | brave orange cell with a small silver knight helmet and a round shield |
 | 免疫 | Leo | cheerful 6-year-old, short black hair, yellow hoodie |
 | 洋流 | Kai | cheerful 6-year-old Taiwanese kid, short straight black hair, teal-and-white striped swim shirt, red swim shorts, small yellow snorkel mask pushed up on the forehead |
+| 氣動車 | Zip | small chubby mint-green toy race car seen from the side facing right, friendly face on its front (big shiny eyes, little smile), rosy cheeks, round clear bubble windshield, chunky dark tires, three small round silver air nozzles |
+| 氣動車 | Dash | the same kind of chubby toy race car but bright orange with white racing stripes, friendly face（遊戲裡的對手，不會被撞壞） |
+| 氣動車 | Rio | cheerful 6-year-old kid, short messy dark-brown hair, orange racing jacket with a white star, blue jeans, red sneakers |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -55,6 +58,9 @@
 - **角色會漂移**：Nova 曾被畫成長髮，要求「exactly like the earlier pages: SHORT curly brown hair」重畫。
 - **會被打掉的東西不能有臉**：太空垃圾、隕石、垃圾球魔王都要求 `NO faces, NO eyes`。病毒是例外（塔防裡是擬人角色，但書中註明「真的病毒沒有臉」）。
 - Gemini 的 Pro 模型出圖常失敗，改用 Flash。
+- **噴氣要畫得酷**：只寫 puff of air 會畫成一團圓圓的雲，使用者說像放屁。提示詞要寫「a sharp, powerful jet of glowing blue-white air ... like a rocket thruster: crisp straight streaks, speed lines and a bright shimmering cyan glow, NOT a round puffy cloud」。遊戲裡的噴氣也用青色細長光束，不用白色圓點。
+- **吸氣不要畫成噴氣**：要明寫 air is SUCKED IN / pulled out of the gap，並寫清楚風扇在車和路面之間，否則 Gemini 會畫成往下噴。
+- Gemini 近期的圖常帶米色紙框，進 `process_images.py` 前要先裁掉（氣動車書左右各裁約 4.6%、上 4.8%）。
 - **提示詞不要有換行**：在輸入框打 `
 ` 會直接送出前半段，Gemini 會照半段提示亂畫（曾畫出熊和兔子野餐）。整段寫成一行。
 - **地圖不要叫 Gemini 畫**：地理位置一定會錯。洋流書的地圖是 `currents/geo.js` 用經緯度手動簡化海岸線，再用 SVG／Phaser 畫，洋流箭頭才對得準。
@@ -109,6 +115,7 @@ Chrome 會擋 Gemini 連續自動下載：
   - 8 關＋星等評分，進度存在本機。
   - 永久升級：塔防的記憶細胞、射擊遊戲的火箭機庫。
   - 無限模式、中大型敵人（破損隕石）、魔王。
+- **原理要對到真實的東西**：氣動車書照特斯拉 Roadster 的兩個原理走：推進器＝作用力與反作用力（書和遊戲都用 Action / Reaction 這組詞），吸地風扇＝氣壓（明寫這是另一個原理）。廠商說的數字（0.6 秒、600 公升）一律寫「Tesla says」。
 - **教育連結**：遊戲機制對應真實科學，例如免疫記憶給傷害加成、吃彩虹蔬果觸發彩虹力量、垃圾食物會讓英雄血糖崩盤、順著洋流游超快而逆流幾乎游不動、冬天和夏天台灣海峽的流向相反。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。

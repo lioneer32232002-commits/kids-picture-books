@@ -13,7 +13,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -54,6 +54,11 @@ SHEETS: dict = {
              ("bag", 0, 1, 160), ("bottle", 1, 1, 140), ("net", 2, 1, 220)]},
     "big": {"boat": ((0, 0, .5, .5), 300), "bignet": ((.5, 0, 1, .5), 460),
             "log": ((0, .5, .5, 1), 260), "sargassum": ((.5, .5, 1, 1), 240)},
+    # air car book + Puff Racer! (side-view sprites face right)
+    "sheet_cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                   [("zip", 0, 0, 360), ("dash", 1, 0, 360), ("rio", 2, 0, 300),
+                    ("drone", 0, 1, 240), ("pump", 1, 1, 300), ("truck", 2, 1, 420)]},
+    "cone": {"cone": ((0, 0, .5, 1), 160)},
     "islands": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), 440) for n, c, r in
                 [("is_lanyu", 0, 0), ("is_green", 1, 0), ("is_turtle", 2, 0),
                  ("is_penghu", 0, 1), ("is_harbor", 1, 1), ("is_palm", 2, 1)]},

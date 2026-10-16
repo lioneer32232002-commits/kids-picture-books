@@ -68,6 +68,9 @@
     snore()  { noise(0.9, 300, 120, 0.15, "bandpass"); noise(0.7, 600, 900, 0.08, "bandpass", 1.1); },
     tick()   { tone("square", 1800, 0, 0.03, 0.06); },
     sparkle(){ [1568, 2093, 2637].forEach((f, i) => tone("sine", f, 0, 0.3, 0.08, i * 0.07)); },
+    puff()   { noise(0.32, 2500, 7000, 0.16, "bandpass"); tone("sine", 700, 1400, 0.18, 0.05); },   // air jet: a rising whoosh
+    hiss()   { noise(0.16, 5200, 2400, 0.07, "highpass"); },
+    hum()    { tone("sine", 110, 140, 0.4, 0.12); tone("triangle", 220, 260, 0.3, 0.05); },
   };
 
   /* ================= PARTICLES ================= */
@@ -169,6 +172,15 @@
         x: x + rnd(-15, 15), y, vx: rnd(-2.5, 2.5), vy: rnd(-3, -0.5), r: rnd(3, 8), life: rnd(25, 45),
         grav: 0.12, color: "#b08a5c", alpha: 0.8
       });
+    },
+    /** air jet: a fast, glowing cyan streak shooting in direction (dx, dy) */
+    jet(stage, x, y, dx, dy, n) {
+      const st = fx(stage), m = Math.hypot(dx, dy) || 1, ux = dx / m, uy = dy / m;
+      for (let i = 0; i < (n || 26); i++) {
+        const s = rnd(9, 20), side = rnd(-1, 1) * 2;
+        add(st, { x: x - uy * side * 3, y: y + ux * side * 3, vx: ux * s - uy * side * .3, vy: uy * s + ux * side * .3, r: rnd(2, 4.5), life: rnd(14, 26),
+          drag: 0.93, shrink: 0.97, color: i % 3 ? "#9ff0ff" : "#ffffff", glow: true });
+      }
     },
     hearts(stage, x, y) {
       const st = fx(stage);
