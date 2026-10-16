@@ -206,7 +206,7 @@
       this.drone = fit(this.add.image(0, -500, "drone"), 150).setDepth(9).setVisible(false);
       this.fan = this.add.graphics().setDepth(6);
       this.cam = this.cameras.main;
-      this.cam.scrollX = -W * 0.3; this.cam.scrollY = T.base - H * 0.62;
+      this.cam.scrollX = -W * 0.3; this.cam.scrollY = T.base - H * 0.74;
       this.hud();
       this.keys = this.input.keyboard.addKeys({ up: "UP", sp: "SPACE", w: "W", right: "RIGHT", d: "D", down: "DOWN", s: "S", sh: "SHIFT" });
       this.input.addPointer(2);
@@ -444,6 +444,7 @@
           case "splash": this.pop(e.x, e.y - 40, "Splash!", "#bfefff"); this.snd("splash"); this.puff(e.x, e.y, 0, -420, 14, 0xbfe9ff, 0.5); this.rescue();
             this.toast(sim.lastCeil ? "Splash! Hold 🌀 STICK all the way along the upside-down road." : "Splash! Tap ⬆ HOP just before the edge to jump over the water.", 3200); break;
           case "drop": this.drone.setVisible(false); this.snd("pop"); break;
+          case "high": if (this.toastT <= 0 || !this.highToast) { this.highToast = true; this.toast("Whoa, that's high enough! Let go of ⬆ HOP to come back down.", 2600); } break;
           case "finish": break;
         }
       }
@@ -503,9 +504,15 @@
         this.dashX = this.clock > this.dashT ? T.finishX : g[0];
       }
       // camera: Zip a third of the way across
-      const tx = cx - W * 0.33, ty = clamp(cy - H * 0.55, T.minY - 260, T.floorY - H + 100);
+      // camera: Zip a third of the way across; the road it drives on sits low (74% down) so there's lots of sky,
+      // and if Zip flies high the camera rises with it, so it never leaves the screen
+      const gy = sim.mode === "ground" ? sim.y : (sim.mode === "air" && T.below(sim.x, sim.y) < 900 ? sim.y + T.below(sim.x, sim.y) : cy);
+      let ty = gy - H * 0.74;
+      ty = Math.min(ty, cy - 150);
+      ty = Math.min(ty, T.floorY - H + 100);
+      const tx = cx - W * 0.33;
       this.cam.scrollX += (tx - this.cam.scrollX) * Math.min(1, dt * 8);
-      this.cam.scrollY += (ty - this.cam.scrollY) * Math.min(1, dt * 4);
+      this.cam.scrollY += (ty - this.cam.scrollY) * Math.min(1, dt * (cy - this.cam.scrollY < 170 ? 10 : 4));
       this.bg.tilePositionX = this.cam.scrollX * 0.2 / this.bg.tileScaleX;
       for (const [k, g] of this.chunkList) g.setVisible(Math.abs((k + 0.5) * 1600 - (this.cam.scrollX + W / 2)) < 1600 + W);
       // hints: wiggle the button that helps right now

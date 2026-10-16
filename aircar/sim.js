@@ -19,6 +19,7 @@
     STICK: 2500,                // suction (more than gravity, so it holds the car upside down)
     MU: 1.1, ENG: 2600,         // tire grip and strongest wheel push
     SOFT: 430,                  // landing faster than this = Bonk!
+    MAXALT: 460,                // above this height the hop jets fade out, so Zip can't fly off the screen
     TANK: 100, HOP_COST: 10, HOLD_COST: 32, ZOOM_COST: 34, PUMP: 5,   // PUMP: Zip's little pump refills the tank while driving (per s)
   };
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -74,7 +75,7 @@
       return this.flat(380);
     }
     truck() {
-      this.flat(640); this.item("truck", 120, -55, { r: 70, w: 210, h: 110 }); this.cue("hop", this.x - 90, { hold: 0.45 });
+      this.flat(640); this.item("truck", 120, -55, { r: 70, w: 210, h: 110 }); this.cue("hop", this.x - 90, { hold: 0.3 });
       for (let i = 0; i < 4; i++) this.item("bolt", -10 + i * 80, -240 - Math.sin(i / 3 * Math.PI) * 30);
       return this.flat(560);
     }
@@ -264,7 +265,7 @@
     }
     takeoff(p, vx, vy) {
       this.mode = "air"; this.vx = vx; this.vy = vy; this.x = p.x; this.y = p.y; this.ang = p.a; this.roll = p.phi;
-      this.airT = 0; this.ignore = 0.06; this.lastSi = this.si; this.vyMax = 0;
+      this.airT = 0; this.ignore = 0.06; this.lastSi = this.si; this.vyMax = 0; this.highSaid = false;
       if (p.tag === "loop") this.whoops();
     }
     whoops() { this.mode = "rescue"; this.rescueT = 1.3; this.rescues++; this.emit("whoops"); }
@@ -275,8 +276,11 @@
       let ax = 0, ay = C.G;
       const cr = Math.cos(this.roll);
       if (inp.hop && this.use(C.HOLD_COST * dt)) {
-        const k = C.HOP_T * this.power * Math.max(0, cr * Math.cos(this.ang));
+        const alt = T.below(this.x, this.y), fade = alt === Infinity ? 1 : clamp((C.MAXALT - alt) / 140, 0, 1);
+        const k = C.HOP_T * this.power * Math.max(0, cr * Math.cos(this.ang)) * fade;
         ay -= k; this.puffing.hop = true;
+        if (fade < 0.4 && !this.highSaid) { this.highSaid = true; this.emit("high"); }
+        if (this.vy < 0) this.vy *= 1 - (1 - fade) * 6 * dt;   // gently stop climbing near the top
       }
       if (inp.zoom && this.use(C.ZOOM_COST * dt)) { ax += C.ZOOM_A * 0.5 * this.power; this.puffing.zoom = true; }
       // little side thrusters (and the hop puffs) spin the car back to wheels-down
