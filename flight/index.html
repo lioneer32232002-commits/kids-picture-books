@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Do Airplanes Fly? Lift, Thrust and Wings for Kids | Picture Book + Flight Game</title>
+<meta name="description" content="How can a heavy airplane stay up in the sky? Learn the four forces, how wings make lift, and how pilots take off, steer and land with Lin and Poppy the little plane, then fly Poppy from the cockpit in Sky Pilot! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Why Do Airplanes Fly? ✈️ A picture book + a cockpit flight game for kids">
+<meta property="og:description" content="Wings push air down, so the air pushes the wings up! Learn lift, thrust and how pilots land with Lin and Poppy, then fly from a real-style cockpit. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/flight-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/flight/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #4f86f7; --accent-4: #ffb020;
+    --bg: radial-gradient(circle at 12% 8%, #dff3ff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #fff1d6 0, transparent 45%), #f2f7ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 60%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #4f86f7; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.orange { background: #ff8a3d; } .bigbtn.purple { background: #9b6cf2; }
+  .bigbtn[disabled] { opacity: .45; }
+  /* page 3: four forces */
+  .force { --w: clamp(70px, 12vw, 140px); position: absolute; z-index: 3; border: none; background: none; padding: 0; cursor: pointer; transform: translate(-50%, -50%); }
+  .force svg { display: block; overflow: visible; width: var(--w); height: auto; }
+  .force b { position: absolute; left: calc(50% + var(--dx) * (var(--w) / 2 + 2.2em)); top: calc(50% + var(--dy) * (var(--w) / 2 + 0.9em)); transform: translate(-50%, -50%); background: #fff; border-radius: 999px; padding: 2px 12px; font: 800 clamp(12px, 1.7vw, 19px) "Baloo 2", sans-serif; white-space: nowrap; box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+  .force:hover b { transform: translate(-50%, -50%) scale(1.08); }
+  /* page 4: the wing */
+  .wingbg { background: linear-gradient(#a9dcff, #e6f6ff); }
+  #wingsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .slider { position: absolute; left: 3%; right: 3%; bottom: 4%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 18px; padding: 6px 14px; font-weight: 800; font-size: clamp(12px, 1.7vw, 19px); display: flex; gap: 12px; align-items: center; }
+  .slider input { flex: 1; accent-color: #4f86f7; height: 28px; }
+  /* page 5: take-off */
+  .meter { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 18px; padding: 8px 14px; font-weight: 800; font-size: clamp(12px, 1.6vw, 18px); width: min(46%, 380px); }
+  .bar { height: 14px; background: #e8e3f1; border-radius: 8px; overflow: hidden; margin: 3px 0 6px; position: relative; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 8px; transition: width .15s; }
+  .bar u { position: absolute; top: -2px; bottom: -2px; width: 3px; background: #e0535a; }
+  .mover { position: absolute; z-index: 2; transform: translate(-50%, -50%); pointer-events: none; transition: none; }
+  .mover img { width: 100%; display: block; filter: drop-shadow(0 8px 6px rgba(0,0,0,.22)); }
+  /* page 7: controls */
+  .ctlcard { position: absolute; right: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px; width: min(40%, 320px); text-align: center; font-weight: 800; font-size: clamp(11px, 1.5vw, 16px); }
+  .ctlcard .views { display: flex; gap: 6px; align-items: center; justify-content: center; height: clamp(60px, 11vw, 120px); }
+  .ctlcard .views img { width: 46%; transition: transform .5s cubic-bezier(.2,.9,.3,1.2); }
+  .ctlcard .row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+  .ctlcard .bigbtn { font-size: clamp(11px, 1.5vw, 16px); padding: 5px 12px; }
+  /* page 8: landing checklist */
+  .check { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 12px; font-weight: 800; font-size: clamp(12px, 1.6vw, 18px); display: grid; gap: 6px; }
+  .check .bigbtn { text-align: left; font-size: clamp(12px, 1.6vw, 18px); padding: 5px 14px; }
+  /* page 9: how high */
+  .stack { position: absolute; left: 3%; bottom: 5%; z-index: 4; display: flex; align-items: flex-end; gap: 3px; height: 70%; }
+  .stack i { width: clamp(6px, 1.1vw, 12px); background: linear-gradient(#cfe6f0, #7fa7b8); border-radius: 3px 3px 0 0; height: 0; transition: height .25s; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #4f86f7; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #3462c4; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#9fd6ff, #e8f7ff 72%, #9fd98a 72%); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">✈️</span>Why Do Airplanes Fly?</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Lin waves from the bubble cockpit of Poppy, a chubby yellow propeller plane with a friendly face, flying over fields, a little airport and the sea."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Why Do Airplanes Fly?</h1>
+        <p>A big jumbo jet can weigh as much as <b>70 elephants</b>. So how can it float up in the sky, high above the clouds? It's not magic. It's <span class="hl">air</span>!</p>
+        <p>This is Lin, and this is Poppy, Lin's little yellow airplane. Let's find out how Poppy flies!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 AIR IS REAL STUFF -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="On a windy green hill, Lin flies a red and yellow kite. Poppy the yellow plane is parked at the bottom of the hill."><div class="layer"></div></div>
+      <div class="text">
+        <p>You can't see air, but it's <b>real stuff</b>! Air is made of tiny, tiny bits that zoom around and bump into everything.</p>
+        <p>When air moves, it can <span class="hl">push</span>. Feel the wind push on your face? That's air! It pushes Lin's kite way up high. 👆 Tap the kite!</p>
+        <span class="fact">⚖️ Air even has weight. All the air in a classroom weighs about as much as <b>three grown-ups</b>!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 FOUR FORCES -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="forces"><img class="art" src="img/p03.webp" style="transform:scaleX(-1)" alt="Poppy flies level through a clear blue sky with Lin in the cockpit.">
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Four pushes and pulls work on every airplane, like a big tug of war. <b>Weight</b> pulls Poppy down. <b>Lift</b> from the wings pushes up. <b>Thrust</b> from the propeller pushes forward. <b>Drag</b>, the air rubbing past, holds Poppy back.</p>
+        <p>When lift beats weight, Poppy goes <span class="big">up!</span> 👆 Tap each arrow.</p>
+        <span class="fact">🧲 Scientists call these the <b>four forces of flight</b>. Every plane, from a paper plane to a jumbo jet, has all four.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 THE WING'S SECRET -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage wingbg" id="wing">
+        <svg id="wingsvg" viewBox="0 0 1000 560" aria-label="Air flowing around a wing"></svg>
+        <div class="readout" id="wingOut" style="top:auto;bottom:17%">Slide to tilt the wing 👇</div>
+        <div class="slider" data-noread><span>Tilt:</span><input id="tilt" type="range" min="-4" max="22" value="4" aria-label="Tilt the wing"><span id="tiltV" style="min-width:3.2em">4°</span></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Here is a wing, cut in half so we can see its shape. It is rounded on top and a little <b>tilted</b>. As it slices through the air, it bends the air <span class="hl">down</span>.</p>
+        <p>Remember <b>action and reaction</b>? The wing pushes air down, so the air pushes the wing <span class="big">up!</span> That push is called <b>lift</b>. 👆 Slide to tilt the wing. Too much tilt? The air can't follow the wing anymore. That's a <b>stall</b>!</p>
+        <span class="fact">🤔 <b>True or false?</b> "The air over the top has to meet the air under the bottom at the back." <b>False!</b> NASA says the air over the top actually gets to the back <b>first</b>. Air speeds up over the top, so it pushes down on the wing less than the air underneath pushes up.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 TAKE-OFF -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="tko"><img class="art" src="img/p05.webp" alt="A long runway at a sunny airport. Lin and Poppy watch from behind the fence.">
+        <div class="meter" data-noread>
+          <div>🚀 Speed <span id="tkoV">0</span> km/h</div><div class="bar"><i id="tkoS" style="background:#4f86f7"></i></div>
+          <div>⬆️ Lift (the red line = weight)</div><div class="bar"><i id="tkoL" style="background:#5ccf6a"></i><u style="left:70%"></u></div>
+        </div>
+        <div class="mover" id="jet" style="left:16%;top:80%;width:30%"><img src="img/jet.webp" alt=""></div>
+        <div class="ctl" data-noread style="right:auto;left:3%"><button class="bigbtn orange" id="tkoBtn">🛫 Full power!</button></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Wings only make lift when air rushes past them <b>fast</b>. That's why airplanes race down a long runway before they fly.</p>
+        <p>Go twice as fast, and the wings make <span class="hl">four times</span> the lift! A big jet lifts off at about <b>250 to 300 km/h</b>, more than twice as fast as cars on a highway. 👆 Press <b>Full power!</b></p>
+        <span class="fact">🐦 Birds take off the same way. Big birds like swans run along the water, flapping hard, until there's enough air rushing over their wings.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 THRUST -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="Lin holds a spinning paper pinwheel next to Poppy, whose propeller spins and blows swirls of air backward."><div class="layer"></div></div>
+      <div class="text">
+        <p>Where does the speed come from? Poppy's <b>propeller</b> is like a spinning pair of little wings. It grabs air and throws it <b>back</b>. Action and reaction: the air pushes Poppy <span class="big">forward!</span> That's <b>thrust</b>.</p>
+        <p>Big jets have <b>jet engines</b> instead. They suck in air, squeeze it, heat it up and blast it out the back, super fast.</p>
+        <span class="fact">🏊 Drag is the air pushing back. Planes have smooth, pointy, rounded shapes so the air slips past. Swimmers make themselves long and smooth for the same reason!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 STEERING -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="steer"><img class="art" src="img/p07.webp" alt="Lin sits in Poppy's cockpit holding the control stick, with round dials on the panel and blue sky through the window.">
+        <div class="ctlcard" data-noread>
+          <div class="views"><img id="vSide" src="img/poppy.webp" alt="Poppy from the side"><img id="vFront" src="img/poppy_front.webp" alt="Poppy from the front"></div>
+          <div class="row"><button class="bigbtn" data-c="pull">⬇ Pull back</button><button class="bigbtn" data-c="push">⬆ Push</button></div>
+          <div class="row"><button class="bigbtn purple" data-c="left">⬅ Tilt left</button><button class="bigbtn purple" data-c="right">Tilt right ➡</button></div>
+        </div>
+        <div class="readout" id="steerOut" style="top:auto;bottom:5%">👆 Try the stick!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>How does a pilot steer? With the <b>stick</b>! It moves little flaps on the wings and tail that bend the air.</p>
+        <p><b>Pull back</b>: the tail's flap tips up, the tail goes down and the nose goes <span class="hl">up</span>. <b>Tilt the stick</b>: one wing gets more lift, the other less, so the plane leans and <span class="hl">turns</span>, like a bike leaning into a curve. 👆 Try it!</p>
+        <span class="fact">🦶 Pilots also have <b>pedals</b> for their feet. They move the <b>rudder</b>, the flap on the tall tail fin, to swing the nose left or right.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 LANDING -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="land"><img class="art" src="img/p08.webp" alt="A runway at sunset with a windsock and a little control tower. Lin waves two orange marshalling wands from the grass.">
+        <div class="check" data-noread>
+          <button class="bigbtn" data-k="gear">🛞 Gear down</button>
+          <button class="bigbtn" data-k="flaps">🪽 Flaps 30°</button>
+          <button class="bigbtn" data-k="slow">🐢 Slow down</button>
+          <button class="bigbtn orange" id="landBtn" disabled>🛬 Land!</button>
+        </div>
+        <div class="mover" id="lpop" style="left:12%;top:16%;width:20%"><img src="img/poppy.webp" alt=""></div>
+        <div class="readout" id="landOut" style="left:auto;right:3%;top:5%">Get ready to land!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Landing is the trickiest part! Pilots go through a <b>checklist</b>: <b>Gear down</b>, so the wheels are ready. <b>Flaps down</b>, so the wing gets bigger and can fly slowly. Then <b>slow down</b> and glide toward the runway.</p>
+        <p>Just before the wheels touch, the pilot gently lifts the nose for a soft <span class="hl">touchdown</span>. 👆 Do the checklist, then land!</p>
+        <span class="fact">✅ Real pilots use checklists every single flight, even pilots who have flown for 30 years. That's how they never forget a step.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 HIGH AND FAST -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="high"><img class="art" src="img/p09.webp" alt="A white passenger jet cruises above a sea of clouds, with a snowy mountain peak poking through far away.">
+        <div class="stack" id="stack" data-noread></div>
+        <div class="ctl" data-noread><button class="bigbtn" id="stackBtn">🏢 Stack Taipei 101s!</button></div>
+        <div class="readout" id="highOut" style="left:auto;right:3%">How high do jets fly?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Big jets fly about <b>10 to 12 kilometers</b> high. That's higher than Mount Everest, the tallest mountain on Earth! Up there the air is thin, so there is less drag and jets can zoom at about <b>900 km/h</b>.</p>
+        <p>Stack up Taipei 101, one of the tallest buildings in Taiwan. You'd need about <span class="big">20</span> of them to reach a jet! 👆 Press the button.</p>
+        <span class="fact">🛩️ The very first airplane flight, by the <b>Wright brothers</b> in 1903, lasted just <b>12 seconds</b> and went 36 meters. That's shorter than the wings of a jumbo jet!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 HOW TO PLAY -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:22%;top:55%;width:28%" data-say="I'm Poppy! I have a real cockpit inside. Start my engine and let's fly!"><img src="img/poppy.webp" alt="Poppy"></button>
+          <button class="actor idle" style="left:53%;top:58%;width:13%;animation-delay:.4s" data-say="Pull back to climb, tilt to turn, and land gently on the runway. You can do it, pilot!"><img src="img/lin.webp" alt="Lin"></button>
+          <button class="actor idle" style="left:78%;top:30%;width:14%;animation-delay:.8s" data-say="Hello up there! Wave when you fly past, but give us lots of room."><img src="img/balloon.webp" alt="Hot-air balloon"></button>
+          <button class="actor idle" style="left:46%;top:20%;width:18%;animation-delay:1.2s" data-say="Fly through my cloud rings! The glowing one is next."><img src="img/cloud.webp" alt="Cloud"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Sky Pilot!</h2>
+        <ol class="steps">
+          <li>Turn the <b>MASTER</b> switch on, then the <b>KEY</b> to start the engine.</li>
+          <li>Push the <b>THROTTLE</b> up. At about 95 km/h, <b>pull the stick back</b> to take off!</li>
+          <li>Pull or push to climb or dive, tilt to turn. Fly through the <b>cloud rings</b>.</li>
+          <li>To land: <b>gear down</b> (3 green lights), <b>flaps 30°</b>, slow down, glide in gently, then <b>brakes</b>.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Sky Pilot!</a>
+        <span class="fact" data-noread>A cockpit with real-style dials, 8 missions from your first take-off to an island hop, plus <b>Free Flight</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 QUIZ + SOURCES -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Lin and Poppy flying over the fields."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Why Airplanes Fly!</h2>
+        <p>Wings bend the air <b>down</b>, so the air pushes the wings <b>up</b>. The faster the air, the more <b>lift</b>. The propeller or jet engine pushes air back for <b>thrust</b>.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. A wing pushes air DOWN. Which way does the air push the wing?</div>
+          <div class="choice-row"><button class="choice" data-ok>⬆️ Up</button><button class="choice">⬇️ Down</button><button class="choice">🔄 Round and round</button></div>
+          <div class="q">2. Why do airplanes race down the runway?</div>
+          <div class="choice-row"><button class="choice">🏁 To win a race</button><button class="choice" data-ok>💨 Wings need fast air to make lift</button><button class="choice">🛞 To warm up the wheels</button></div>
+          <div class="q">3. What does a pilot do before landing?</div>
+          <div class="choice-row"><button class="choice">🎵 Sings a song</button><button class="choice">🚀 Goes super fast</button><button class="choice" data-ok>✅ Gear down, flaps down, slow down</button></div>
+        </div>
+        <span class="fact" data-noread>✂️ Try it at home: fold a paper airplane. Bend the back edges of the wings up a tiny bit, and its nose goes up, just like a real plane's tail flaps!</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/" target="_blank" rel="noopener">NASA Glenn, four forces on an airplane</a> ·
+          <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/foilw1" target="_blank" rel="noopener">NASA Glenn, why the "equal transit" idea is wrong</a> ·
+          <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/newtons-laws-of-motion/" target="_blank" rel="noopener">NASA Glenn, Newton's laws of motion</a> ·
+          <a href="https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/phak/01_phak_front.pdf" target="_blank" rel="noopener">FAA, Pilot's Handbook of Aeronautical Knowledge (flight controls, flaps, instruments)</a> ·
+          <a href="https://aerospaceweb.org/question/performance/q0088.shtml" target="_blank" rel="noopener">Aerospaceweb, airliner take-off speeds</a> ·
+          <a href="https://airandspace.si.edu/collection-objects/1903-wright-flyer/nasm_A19610048000" target="_blank" rel="noopener">Smithsonian National Air and Space Museum, 1903 Wright Flyer (12 seconds, 36 m)</a> ·
+          <a href="https://www.lufthansagroup.com/en/company/fleet/lufthansa-and-regional-partners/boeing-747-8.html" target="_blank" rel="noopener">Lufthansa, Boeing 747-8 (68.4 m wingspan, 442 tonnes at take-off)</a> ·
+          <a href="https://www.britannica.com/place/Mount-Everest" target="_blank" rel="noopener">Britannica, Mount Everest (8,849 m)</a> ·
+          <a href="https://www.nationalzoo.si.edu/node/1153" target="_blank" rel="noopener">Smithsonian's National Zoo, adult Asian elephants weigh about 2.7 to 5.4 tonnes</a><br>
+          Lin and Poppy are pretend, and Poppy's face is just for fun. Numbers are rounded for kids: the 70 elephants compare a fully loaded Boeing 747-8 (about 442 tonnes) with big elephants of about 6 tonnes; the classroom is 8 × 8 × 3 meters of air at 1.2 kg per cubic meter; 20 Taipei 101s (508 m each) is about 10 km.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Sky Pilot!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .2); build(1, st => {
+    say(st, 63, 40, 22, 30, "Poppy", "<b>Hi, I'm Poppy!</b>I'm a little airplane. My wings and my propeller work with the air to fly.", S.whoosh, 4, 6);
+    say(st, 66, 26, 8, 14, "Lin", "<b>I'm Lin!</b>I'm learning to be a pilot. Want to fly with us?", S.chirp, 98, 6, true);
+    say(st, 50, 86, 16, 12, "Airport", "<b>An airport!</b>See the long gray runway? Planes need it to speed up before they lift off.", S.ding, 4, 50);
+  }); });
+
+  /* -------- 2 kite -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .5); build(2, st => {
+    B.hot(st, 50, 20, 14, 24, "Kite", () => {
+      S.wind(); const [x, y] = B.px(st, 50, 20);
+      for (let i = 0; i < 4; i++) setTimeout(() => F.jet(st, x - 160 + i * 20, y + 30 - i * 10, 1, -0.15, 18), i * 120);
+      B.bubble(st, 4, 50, "<b>Whoosh!</b>The wind pushes on the kite, and the string holds it, so the kite climbs up high!");
+    });
+    say(st, 46, 62, 10, 30, "Lin", "<b>Lin:</b> I can't see the wind, but I can feel it pulling on the string!", S.chirp, 4, 6);
+    say(st, 84, 80, 14, 16, "Poppy", "<b>Poppy:</b> Wings use moving air too. Let's find out how!", S.whoosh, 98, 6, true);
+  }); });
+
+  /* -------- 3 four forces -------- */
+  const FORCES = [
+    { k: "Lift", x: 50, y: 22, rot: -90, col: "#4f86f7", say: "<b>Lift ⬆</b>The wings push air down, so the air pushes them up. Faster air makes more lift!" },
+    { k: "Weight", x: 50, y: 78, rot: 90, col: "#ff8a3d", say: "<b>Weight ⬇</b>Earth's gravity pulls Poppy down, like it pulls you down when you jump." },
+    { k: "Thrust", x: 80, y: 50, rot: 0, col: "#5ccf6a", say: "<b>Thrust ➡</b>The propeller throws air back, so the air pushes Poppy forward." },
+    { k: "Drag", x: 20, y: 50, rot: 180, col: "#e0535a", say: "<b>Drag ⬅</b>The air rubs and pushes against Poppy, slowing it down." },
+  ];
+  B.on(3, () => build(3, st => {
+    FORCES.forEach(f => {
+      const b = document.createElement("button");
+      b.className = "force"; b.style.left = f.x + "%"; b.style.top = f.y + "%";
+      b.setAttribute("aria-label", f.k);
+      const L = 110;
+      const r = f.rot * Math.PI / 180; b.style.setProperty("--dx", Math.round(Math.cos(r))); b.style.setProperty("--dy", Math.round(Math.sin(r)));
+      b.innerHTML = '<svg width="' + L + '" height="40" viewBox="0 0 ' + L + ' 40" style="transform:rotate(' + f.rot + 'deg)"><path d="M4 14 H' + (L - 30) + ' V4 L' + (L - 2) + ' 20 L' + (L - 30) + ' 36 V26 H4 Z" fill="' + f.col + '" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></svg><b>' + f.k + "</b>";
+      b.onclick = e => {
+        e.stopPropagation(); S.pop(); F.sparkles(st, ...B.px(st, f.x, f.y), 14);
+        b.animate([{ transform: "translate(-50%,-50%) scale(1)" }, { transform: "translate(-50%,-50%) scale(1.25)" }, { transform: "translate(-50%,-50%) scale(1)" }], { duration: 400 });
+        B.bubble(st, f.x > 60 ? 98 : 4, f.y > 60 ? 6 : 64, f.say, f.x > 60 ? { right: true } : null);
+      };
+      st.querySelector(".layer").appendChild(b);
+    });
+  }));
+
+  /* -------- 4 the wing (SVG) -------- */
+  const svg = $("#wingsvg"), NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); return e; };
+  function drawWing(deg) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const cx = 470, cy = 300, a = deg * Math.PI / 180, stall = deg > 15;
+    // stream lines: they rise a little in front, hug the wing, and leave it turned DOWN (more tilt, more turning)
+    const LE = cx - 170, TE = cx + 190, chord = TE - LE, ta = Math.tan(a), down = stall ? 0.05 : Math.tan(a * 0.9 + 0.05);
+    const thick = (x, top) => { const u = Math.min(1, Math.max(0, (x - LE) / chord)); return (top ? 62 : 22) * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.7)), 0.8); };
+    for (let i = -5; i <= 5; i++) {
+      if (!i) continue;
+      const top = i < 0, y0 = cy + i * 42, w = Math.exp(-(Math.abs(i) - 1) * 0.32);
+      const pts = [];
+      for (let x = 0; x <= 1000; x += 10) {
+        let d;
+        if (x < LE) d = (LE - cx) * ta * Math.exp(-(LE - x) / 160);
+        else if (x <= TE) d = (x - cx) * ta + (top ? -1 : 1) * thick(x, top);
+        else d = (TE - cx) * ta + (x - TE) * down;
+        let y = y0 + w * d;
+        if (stall && top && Math.abs(i) <= 2 && x > cx - 40) y += Math.sin(x / 22 + i) * 14 * Math.min(1, (x - cx + 40) / 120);
+        pts.push(x + " " + y.toFixed(1));
+      }
+      svg.appendChild(el("path", { d: "M" + pts.join(" L"), fill: "none", stroke: "#ffffff", "stroke-width": 5, "stroke-linecap": "round", "stroke-dasharray": "18 16", class: "flow", opacity: 0.9 }));
+    }
+    // the wing: an airfoil, tilted
+    const g = el("g", { transform: "rotate(" + deg + " " + cx + " " + cy + ")" });
+    g.appendChild(el("path", { d: "M" + (cx - 170) + " " + cy + " C " + (cx - 170) + " " + (cy - 50) + ", " + (cx - 60) + " " + (cy - 62) + ", " + (cx + 40) + " " + (cy - 44) + " S " + (cx + 160) + " " + (cy - 8) + ", " + (cx + 190) + " " + (cy + 4) + " C " + (cx + 80) + " " + (cy + 10) + ", " + (cx - 60) + " " + (cy + 26) + ", " + (cx - 140) + " " + (cy + 20) + " C " + (cx - 165) + " " + (cy + 16) + ", " + (cx - 170) + " " + (cy + 8) + ", " + (cx - 170) + " " + cy + " Z",
+      fill: "#ffd23f", stroke: "#24305e", "stroke-width": 6 }));
+    g.appendChild(el("ellipse", { cx: cx - 90, cy: cy - 22, rx: 50, ry: 8, fill: "#fff3b0" }));
+    svg.appendChild(g);
+    // lift arrow: grows with tilt, collapses in a stall
+    const lift = stall ? 0.35 : Math.max(0, 0.3 + 5 * a) / 1.6;
+    const len = 20 + 140 * Math.min(1, lift);
+    svg.appendChild(el("path", { d: "M" + (cx - 40) + " " + (cy - 50) + " v -" + len + " h -22 l 34 -40 l 34 40 h -22 v " + len + " z", fill: stall ? "#9aa3b8" : "#5ccf6a", stroke: "#fff", "stroke-width": 5 }));
+    const t = el("text", { x: cx - 26, y: cy - 70 - len, "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 34, fill: "#24305e", "text-anchor": "middle" });
+    t.textContent = stall ? "Stall!" : "Lift"; svg.appendChild(t);
+    // "air goes down" arrow behind the wing
+    if (!stall && deg > 0) {
+      const x0 = cx + 300, y0 = cy + (TE - cx) * ta + 60, ang = Math.atan(down), L2 = 90;
+      const x1 = x0 + Math.cos(ang) * L2, y1 = y0 + Math.sin(ang) * L2;
+      svg.appendChild(el("path", { d: "M" + x0 + " " + y0 + " L" + x1 + " " + y1, stroke: "#4f86f7", "stroke-width": 12, "stroke-linecap": "round", fill: "none" }));
+      svg.appendChild(el("path", { d: "M" + (x1 + Math.cos(ang) * 22) + " " + (y1 + Math.sin(ang) * 22) + " L" + (x1 - Math.sin(ang) * 18) + " " + (y1 + Math.cos(ang) * 18) + " L" + (x1 + Math.sin(ang) * 18) + " " + (y1 - Math.cos(ang) * 18) + " Z", fill: "#4f86f7" }));
+      const t2 = el("text", { x: x1 + 10, y: y1 + 50, "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 26, fill: "#24305e", "text-anchor": "middle" });
+      t2.textContent = "air pushed down"; svg.appendChild(t2);
+    }
+    return stall;
+  }
+  const flowCss = document.createElement("style");
+  flowCss.textContent = "#wingsvg .flow { animation: flow .8s linear infinite; } @keyframes flow { to { stroke-dashoffset: -34; } }";
+  document.head.appendChild(flowCss);
+  B.on(4, () => build(4, st => {
+    const tilt = $("#tilt"), out = $("#wingOut"), tv = $("#tiltV");
+    let last = null;
+    const upd = () => {
+      const d = +tilt.value; tv.textContent = d + "°";
+      const stall = drawWing(d);
+      const msg = stall ? "💥 <b>Stall!</b> Too much tilt. The air can't follow the top of the wing, and the lift drops away." :
+        d <= 0 ? "Hardly any tilt: the air goes almost straight past. Only a little lift." :
+        d < 10 ? "The wing bends the air <b>down</b>, so the air pushes the wing <b>up</b>. Lift!" :
+        "More tilt, more air pushed down, <b>more lift</b>! Careful, not too much...";
+      if (msg !== last) { out.innerHTML = msg; last = msg; if (stall) { S.oops(); F.shake(st); } else S.tick(); }
+    };
+    tilt.oninput = upd; upd();
+  }));
+
+  /* -------- 5 take-off -------- */
+  let tkoTimer = null;
+  B.on(5, () => build(5, st => {
+    const jet = $("#jet"), btn = $("#tkoBtn");
+    // the jet rolls along the runway, which runs away from us toward the hangars
+    const P0 = [16, 80], P1 = [60, 55];
+    const place = (t, rise, ang) => {
+      const x = P0[0] + (P1[0] - P0[0]) * t, y = P0[1] + (P1[1] - P0[1]) * t - rise, sc = 1 - 0.55 * t;
+      jet.style.left = x + "%"; jet.style.top = y + "%"; jet.style.width = (30 * sc) + "%";
+      jet.style.transform = "translate(-50%,-50%) rotate(" + (-ang) + "deg)";
+      return [x, y];
+    };
+    const reset = () => { place(0, 0, 0); $("#tkoS").style.width = "0"; $("#tkoL").style.width = "0"; $("#tkoV").textContent = "0"; };
+    say(st, 84, 62, 12, 24, "Lin and Poppy", "<b>Lin:</b> Listen to those engines! The jet needs a long, long runway to get fast enough.", S.chirp, 98, 40, true);
+    btn.onclick = () => {
+      if (tkoTimer) return;
+      reset(); S.jet(); btn.disabled = true;
+      let v = 0, t = 0, rise = 0, ang = 0, up = false;
+      tkoTimer = setInterval(() => {
+        v = Math.min(300, v + 4.2);
+        const lift = (v / 280) * (v / 280);        // lift grows with speed x speed
+        $("#tkoV").textContent = Math.round(v);
+        $("#tkoS").style.width = (v / 300 * 100) + "%";
+        $("#tkoL").style.width = Math.min(100, lift * 70) + "%";
+        t = Math.min(1.25, t + v / 300 * 0.016);
+        if (lift >= 1 && !up) { up = true; S.whoosh(); const [px, py] = B.px(st, ...place(t, rise, ang)); F.sparkles(st, px, py, 24); B.bubble(st, 4, 40, "<b>Lift-off!</b>At about " + Math.round(v) + " km/h, the lift beats the weight. Up, up and away!"); }
+        if (up) { ang = Math.min(10, ang + 0.5); rise += 0.45; }
+        place(t, rise, ang);
+        if (t >= 1.25) { clearInterval(tkoTimer); tkoTimer = null; btn.disabled = false; btn.textContent = "🔁 Again"; }
+      }, 50);
+    };
+  }), () => { if (tkoTimer) { clearInterval(tkoTimer); tkoTimer = null; $("#tkoBtn").disabled = false; } });
+
+  /* -------- 6 thrust -------- */
+  B.on(6, () => build(6, st => {
+    B.hot(st, 55, 44, 12, 34, "Propeller", () => {
+      S.rumble(); const [x, y] = B.px(st, 58, 44);
+      for (let i = 0; i < 5; i++) setTimeout(() => F.jet(st, x + 30, y + (i - 2) * 16, 1, 0, 22), i * 90);
+      B.bubble(st, 4, 6, "<b>Brrrrrm!</b>The propeller throws air backward ➡, so the air pushes Poppy forward ⬅. Action and reaction!");
+    });
+    say(st, 30, 42, 10, 20, "Lin's pinwheel", "<b>Lin:</b> My pinwheel spins when air pushes it. Poppy's propeller works the other way: the engine spins it, and it pushes the air!", S.whoosh, 98, 64, true);
+  }));
+
+  /* -------- 7 steering -------- */
+  B.on(7, () => build(7, st => {
+    const side = $("#vSide"), front = $("#vFront"), out = $("#steerOut");
+    const C = {
+      pull: ["rotate(-18deg)", "", "<b>Pull back:</b> the tail flap (the <b>elevator</b>) tips up. The tail goes down, the nose goes up. Climb!"],
+      push: ["rotate(14deg)", "", "<b>Push forward:</b> the elevator tips down. The tail goes up, the nose goes down. Dive!"],
+      left: ["", "rotate(-28deg)", "<b>Tilt left:</b> the <b>ailerons</b> on the wings move opposite ways. The left wing dips, and Poppy turns left."],
+      right: ["", "rotate(28deg)", "<b>Tilt right:</b> the right wing dips, and Poppy leans into a right turn."],
+    };
+    st.querySelectorAll("[data-c]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const c = C[b.dataset.c]; S.whoosh();
+      side.style.transform = c[0]; front.style.transform = c[1]; out.innerHTML = c[2];
+      clearTimeout(st._t); st._t = setTimeout(() => { side.style.transform = ""; front.style.transform = ""; }, 1600);
+    });
+    say(st, 44, 72, 10, 22, "Control stick", "<b>The stick!</b>Pull, push, or tilt it. Wires and rods move the little flaps on the wings and tail.", S.tick, 4, 6);
+    say(st, 54, 46, 12, 20, "Dials", "<b>Dials</b> tell the pilot how fast, how high, and which way the plane is going.", S.ding, 4, 6);
+  }));
+
+  /* -------- 8 landing -------- */
+  let landTimer = null;
+  B.on(8, () => build(8, st => {
+    const done = {}, btn = $("#landBtn"), pop = $("#lpop"), out = $("#landOut");
+    const MSG = { gear: "🛞 Wheels down and locked!", flaps: "🪽 Flaps down: a bigger wing for flying slowly.", slow: "🐢 Throttle back, nice and slow." };
+    st.querySelectorAll("[data-k]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.k;
+      if (done[k]) return; done[k] = true; b.classList.add("on"); b.textContent = "✔ " + b.textContent.replace(/^\S+ /, "");
+      S.ding(); out.innerHTML = MSG[k];
+      if (done.gear && done.flaps && done.slow) { btn.disabled = false; out.innerHTML = "Checklist done! Press <b>Land!</b>"; }
+    });
+    btn.onclick = () => {
+      if (landTimer) return; btn.disabled = true; S.whoosh(); st._touched = false;
+      let x = 12, y = 16, t = 0;
+      landTimer = setInterval(() => {
+        t++; x += y < 77 ? 0.5 : 0.25; y = Math.min(77, y + (y < 69 ? 0.68 : 0.2));
+        const flare = y >= 77 ? 0 : y >= 69 ? -6 : 4;
+        pop.style.left = x + "%"; pop.style.top = y + "%"; pop.style.transform = "translate(-50%,-50%) rotate(" + flare + "deg)";
+        if (y >= 77 && !st._touched) { st._touched = true; S.dig(); S.yay(); const [px, py] = B.px(st, x, y + 6); F.dust(st, px, py, 18); F.sparkles(st, px, py - 20, 26); out.innerHTML = "✨ <b>Soft touchdown!</b> Welcome home, Poppy!"; B.speak(out.innerText); }
+        if (x > 62) { clearInterval(landTimer); landTimer = null; }
+      }, 40);
+    };
+    say(st, 88, 64, 10, 30, "Lin", "<b>Lin:</b> The windsock shows which way the wind blows. Planes land facing into the wind, so they touch down slower over the ground.", S.chirp, 98, 40, true);
+  }), () => { if (landTimer) { clearInterval(landTimer); landTimer = null; } });
+
+  /* -------- 9 how high -------- */
+  B.on(9, () => build(9, st => {
+    const stack = $("#stack"), out = $("#highOut"), btn = $("#stackBtn");
+    for (let i = 0; i < 20; i++) { const b = document.createElement("i"); stack.appendChild(b); }
+    btn.onclick = () => {
+      S.tick(); const bars = [...stack.children]; let i = 0;
+      bars.forEach(b => b.style.height = "0");
+      const go = setInterval(() => {
+        if (i >= bars.length) { clearInterval(go); S.yay(); out.innerHTML = "20 Taipei 101s ≈ <b>10 km</b>, where jets fly!"; return; }
+        bars[i].style.height = ((i + 1) / 20 * 100) + "%"; out.textContent = (i + 1) + " × Taipei 101 = " + ((i + 1) * 508).toLocaleString() + " m"; S.pop(); i++;
+      }, 160);
+    };
+    say(st, 68, 30, 20, 18, "Jet", "<b>A jumbo jet</b> cruises above the clouds, where the sky is almost always sunny!", S.jet, 4, 6);
+    say(st, 73, 58, 12, 18, "Mountain", "<b>A tall, snowy mountain!</b> Even Mount Everest, the tallest on Earth at 8,849 m, is lower than where jets fly.", S.wind, 98, 70, true);
+  }));
+
+  /* -------- 10 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(10), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(10, () => F.weather(stageOf(10), "pollen", .3));
+
+  /* -------- 11 -------- */
+  B.on(11, () => { const st = stageOf(11); F.weather(st, "pollen", .3); build(11, st => {
+    say(st, 63, 40, 22, 30, "Poppy", "<b>Poppy:</b> Thanks for flying with me! See you in the cockpit, pilot!", S.yay, 4, 6);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

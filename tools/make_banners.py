@@ -32,6 +32,10 @@ JOBS = [
     ("aircar", "square", "aircar-square", (1080, 1080)),
     ("blastracer", "wide", "blastracer-fb", (1200, 630)),
     ("blastracer", "square", "blastracer-square", (1080, 1080)),
+    ("flight", "wide", "flight-fb", (1200, 630)),
+    ("flight", "square", "flight-square", (1080, 1080)),
+    ("skypilot", "wide", "skypilot-fb", (1200, 630)),
+    ("skypilot", "square", "skypilot-square", (1080, 1080)),
 ]
 
 

@@ -3,7 +3,8 @@
 Pages  -> <book>/img/pNN.webp  (1600px wide, WebP)
 Sprites-> <book>/img/<name>.png (white background removed by edge flood-fill)
 
-usage: python tools/process_images.py
+usage: python tools/process_images.py          (every book)
+       python tools/process_images.py flight   (one _raw/ folder only)
 """
 from collections import deque
 from pathlib import Path
@@ -13,7 +14,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -59,6 +60,10 @@ SHEETS: dict = {
                    [("zip", 0, 0, 360), ("dash", 1, 0, 360), ("rio", 2, 0, 300),
                     ("drone", 0, 1, 240), ("pump", 1, 1, 300), ("truck", 2, 1, 420)]},
     "cone": {"cone": ((0, 0, .5, 1), 160)},
+    # airplane book + Sky Pilot! (side views face right)
+    "sheet_flight": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                     [("lin", 0, 0, 320), ("poppy", 1, 0, 400), ("poppy_front", 2, 0, 400),
+                      ("jet", 0, 1, 420), ("cloud", 1, 1, 256), ("balloon", 2, 1, 260)]},
     "islands": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), 440) for n, c, r in
                 [("is_lanyu", 0, 0), ("is_green", 1, 0), ("is_turtle", 2, 0),
                  ("is_penghu", 0, 1), ("is_harbor", 1, 1), ("is_palm", 2, 1)]},
@@ -162,7 +167,11 @@ def sprite(src: Path, dst: Path, size: int, box=None, flip=False):
 
 
 def main():
+    import sys
+    only = sys.argv[1:]
     for key, folder in BOOKS.items():
+        if only and key not in only:
+            continue
         src_dir = RAW / key
         if not src_dir.exists():
             continue

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -124,6 +124,33 @@
   .blastracer.square .art { background-position: 80% 50%; }
   .blastracer.square .veil { background: linear-gradient(180deg, rgba(52,44,104,0) 0%, #342c68 25%); }
 
+  /* ---------- why do airplanes fly (book) ---------- */
+  .flight .art { background-image: url(../../_raw/flight/banner_book.jpg); }
+  .flight.wide .art { background-size: cover; background-position: 100% 50%; }
+  .flight .veil { background: linear-gradient(90deg, rgba(236,247,255,.96) 0%, rgba(230,245,255,.82) 38%, rgba(230,245,255,0) 58%); }
+  .flight .copy { color: #24305e; }
+  .flight .kicker { background: #4f86f7; color: #fff; }
+  .flight h1 { color: #24305e; text-shadow: 0 4px 0 #fff, 0 6px 18px rgba(255,255,255,.9); }
+  .flight h1 span { color: #ff8a3d; }
+  .flight .chip { background: #fff; color: #24305e; }
+  .flight .cta { background: #4f86f7; box-shadow: 0 6px 0 #3462c4; }
+  .flight.wide h1 { font-size: 76px; }
+  .flight.square .art { background-position: 80% 50%; }
+  .flight.square .veil { background: linear-gradient(180deg, rgba(230,245,255,0) 0%, #e6f5ff 25%); }
+
+  /* ---------- sky pilot (game) ---------- */
+  .skypilot .art { background-image: url(../../_raw/flight/banner_game.jpg); }
+  .skypilot.wide .art { background-size: cover; background-position: 75% 50%; }
+  .skypilot .veil { background: linear-gradient(90deg, rgba(30,40,80,.9) 0%, rgba(36,48,94,.66) 36%, rgba(36,48,94,0) 56%); }
+  .skypilot .copy { color: #fff; }
+  .skypilot .kicker { background: #ffd23f; color: #24305e; }
+  .skypilot h1 { color: #fff; text-shadow: 0 4px 0 #24305e, 0 8px 24px rgba(0,0,0,.45); }
+  .skypilot h1 span { color: #ffd23f; }
+  .skypilot .chip { background: rgba(255,255,255,.95); color: #24305e; }
+  .skypilot .cta { background: #4f86f7; box-shadow: 0 6px 0 #3462c4; }
+  .skypilot.square .art { background-position: 75% 50%; }
+  .skypilot.square .veil { background: linear-gradient(180deg, rgba(36,48,94,0) 0%, #24305e 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -201,6 +228,20 @@
       title: "Blast <span>Racer!</span>",
       sub: "Blast air to hop, zoom and stick upside down on loops and corkscrews. Can you beat Dash?",
       chips: ["🌀 Loops & corkscrews", "🏁 8 tracks", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
+    },
+    flight: {
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "Why Do <span>Airplanes</span> Fly?",
+      sub: "Wings push air down, so the air pushes the wings up! Lift, thrust and landing for little pilots.",
+      chips: ["✈️ The 4 forces", "🕹️ Cockpit game", "🧒 Ages 5–7"],
+      cta: "Read & fly free ▶",
+    },
+    skypilot: {
+      kicker: "FREE FLIGHT GAME FOR KIDS",
+      title: "Sky <span>Pilot!</span>",
+      sub: "Turn the key, push the throttle, pull back and lift off! Fly through cloud rings and land on the runway.",
+      chips: ["🛫 Real-style cockpit", "☁️ 8 missions", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
     planet: {

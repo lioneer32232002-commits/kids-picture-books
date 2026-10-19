@@ -10,7 +10,7 @@
 - **對象**：5–7 歲孩子，由家長陪著玩。
 - **語言**：內容全英文（句子短、白話），每頁有「📖 Read to me」用瀏覽器語音朗讀。
 - **調性**：可愛，但不陽春；有科學根據，不誇大。
-- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊、洋流游泳）。
+- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊、洋流游泳、氣動賽車、駕駛艙模擬飛行）。
 - **上線**：GitHub Pages（`lioneer32232002-commits/kids-picture-books`），**不用 Cloudflare**。
 
 ---
@@ -50,6 +50,8 @@
 | 氣動車 | Zip | small chubby mint-green toy race car seen from the side facing right, friendly face on its front (big shiny eyes, little smile), rosy cheeks, round clear bubble windshield, chunky dark tires, three small round silver air nozzles |
 | 氣動車 | Dash | the same kind of chubby toy race car but bright orange with white racing stripes, friendly face（遊戲裡的對手，不會被撞壞） |
 | 氣動車 | Rio | cheerful 6-year-old kid, short messy dark-brown hair, orange racing jacket with a white star, blue jeans, red sneakers |
+| 飛機 | Lin | cheerful 6-year-old Taiwanese kid pilot, short black bob hair, brown leather aviator cap with round goggles pushed up on the forehead, red scarf, sky-blue pilot jumpsuit with a little gold wing badge, white sneakers |
+| 飛機 | Poppy | small chubby sunny-yellow propeller airplane, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), round bubble cockpit window, white wings with a red stripe, red propeller |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -58,6 +60,7 @@
 - **角色會漂移**：Nova 曾被畫成長髮，要求「exactly like the earlier pages: SHORT curly brown hair」重畫。
 - **會被打掉的東西不能有臉**：太空垃圾、隕石、垃圾球魔王都要求 `NO faces, NO eyes`。病毒是例外（塔防裡是擬人角色，但書中註明「真的病毒沒有臉」）。
 - Gemini 的 Pro 模型出圖常失敗，改用 Flash。
+- Gemini 會自己決定飛機朝左或朝右，畫好後再對照：朝向和互動箭頭不合時用 CSS `scaleX(-1)` 翻圖，不必重畫。
 - **噴氣要畫得酷**：只寫 puff of air 會畫成一團圓圓的雲，使用者說像放屁。提示詞要寫「a sharp, powerful jet of glowing blue-white air ... like a rocket thruster: crisp straight streaks, speed lines and a bright shimmering cyan glow, NOT a round puffy cloud」。遊戲裡的噴氣也用青色細長光束，不用白色圓點。
 - **吸氣不要畫成噴氣**：要明寫 air is SUCKED IN / pulled out of the gap，並寫清楚風扇在車和路面之間，否則 Gemini 會畫成往下噴。
 - Gemini 近期的圖常帶米色紙框，進 `process_images.py` 前要先裁掉（氣動車書左右各裁約 4.6%、上 4.8%）。
@@ -73,6 +76,8 @@ Chrome 會擋 Gemini 連續自動下載：
 - 被擋時改用 `tools/dev/gemini_capture.js`：在頁面內載入原圖、分段截圖，再用 `tools/dev/stitch_tiles.py` 拼回來，約 1550px 寬，網頁用足夠。
 - **不要撿下載資料夾裡舊的 `Gemini_Generated_Image_*`**：曾經撿錯一張使用者自己的圖。
 - 不按下載鈕的取圖法（洋流書用這個）：頁面裡的預覽圖是 1024 px 的 blob，在頁面內用全螢幕 overlay 以 1:1 顯示，再用 zoom 截圖（`scale: 1`、`save_to_disk`）存下來，直式圖分兩段截再拼。網頁用夠了，也不會觸發瀏覽器下載。
+- **最快的取圖法（飛機書用這個，連續 8 張以上沒被擋）**：在 Gemini 頁面內把 1024 px 預覽 blob 畫到 canvas → `toDataURL('image/jpeg', .93)` → 用 `<a download="flight_p05.jpg">` 觸發「data URL 下載」，檔名自己取，再從下載資料夾搬到 `_raw/`。不經過下載鈕，不會撿錯舊檔。
+  輸入框用 `document.querySelector('rich-textarea .ql-editor').focus()` 對焦再打字，比點座標可靠（視窗大小一變，座標就點不到）。
 
 ---
 
@@ -117,6 +122,8 @@ Chrome 會擋 Gemini 連續自動下載：
   - 無限模式、中大型敵人（破損隕石）、魔王。
 - **原理要對到真實的東西**：氣動車書照特斯拉 Roadster 的兩個原理走：推進器＝作用力與反作用力（書和遊戲都用 Action / Reaction 這組詞），吸地風扇＝氣壓（明寫這是另一個原理）。廠商說的數字（0.6 秒、600 公升）一律寫「Tesla says」。
 - **教育連結**：遊戲機制對應真實科學，例如免疫記憶給傷害加成、吃彩虹蔬果觸發彩虹力量、垃圾食物會讓英雄血糖崩盤、順著洋流游超快而逆流幾乎游不動、冬天和夏天台灣海峽的流向相反。
+- **模擬器要讓真的飛行員也服氣**（飛機遊戲，使用者要求）：儀表板照真實小飛機配置——六大儀表（空速、姿態、高度／轉彎協調、航向、升降速度）、轉速表、STALL／GEAR 警告燈、MASTER 開關＋鑰匙啟動、襟翼分段手柄（UP／10°／30°）、輪子形把手的起落架手柄＋三顆綠燈（收放中亮紅燈、約 4 秒、地面鎖住不能收）、油門、煞車、GPS 洋紅色航線。空速表的白／綠／黃弧與紅線要和物理模型的失速速度一致。單位用 km/h 和公尺（書裡一致），頁面註明很多飛機用節和英尺。
+  簡化但不亂做：搖桿是有防失速保護的 fly-by-wire（放手＝平飛），太慢只會下沉並亮 STALL；這點在頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。
 - 測試時先 `localStorage.setItem('pb-muted','1')` 靜音；測完關掉測試分頁和伺服器。
