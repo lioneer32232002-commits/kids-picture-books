@@ -822,6 +822,7 @@
       this.toastTxt = txt(this, W / 2, 452, "", 24, "#ffffff", { strokeThickness: 6 }).setDepth(D);
       this.pointer = txt(this, 0, 0, "👆", 52, "#ffffff", { strokeThickness: 0 }).setDepth(D + 5).setVisible(false);
       this.arrow = this.add.graphics().setDepth(D);
+      this.guideTxt = txt(this, 0, 0, "", 22, "#ffe066", { strokeThickness: 5 }).setDepth(D).setVisible(false);
       button(this, W - 52, 86, 76, 54, "⏸", 0x4f86f7, () => this.pause(), 28).setDepth(D);
     }
     hint(text, target) {
@@ -912,7 +913,7 @@
     handleEvents() {
       const m = this.m;
       for (const e of m.events.splice(0)) {
-        if (e.e === "ring") { S.ding(); this.flash(0xfff3a8); const n = m.rings.filter(r => r.passed).length; this.toast(this.L.free ? "☁️ " + m.freeCount + "!" : ["Swoosh!", "Nice!", "Great flying!", "Wheee!", "Right through!"][n % 5], 900); }
+        if (e.e === "ring") { S.ding(); this.flash(0xfff3a8); if (this.L.free) this.ringBurst(m.freeCount, 0); else this.ringBurst(m.rings.filter(r => r.passed).length, m.rings.length); }
         if (e.e === "miss") { this.toast("Missed one. Keep going!", 1200); }
         if (e.e === "liftoff") { S.whoosh(); this.toast("🛫 Lift-off! The wings are lifting Poppy!", 2200); }
         if (e.e === "slow") { S.oops(); }
@@ -955,25 +956,58 @@
         if (p.onGround && p.engine && this.hintNow.startsWith("MASTER on")) this.hint("");
         if (this.hintNow.startsWith("Gear DOWN") && p.gear) this.hint("");
       }
-      // guide arrow toward the next ring, gate or runway
+      // guide toward the next ring (or the runway). On screen: a bouncing chevron above it.
+      // Off screen: an arrow on the EDGE of the window on that side, labelled "Next", so it never looks like "go back".
       const tgt = m.next || (L.land && !p.onGround ? (() => { const a = F.runwayPoint(L.land, -1); return { x: a.x, y: 0, z: a.z }; })() : null);
       const g = this.arrow; g.clear();
-      if (tgt && m.state === "play") {
+      const showGuide = tgt && m.state === "play" && this.time.now > (this.quietUntil || 0);
+      this.guideTxt.setVisible(false);
+      if (showGuide) {
         const v = this.toCam(tgt.x, tgt.y, tgt.z), P = v[2] > 5 ? this.proj(v) : null;
-        if (P && P.x > 60 && P.x < W - 60 && P.y > 40 && P.y < DASH_Y - 60) {
+        const top = 70, bot = DASH_Y - 95, left = 70, right = W - 70;
+        const label = m.next ? "Next ☁️" : "Runway";
+        if (P && P.x > left && P.x < right && P.y > top && P.y < bot) {
           const bob = Math.sin(this.time.now / 160) * 6, sz = 16;
           g.fillStyle(0x24305e, 0.6).fillTriangle(P.x - sz - 2, P.y - 70 + bob - 2, P.x + sz + 2, P.y - 70 + bob - 2, P.x, P.y - 46 + bob + 2);
           g.fillStyle(0xffd23f, 1).fillTriangle(P.x - sz, P.y - 70 + bob, P.x + sz, P.y - 70 + bob, P.x, P.y - 48 + bob);
         } else {
-          // off screen: a big arrow near the middle pointing the way
-          let ax = v[0], ay = v[1]; if (v[2] < 0) { ax = -ax; ay = -ay; }
-          if (v[2] < 0 && Math.abs(ax) < 1) ax = 1;
-          const a = Math.atan2(-ay, ax), cx = W / 2 + Math.cos(a) * 170, cy = VIEW.cy + Math.sin(a) * 120;
-          const pts = [[34, 0], [-14, -24], [-6, 0], [-14, 24]].map(([u, w]) => ({ x: cx + u * Math.cos(a) - w * Math.sin(a), y: cy + u * Math.sin(a) + w * Math.cos(a) }));
+          let ex, ey, a, txt2 = label;
+          if (v[2] <= 5) {
+            // behind us: point sideways toward the turn, never backward
+            const sideR = v[0] >= 0;
+            a = sideR ? 0 : Math.PI; ex = sideR ? right : left; ey = VIEW.cy;
+            txt2 = sideR ? "Turn right ↻" : "↺ Turn left";
+          } else {
+            // in front but off the window: slide the arrow to the window edge in that direction
+            const dx = P.x - W / 2, dy = P.y - VIEW.cy, k = Math.min((dx > 0 ? right - W / 2 : W / 2 - left) / Math.max(1e-3, Math.abs(dx)), (dy > 0 ? bot - VIEW.cy : VIEW.cy - top) / Math.max(1e-3, Math.abs(dy)));
+            ex = W / 2 + dx * k; ey = VIEW.cy + dy * k; a = Math.atan2(dy, dx);
+            if (dy > 0 && Math.abs(dy) > Math.abs(dx)) txt2 = "⬇ " + label + " (lower)";
+            else if (dy < 0 && Math.abs(dy) > Math.abs(dx)) txt2 = "⬆ " + label + " (higher)";
+          }
+          const pulse = 1.4 + 0.15 * Math.sin(this.time.now / 140);
+          const pts = [[30, 0], [-14, -24], [-4, 0], [-14, 24]].map(([u, w]) => ({ x: ex + (u * Math.cos(a) - w * Math.sin(a)) * pulse, y: ey + (u * Math.sin(a) + w * Math.cos(a)) * pulse }));
           g.fillStyle(0x24305e, 0.5).fillPoints(pts.map(q => ({ x: q.x + 3, y: q.y + 4 })), true);
           g.fillStyle(0xffd23f, 0.95).fillPoints(pts, true);
+          const lx = clamp(ex - Math.cos(a) * 90, 120, W - 120), ly = clamp(ey - Math.sin(a) * 58, top, bot);
+          this.guideTxt.setText(txt2).setPosition(lx, ly).setVisible(true);
         }
       }
+    }
+
+    // flying through a ring: the clouds burst outward around you and the count pops up in the middle
+    ringBurst(n, all) {
+      for (let i = 0; i < 14; i++) {
+        const a = i / 14 * Math.PI * 2, r0 = 230;
+        const c = this.add.image(W / 2 + Math.cos(a) * r0, VIEW.cy + Math.sin(a) * r0 * 0.8, "cloud").setDepth(8.5).setTint(0xfff6c8);
+        fit(c, 150);
+        this.tweens.add({ targets: c, x: W / 2 + Math.cos(a) * 900, y: VIEW.cy + Math.sin(a) * 700, scale: c.scale * 2.2, alpha: 0, duration: 650, ease: "Quad.out", onComplete: () => c.destroy() });
+      }
+      const t = txt(this, W / 2, VIEW.cy - 10, all ? "✔ " + n + " / " + all : "✔ " + n, 76, "#ffe066", { strokeThickness: 10 }).setDepth(25).setScale(0.4);
+      const sub = txt(this, W / 2, VIEW.cy + 56, ["Swoosh!", "Nice!", "Great flying!", "Wheee!", "Right through!"][n % 5], 34, "#ffffff", { strokeThickness: 7 }).setDepth(25).setAlpha(0);
+      this.tweens.add({ targets: t, scale: 1, duration: 260, ease: "Back.out" });
+      this.tweens.add({ targets: sub, alpha: 1, duration: 200 });
+      this.tweens.add({ targets: [t, sub], alpha: 0, y: "-=40", delay: 900, duration: 400, onComplete: () => { t.destroy(); sub.destroy(); } });
+      this.quietUntil = this.time.now + 1100;   // let the cheer show before pointing at the next ring
     }
 
     pause() {
