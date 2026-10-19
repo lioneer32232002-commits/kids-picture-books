@@ -774,16 +774,23 @@
       tg.fillStyle(0x7a8094, 1).fillRect(t.x - 4, ty, 8, t.bot - ty + 6);
       tg.fillStyle(0x000000, 0.35).fillRoundedRect(t.x - 30, ty - 15, 64, 34, 12);
       tg.fillStyle(0x1a1a1a, 1).fillRoundedRect(t.x - 32, ty - 19, 64, 34, 12); tg.fillStyle(0x3a3a3a, 1).fillRoundedRect(t.x - 26, ty - 15, 52, 8, 4);
-      // propeller
-      const pg = this.propG, px = W / 2 + 40, py = DASH_Y - 30; pg.clear();
+      // propeller, seen from the cockpit: it spins in a circle facing us, like clock hands around the red spinner.
+      // Real props have yellow tips, so a spinning prop shows a faint disc with a yellow ring.
+      const pg = this.propG, px = W / 2 + 40, py = DASH_Y - 34, PR = 150, PRy = 0.94; pg.clear();
       this.prop += p.spin * 0.9 * dt * 60;
+      const blade = (a, alpha) => {
+        const ca = Math.cos(a), sa = Math.sin(a), P = (r, w) => ({ x: px + ca * r - sa * w, y: py + (sa * r + ca * w) * PRy });
+        pg.fillStyle(0x34302c, alpha).fillPoints([P(16, -11), P(PR * 0.55, -13), P(PR - 6, -8), P(PR, 0), P(PR - 6, 8), P(PR * 0.55, 12), P(16, 9)], true);
+        pg.fillStyle(0xffd23f, alpha).fillPoints([P(PR - 20, -9), P(PR - 6, -8), P(PR, 0), P(PR - 6, 8), P(PR - 20, 9)], true);
+      };
       if (p.spin > 0.5) {
-        pg.fillStyle(0xffffff, 0.06 + p.spin * 0.06).fillEllipse(px, py, 520, 120);
-        for (let k = 0; k < 2; k++) { const a = this.prop * 3 + k * Math.PI; pg.lineStyle(10, 0x5a4a3a, 0.12).lineBetween(px, py, px + Math.cos(a) * 250, py + Math.sin(a) * 56); }
+        pg.fillStyle(0x6a6058, 0.05 + p.spin * 0.05).fillEllipse(px, py, PR * 2, PR * 2 * PRy);
+        pg.lineStyle(10, 0xffd23f, 0.12 + p.spin * 0.14).strokeEllipse(px, py, PR * 2 - 22, (PR * 2 - 22) * PRy);
+        for (let k = 0; k < 2; k++) blade(this.prop * 3 + k * Math.PI, 0.1);
       } else {
-        const a = this.prop * 0.4 + 0.3; pg.lineStyle(16, 0x4a3a2e, 0.95).lineBetween(px - Math.cos(a) * 230, py - Math.sin(a) * 54, px + Math.cos(a) * 230, py + Math.sin(a) * 54);
+        for (let k = 0; k < 2; k++) blade(this.prop + 0.5 + k * Math.PI, 1);
       }
-      pg.fillStyle(0xd94b3b, 1).fillEllipse(px, py, 40, 26);
+      pg.fillStyle(0xa8352a, 1).fillCircle(px, py + 2, 22); pg.fillStyle(0xd94b3b, 1).fillCircle(px, py, 21); pg.fillStyle(0xff8a80, 1).fillCircle(px - 6, py - 7, 6);
       // GPS map: plane in the middle, north up, 3 km each way, magenta line to the next waypoint like a real GPS
       const mg = this.mapG, mx = 1051, my = 568, ms = 64 / 3000; mg.clear();
       mg.fillStyle(0x1f5f96, 1).fillRect(966, 508, 170, 140);
