@@ -517,6 +517,7 @@
       const a = A[e.k], s = this.s;
       S.yay();
       this.toast(e.say, 3000); say(e.say);
+      if (e.do === "dropoff" && e.k === "tsa") this.toast("🏥 Songshan is in the city: the hospital is just 10 to 15 minutes away!", 2600);
       // the ambulance drives up to the plane
       if (e.do === "pickup" || e.do === "dropoff" || e.do === "transfer") {
         const px = s.x, py = s.y;
@@ -683,7 +684,9 @@
       const lines = [["⭐", "Mission done", true], [r.comfort >= 60 ? "⭐" : "☆", "Cozy ride: " + r.comfort + "%" + (r.comfort >= 60 ? "" : " (get 60%)"), r.comfort >= 60],
         [r.stars === 3 ? "⭐" : "☆", "Super cozy (85%) in " + tm + " (goal " + par + ")", r.stars === 3]];
       lines.forEach((l, i) => c.add(txt(this, W / 2 + 60, 300 + i * 40, l[0] + " " + l[1], 26, l[2] ? "#1d3a52" : "#9a92ad", { strokeThickness: 0 })));
-      c.add(txt(this, W / 2 + 60, 430, "💡 " + FACTS[(this.li + 1) % FACTS.length], 21, "#139c94", { strokeThickness: 0, wordWrap: { width: 560 } }));
+      const toCity = L.legs[L.legs.length - 1].to === "tsa" && L.patient;
+      const tip = toCity ? "🏥 You landed in the middle of Taipei, so big hospitals are only a 10 to 15 minute drive away. That's why the islands need Songshan!" : "💡 " + FACTS[(this.li + 1) % FACTS.length];
+      c.add(txt(this, W / 2 + 60, 430, tip, 21, "#139c94", { strokeThickness: 0, wordWrap: { width: 560 } }));
       const next = this.li < LEVELS.length - 1;
       const btns = [["⌂ Missions", 0x4f86f7, () => this.scene.start("menu")], ["↻ Again", 0xff8a3d, () => this.scene.start("play", { level: this.li })]];
       if (next) btns.push(["Next ▶", 0x5ccf6a, () => this.scene.start("brief", { level: this.li + 1 })]);
