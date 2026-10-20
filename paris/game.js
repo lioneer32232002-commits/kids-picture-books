@@ -60,6 +60,25 @@
     im.setScale(Math.max(W / im.width, H / im.height));
     return im;
   }
+  // a chunky arrow with a soft shadow, a white rim and a light stripe (from x0,y0 pointing along `ang`)
+  function arrow(g, x0, y0, ang, len, col, dark, scale) {
+    const k = scale || 1, w = 9 * k, hw = 22 * k, hl = 26 * k, c = Math.cos(ang), s = Math.sin(ang);
+    const P = (a, b) => ({ x: x0 + c * a - s * b, y: y0 + s * a + c * b });
+    const shape = (pad, dx, dy) => [P(-pad, -w - pad), P(len - hl, -w - pad), P(len - hl, -hw - pad * 1.6), P(len + pad * 1.8, 0),
+      P(len - hl, hw + pad * 1.6), P(len - hl, w + pad), P(-pad, w + pad)].map(p => ({ x: p.x + dx, y: p.y + dy }));
+    g.fillStyle(0x000000, 0.22).fillPoints(shape(4, 3, 5), true);
+    g.fillStyle(0xffffff, 1).fillPoints(shape(4, 0, 0), true);
+    g.fillStyle(dark, 1).fillPoints(shape(0, 0, 0), true);
+    g.fillStyle(col, 1).fillPoints(shape(-2.5, 0, -1.5), true);
+    g.fillStyle(0xffffff, 0.45).fillPoints([P(2, -w + 3), P(len - hl - 2, -w + 3), P(len - hl - 2, -w + 6), P(2, -w + 6)], true);
+  }
+  // a label in a white pill
+  function pill(g, x, y, w, h, col) {
+    g.fillStyle(0x000000, 0.2).fillRoundedRect(x - w / 2 + 2, y - h / 2 + 4, w, h, h / 2);
+    g.fillStyle(0xffffff, 1).fillRoundedRect(x - w / 2, y - h / 2, w, h, h / 2);
+    g.lineStyle(3, col, 1).strokeRoundedRect(x - w / 2, y - h / 2, w, h, h / 2);
+  }
+
   // a stable "random" number per block, so stones keep their tint
   const hash = (a, b) => { const s = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453; return s - Math.floor(s); };
   const STONE = [0xeadcbf, 0xe3d2b0, 0xefe3c9, 0xddcba6];
@@ -82,6 +101,21 @@
       g.generateTexture("drop", 4, 22); g.clear();
       g.fillStyle(0x6fc3ff, 1).fillCircle(6, 6, 6); g.fillStyle(0xffffff, 0.8).fillCircle(4, 4, 2);
       g.generateTexture("blob", 12, 12); g.destroy();
+      // a pointing hand for the "drag it here" demo, drawn on a canvas so it has smooth curves
+      const hc = this.textures.createCanvas("hand", 96, 120), x = hc.getContext();
+      const handPath = () => {
+        x.beginPath();
+        x.moveTo(38, 60); x.lineTo(38, 18); x.arc(48, 18, 10, Math.PI, 0); x.lineTo(58, 52);     // index finger
+        x.arc(66, 54, 8, Math.PI, 0); x.lineTo(74, 58); x.arc(80, 60, 6, Math.PI, 0);             // middle, ring
+        x.lineTo(86, 64); x.arc(88, 68, 5, Math.PI, 0.2); x.lineTo(92, 90);                        // little finger
+        x.quadraticCurveTo(90, 112, 64, 114); x.lineTo(50, 114); x.quadraticCurveTo(34, 112, 26, 96);
+        x.lineTo(12, 74); x.quadraticCurveTo(8, 64, 18, 62); x.quadraticCurveTo(26, 62, 38, 76); x.closePath();
+      };
+      x.save(); x.translate(3, 4); handPath(); x.fillStyle = "rgba(0,0,0,.25)"; x.fill(); x.restore();
+      handPath(); const gr = x.createLinearGradient(0, 0, 96, 120); gr.addColorStop(0, "#ffffff"); gr.addColorStop(1, "#ffe9d6");
+      x.fillStyle = gr; x.fill(); x.lineWidth = 5; x.lineJoin = "round"; x.strokeStyle = "#2b2350"; x.stroke();
+      x.lineWidth = 3; x.beginPath(); x.moveTo(58, 56); x.lineTo(58, 74); x.moveTo(74, 60); x.lineTo(74, 76); x.stroke();
+      hc.refresh();
       // stand-ins when an illustration is missing, so the game never breaks
       const fake = (k, w, h, draw) => { if (this.textures.exists(k)) return; const f = this.make.graphics({ add: false }); draw(f); f.generateTexture(k, w, h); f.destroy(); };
       fake("lea", 160, 240, f => { f.fillStyle(0x2c4fa3, 1).fillRoundedRect(40, 100, 80, 100, 30); f.fillStyle(0xffd9b8, 1).fillCircle(80, 70, 44); f.fillStyle(0xd6372e, 1).fillEllipse(80, 30, 100, 36); });
@@ -184,6 +218,12 @@
         this.input.keyboard.on("keydown-SPACE", () => { if (this.sim.drop()) S.tick(); });
       }
       this.wobble = [0, 0];
+      // the "drag it here" demo: a hand carries a ghost piece from the tray to the right spot
+      this.ghostG = this.add.graphics().setDepth(35);
+      this.ghostImg = fit(this.add.image(0, 0, "garg"), 70).setDepth(35).setVisible(false);
+      this.hand = this.add.image(0, 0, "hand").setOrigin(0.5, 0.07).setDepth(36).setVisible(false);
+      this.tutLbl = txt(this, 0, 0, "Drag here!", 20, "#2b2350", { strokeThickness: 0 }).setDepth(37).setVisible(false);
+      this.idleSince = 0; this.placed = false;
       this.phaseUi();
     }
 
@@ -235,9 +275,6 @@
         it.kind = kind; it.home = { x, y };
         this.tray.add(it);
       }
-      const hand = txt(this, CX - (n - 1) * 42, H - 100, "👆 drag", 22, "#ffffff");
-      this.tray.add(hand);
-      this.tweens.add({ targets: hand, y: H - 108, yoyo: true, repeat: -1, duration: 500 });
     }
     trayAt(p) {
       let best = null, bd = 50 * 50;
@@ -297,6 +334,7 @@
         case "buttress": {
           S.ding(); const x = e.side ? G.wr + BW / 2 : G.wl - BW / 2;
           this.sparks.emitParticleAt(x, e.y, 16); this.toast("Push back! 💪", "#c8ffd0");
+          this.idleSince = this.time.now; this.placed = true;
           if (this.sim.phase === "buttress") this.fillTray("butt", this.sim.pushLeft());
           break;
         }
@@ -309,11 +347,12 @@
           S.pop(); gi.setVisible(true).setScale(0.01);
           this.tweens.add({ targets: gi, scale: 74 / Math.max(gi.width, gi.height), duration: 300, ease: "Back.out" });
           this.sparks.emitParticleAt(o.x, o.y, 10);
+          this.idleSince = this.time.now; this.placed = true;
           this.fillTray("garg", this.sim.garg.filter(g => !g).length);
           break;
         }
         case "rainStart": S.wind(); this.toast("🌧️ Here comes the rain!", "#d6ecff"); this.flyPigeon(); break;
-        case "phase": this.phaseUi(); if (e.phase === "rain" || e.phase === "buttress") this.showPigeon(); break;
+        case "phase": this.idleSince = this.time.now; this.placed = false; this.phaseUi(); if (e.phase === "rain" || e.phase === "buttress") this.showPigeon(); break;
         case "done": this.end(e); break;
       }
     }
@@ -339,7 +378,7 @@
     spireTop() { return this.G.ridge - this.sim.spire.length * C.BEAM_H; }
 
     /* ---------------- drawing */
-    drawFlyer(g, ax, ay, bx, by, alpha, icon) {
+    drawFlyer(g, ax, ay, bx, by, alpha, icon, tint) {
       // a flying buttress: a straight sloping top and a curved underside, from the wall (a) to the pier (b)
       const P0 = { x: ax, y: ay + 16 }, P1 = { x: bx, y: ay + 16 }, P2 = { x: bx, y: by + (icon ? 18 : 46) };
       const pts = [{ x: ax, y: ay - 12 }, { x: bx, y: by - 12 }];
@@ -347,8 +386,8 @@
         const t = 1 - i / 14, u = 1 - t;     // underside from the pier back to the wall
         pts.push({ x: u * u * P0.x + 2 * u * t * P1.x + t * t * P2.x, y: u * u * P0.y + 2 * u * t * P1.y + t * t * P2.y });
       }
-      g.fillStyle(0xe3d2b0, alpha || 1).fillPoints(pts, true);
-      g.lineStyle(3, 0x8a7656, alpha || 1).strokePoints(pts, true);
+      g.fillStyle(tint || 0xe3d2b0, alpha || 1).fillPoints(pts, true);
+      g.lineStyle(3, tint ? 0xffffff : 0x8a7656, tint ? Math.min(1, (alpha || 1) * 2.4) : alpha || 1).strokePoints(pts, true);
     }
     drawWall(g, side, n, lean, wet) {
       const G = this.G, sim = this.sim, wx = side ? G.wr : G.wl, dir = side ? 1 : -1, list = sim.walls[side];
@@ -417,17 +456,20 @@
       if (sim.phase === "buttress") {
         for (let side = 0; side < 2; side++) G.push.forEach((py, i) => {
           if (sim.butt[side][i] !== undefined) return;
-          const dir = side ? 1 : -1, x0 = (side ? G.wr : G.wl) + dir * (BW / 2 + 8 + lean[side]), len = 46 + 8 * Math.sin(t * 6);
-          fx.fillStyle(0xe4574f, 1).fillRect(Math.min(x0, x0 + dir * len), py - 8, len, 16);
-          fx.fillTriangle(x0 + dir * len, py - 20, x0 + dir * (len + 26), py, x0 + dir * len, py + 20);
-          // ghost buttress where it should go
-          fx.lineStyle(3, 0xffffff, 0.5 + 0.3 * Math.sin(t * 5)).strokeRect(G.pierX[side] - 22, G.pierTop, 44, GROUND - G.pierTop);
+          const dir = side ? 1 : -1, face = (side ? G.wr : G.wl) + dir * BW / 2, x0 = face + dir * (6 + lean[side]);
+          // a see-through buttress right where it belongs: drop it on this shape
+          if (!(this.dragging && !this.dragging.tap)) this.drawFlyer(fx, face, py, G.pierX[side] - dir * 22, Math.min(G.pierTop - 6, py + 50), 0.5 + 0.18 * Math.sin(t * 4), false, 0x6fa8ff);
+          arrow(fx, x0, py, side ? 0 : Math.PI, 60 + 8 * Math.sin(t * 6), 0xff6b5e, 0xc8372d, 1.05);
         });
         if (!this.pushLabels) {
           this.pushLabels = [];
-          for (let side = 0; side < 2; side++) G.push.forEach((py, i) => this.pushLabels.push({ side, i, t: txt(this, (side ? G.wr : G.wl) + (side ? 1 : -1) * 120, py - 30, "PUSH", 22, "#ffd0d0").setDepth(15) }));
+          for (let side = 0; side < 2; side++) G.push.forEach((py, i) => this.pushLabels.push({ side, i, x: (side ? G.wr : G.wl) + (side ? 1 : -1) * (BW / 2 + 52), y: py - 34,
+            t: txt(this, 0, 0, "PUSH", 19, "#c8372d", { strokeThickness: 0 }).setDepth(16) }));
         }
-        this.pushLabels.forEach(p => p.t.setVisible(sim.butt[p.side][p.i] === undefined));
+        this.pushLabels.forEach(p => {
+          const on = sim.butt[p.side][p.i] === undefined; p.t.setVisible(on);
+          if (on) { p.t.setPosition(p.x, p.y); pill(fx, p.x, p.y, 74, 30, 0xc8372d); }
+        });
         // a buttress being dragged: show where it would go
         const d = this.dragging;
         if (d && !d.tap) {
@@ -440,9 +482,11 @@
       // gutters waiting for a gargoyle
       if (sim.phase === "rain") G.outlets.forEach((o, i) => {
         if (sim.garg[i]) return;
-        const r = 16 + 5 * Math.sin(t * 6 + i);
-        fx.fillStyle(0x2b2350, 1).fillCircle(o.x, o.y, 8);
-        fx.lineStyle(4, 0xfff27a, 0.9).strokeCircle(o.x, o.y, r);
+        const r = 18 + 5 * Math.sin(t * 6 + i);
+        fx.fillStyle(0xffd23f, 0.25).fillCircle(o.x, o.y, r + 6);
+        fx.lineStyle(5, 0xffffff, 1).strokeCircle(o.x, o.y, r);
+        fx.lineStyle(3, 0xe09412, 1).strokeCircle(o.x, o.y, r - 4);
+        fx.fillStyle(0x2b2350, 1).fillCircle(o.x, o.y, 7);
       });
       // crane and the hanging stone
       if (sim.phase === "stack" || sim.phase === "spire") {
@@ -454,9 +498,7 @@
         const pulse = 0.5 + 0.5 * Math.sin(t * 6), over = Math.abs(hx - T.x) < (T.spire ? C.BEAM_W * 0.4 : BW * 0.35);
         fx.fillStyle(over ? 0x5ccf6a : 0xffd23f, 0.3 + 0.2 * pulse).fillRect(T.x - T.w / 2, T.y - T.h, T.w, T.h);
         fx.lineStyle(5, over ? 0x2f9e44 : 0xffb020, 1).strokeRect(T.x - T.w / 2, T.y - T.h, T.w, T.h);
-        const ay = T.y - T.h - 16 - 8 * pulse;
-        fx.fillStyle(0xffb020, 1).fillTriangle(T.x - 16, ay - 18, T.x + 16, ay - 18, T.x, ay);
-        fx.fillRect(T.x - 6, ay - 38, 12, 22);
+        arrow(fx, T.x, T.y - T.h - 70 - 8 * pulse, Math.PI / 2, 50, over ? 0x7ee08a : 0xffd23f, over ? 0x2f9e44 : 0xe09412, 0.8);
         const f = sim.falling;
         // a dotted line straight down from the stone shows where it will land (green when it's right above the box)
         if (!f) for (let y = hy + 30; y < T.y - T.h - 4; y += 18) fx.fillStyle(over ? 0x5ccf6a : 0xffffff, over ? 0.95 : 0.6).fillRect(hx - 2, y, 4, 9);
@@ -509,6 +551,51 @@
       if (sim.phase === "stack") this.info.setText("Tap to drop the stone right on the wall!  🧱 " + (sim.walls[0].length + sim.walls[1].length) + " / " + this.L.n * 2);
       this.rain(dt);
       this.draw();
+      this.demo(this.time.now);
+    }
+
+    /* ---------------- the drag demo */
+    demo(now) {
+      const sim = this.sim, G = this.G, gg = this.ghostG;
+      gg.clear();
+      const hide = () => { this.hand.setVisible(false); this.ghostImg.setVisible(false); this.tutLbl.setVisible(false); };
+      const src = this.tray.list.find(o => o.kind);
+      // shows at the start of a job, and again if nothing has been placed for a few seconds
+      if (this.bot || this.ended || !src || this.dragging || !(sim.phase === "buttress" || sim.phase === "rain") || now - this.idleSince < (this.placed ? 6000 : 600)) return hide();
+      let tx, ty;
+      if (sim.phase === "buttress") {
+        let side = -1, i = -1;
+        for (let sd = 0; sd < 2 && side < 0; sd++) for (let k = 0; k < G.push.length; k++) if (sim.butt[sd][k] === undefined) { side = sd; i = k; break; }
+        if (side < 0) return hide();
+        const dir = side ? 1 : -1; tx = (side ? G.wr : G.wl) + dir * (BW / 2 + 50); ty = G.push[i] + 6;
+      } else {
+        const i = sim.garg.findIndex(g => !g); if (i < 0) return hide();
+        tx = G.outlets[i].x; ty = G.outlets[i].y;
+      }
+      const u = ((now - this.idleSince) % 2800) / 2800, ease = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      let x = src.x, y = src.y, a = 1, press = 0, carry = false;
+      if (u < 0.15) { a = u / 0.15; press = u > 0.1 ? 1 : 0; carry = u > 0.1; }
+      else if (u < 0.7) { const k = ease((u - 0.15) / 0.55); x = src.x + (tx - src.x) * k; y = src.y + (ty - src.y) * k - Math.sin(Math.PI * k) * 90; press = 1; carry = true; }
+      else { x = tx; y = ty; a = u < 0.85 ? 1 : 1 - (u - 0.85) / 0.15; }
+      // dotted path from the tray to the spot
+      for (let k = 0.05; k < 1; k += 0.07) {
+        const px = src.x + (tx - src.x) * k, py = src.y + (ty - src.y) * k - Math.sin(Math.PI * k) * 90;
+        gg.fillStyle(0xffffff, 0.75 * Math.min(1, a)).fillCircle(px, py, 4);
+      }
+      // the spot: a pulsing ring, and a burst when the ghost piece is "dropped"
+      const r = 26 + 6 * Math.sin(now / 120);
+      gg.lineStyle(5, 0xffffff, 0.95 * a).strokeCircle(tx, ty, r); gg.lineStyle(3, 0x3d6fd8, 0.9 * a).strokeCircle(tx, ty, r - 5);
+      if (u >= 0.7 && u < 0.85) { const k = (u - 0.7) / 0.15; gg.lineStyle(4, 0xffd23f, 1 - k).strokeCircle(tx, ty, r + 30 * k); }
+      // the ghost piece rides along under the finger
+      if (carry) {
+        if (sim.phase === "rain") this.ghostImg.setVisible(true).setPosition(x, y + 26).setAlpha(0.75).setFlipX(tx < CX);
+        else { this.ghostImg.setVisible(false); gg.fillStyle(0xffffff, 0.001); this.drawFlyer(gg, x - 30, y + 14, x + 30, y + 38, 0.7, true); }
+      } else this.ghostImg.setVisible(false);
+      this.hand.setVisible(true).setPosition(x + 6, y + 4).setAlpha(Math.min(1, a)).setScale(press ? 0.62 : 0.7).setAngle(-12);
+      // the label goes outside the building for buttresses (the PUSH pill sits above the arrow), above the gutter for gargoyles
+      const lx = sim.phase === "buttress" ? tx + (tx < CX ? -1 : 1) * 70 : tx, ly = sim.phase === "buttress" ? ty + r + 30 : ty - r - 28;
+      this.tutLbl.setVisible(true).setPosition(clamp(lx, 80, W - 80), ly).setAlpha(Math.min(1, a));
+      pill(gg, this.tutLbl.x, this.tutLbl.y, this.tutLbl.width + 26, 32, 0x3d6fd8);
     }
 
     /* ---------------- finish */

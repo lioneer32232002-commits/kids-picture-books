@@ -5,8 +5,7 @@
 window.cathBot = function (lv, secs, stopAt) {
   const g = __cbGame, F = 1000 / 60;
   g.loop.sleep();
-  let t = performance.now();
-  const step = n => { for (let i = 0; i < n; i++) { t += F; g.step(t, F); } };
+  const step = n => { for (let i = 0; i < n; i++) { window.__cbT = Math.max(window.__cbT || 0, performance.now()) + F; g.step(window.__cbT, F); } };
   if (lv !== undefined && lv !== null) { g.scene.getScenes(true).forEach(x => x.scene.stop()); step(1); g.scene.start('play', { level: lv }); step(3); }
   const s = g.scene.getScene('play');
   let n = 0;
@@ -15,7 +14,8 @@ window.cathBot = function (lv, secs, stopAt) {
   const m = s.sim;
   return { lv: lv + 1, phase: m.phase, t: Math.round(m.t), stars: m.stars, score: m.score, neat: +m.neatness().toFixed(2), dry: +m.dryness().toFixed(2), misses: m.misses };
 };
-window.cathStep = function (frames) { const g = __cbGame, F = 1000 / 60; let t = performance.now(); for (let i = 0; i < frames; i++) { t += F; g.step(t, F); } };
+// game time only moves forward, even across several calls
+window.cathStep = function (frames) { const g = __cbGame, F = 1000 / 60; for (let i = 0; i < frames; i++) { window.__cbT = Math.max(window.__cbT || 0, performance.now()) + F; g.step(window.__cbT, F); } };
 // The canvas looks blank while the loop sleeps; cathShot() copies the last frame into an <img> on top of it.
 window.cathShot = function () {
   const pr = new Promise(r => __cbGame.renderer.snapshot(img => {
