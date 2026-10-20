@@ -252,7 +252,7 @@
       if (ph === "stack") this.info.setText("Tap to drop the stone right on the wall!");
       else if (ph === "spire") this.info.setText("Rebuild the spire! Drop the oak beams on the roof.");
       else if (ph === "buttress") {
-        this.info.setText("The roof pushes the walls out! Drag a flying buttress to each red arrow.");
+        this.info.setText("The heavy stone ceiling pushes the walls out! Drag a flying buttress to each red arrow.");
         this.fillTray("butt", sim.pushLeft());
       } else if (ph === "rain") {
         this.info.setText("A storm is coming! Put a gargoyle on every glowing gutter.");
@@ -330,7 +330,7 @@
           break;
         case "bonk": S.oops(); this.toast("Bonk! Try again", "#ffd0d0"); break;
         case "miss": this.dust.emitParticleAt(e.x, GROUND, 10); break;
-        case "walls": S.yay(); this.say(this.L.bt ? "Walls done! But uh-oh: the heavy roof pushes them outward. See the red arrows?" : "Walls done! Low walls can hold the roof by themselves.", 4500); break;
+        case "walls": S.yay(); this.say(this.L.bt ? "Walls done! But uh-oh: the heavy stone ceiling (the vault) pushes them outward. See the red arrows?" : "Walls done! Low walls can hold the roof by themselves.", 4500); break;
         case "buttress": {
           S.ding(); const x = e.side ? G.wr + BW / 2 : G.wl - BW / 2;
           this.sparks.emitParticleAt(x, e.y, 16); this.toast("Push back! 💪", "#c8ffd0");
@@ -338,7 +338,7 @@
           if (this.sim.phase === "buttress") this.fillTray("butt", this.sim.pushLeft());
           break;
         }
-        case "standing": S.yay(); this.say("The walls stand straight! The buttresses push back as hard as the roof pushes out.", 4000); break;
+        case "standing": S.yay(); this.say("The walls stand straight! The buttresses push back as hard as the vault pushes out.", 4000); break;
         case "rooster": S.yay(); this.rooster.setVisible(true).setPosition(CX, this.spireTop() - 34).setScale(0.01);
           this.tweens.add({ targets: this.rooster, scale: 70 / Math.max(this.rooster.width, this.rooster.height), duration: 600, ease: "Back.out" });
           this.sparks.emitParticleAt(CX, this.spireTop() - 30, 30); this.toast("🐓 The golden rooster!", "#fff1b8"); break;

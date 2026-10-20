@@ -17,10 +17,10 @@
   // n: stones per wall, bt: flying buttresses per side, outlets, swing speed, rain prep seconds
   const LEVELS = [
     { name: "Little Chapel", n: 3, bt: 0, out: 2, w: 1.5, prep: 7, rain: 14, tip: "Low walls are strong enough on their own. Just stack them nice and straight!" },
-    { name: "First Buttress", n: 4, bt: 1, out: 2, w: 1.6, prep: 7, rain: 14, tip: "The roof pushes the walls out. Put a flying buttress right at the red push arrow!" },
+    { name: "First Buttress", n: 4, bt: 1, out: 2, w: 1.6, prep: 7, rain: 14, tip: "The stone ceiling pushes the walls out. Put a flying buttress right at the red push arrow!" },
     { name: "Rainy Day", n: 5, bt: 1, out: 4, w: 1.7, prep: 7, rain: 16, tip: "More gutters, more gargoyles! Water also runs along the buttresses." },
     { name: "Windy Crane", n: 5, bt: 1, out: 4, w: 2.0, prep: 6, rain: 16, tip: "The crane swings faster now. Wait for the stone to be right above the wall!" },
-    { name: "Taller Nave", n: 6, bt: 2, out: 4, w: 2.0, prep: 6, rain: 16, tip: "Tall walls get two pushes. Notre-Dame has two buttresses stacked on each side!" },
+    { name: "Taller Nave", n: 6, bt: 2, out: 4, w: 2.0, prep: 6, rain: 16, tip: "Tall walls get two pushes. Many tall Gothic churches have flying buttresses stacked two high!" },
     { name: "Big Storm", n: 6, bt: 2, out: 6, w: 2.1, prep: 6, rain: 18, tip: "Six gutters! Move fast before the storm comes." },
     { name: "Grand Cathedral", n: 7, bt: 2, out: 6, w: 2.3, prep: 5, rain: 18, tip: "The tallest walls yet. Steady hands, master builder!" },
     { name: "The New Spire", n: 7, bt: 2, out: 6, w: 2.3, prep: 5, rain: 18, spire: 4, tip: "Rebuild the spire with oak beams, then the golden rooster goes on top!" },
