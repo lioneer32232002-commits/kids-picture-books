@@ -242,13 +242,15 @@
     // steering: turn toward an aim point, or by a turn rate
     let turn = 0;
     if (steer) {
-      if (inp.aim) {
+      // a finger right on top of the aircraft has no clear direction: ignore it instead of wiggling
+      if (inp.aim && Math.hypot(inp.aim.x - s.x, inp.aim.y - s.y) > 70) {
         const want = Math.atan2(inp.aim.x - s.x, -(inp.aim.y - s.y)) / D2R;
-        turn = clamp(wrap(want - s.h) / 25, -1, 1);
+        turn = clamp(wrap(want - s.h) / 30, -1, 1);
       } else if (inp.turn) turn = clamp(inp.turn, -1, 1);
     }
-    s.turnNow = turn;
-    s.h = (s.h + turn * pl.turn * dt + 360) % 360;
+    // ease into and out of turns, like a real plane rolling into a bank
+    s.turnNow = (s.turnNow || 0) + clamp(turn - (s.turnNow || 0), -4 * dt, 4 * dt);
+    s.h = (s.h + s.turnNow * pl.turn * dt + 360) % 360;
     // speed follows the power lever; gear down = more drag = slower
     let target = pl.speeds[s.lever];
     if (pl.gear && (s.gear || s.gearMove) && s.phase === "air") target = Math.min(target, pl.gearMax);

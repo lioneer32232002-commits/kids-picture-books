@@ -176,7 +176,7 @@
       const L = this.li < 0 ? R.FREE : LEVELS[this.li];
       this.L = L;
       // the scene object is reused between runs: forget everything from the last one
-      Object.assign(this, { lever: null, gearBox: null, paused: false, aimPtr: null, toasting: false, lastLever: null, dragLever: false, gearMoving: false, pulse: null });
+      Object.assign(this, { camLead: null, lever: null, gearBox: null, paused: false, aimPtr: null, toasting: false, lastLever: null, dragLever: false, gearMoving: false, pulse: null });
       this.s = R.create(L, { plane: this.planeKind });
       this.inp = {}; this.aim = null; this.mem = {}; this.toastQ = [];
       const s = this.s, cam = this.cameras.main;
@@ -199,7 +199,7 @@
       this.navG = this.add.graphics().setDepth(23);
       this.amb = fit(this.add.image(0, 0, "ambulance"), 70).setDepth(9).setVisible(false);
       this.setCraft();
-      cam.startFollow(this.craft, true, 0.09, 0.09);
+      // the camera is moved by hand in draw(), in the same frame as the sea waves, so nothing lags a frame behind
       cam.centerOn(s.x, s.y);
       if (L.night) {
         this.add.rectangle(0, 0, W, H, 0x0b1440, 0.3).setOrigin(0).setScrollFactor(0).setDepth(20);
@@ -479,7 +479,7 @@
         this.handle(s.events.slice());
       }
       this.inp = {};
-      this.draw(dt);
+      this.draw(dt, Math.min(0.05, delta / 1000));
     }
 
     handle(evs) {
@@ -527,7 +527,7 @@
       }
     }
 
-    draw(dt) {
+    draw(dt, realDt) {
       const s = this.s, L = this.L, cam = this.cameras.main, t = this.time.now / 1000;
       const heli = s.plane === "heli";
       // only draw the map chunks the camera can see
@@ -539,7 +539,14 @@
       this.shadow.setPosition(s.x + 10 + s.alt * 38, s.y + 10 + s.alt * 46).setAngle(s.h).setScale(sc * 0.92);
       this.rotor.setPosition(s.x, s.y - 0).setAngle(t * 1500 % 360).setVisible(heli && (s.phase !== "ground" || s.alt > 0)).setScale(this.rotor.scale);
       if (heli && s.phase === "ground") this.rotor.setVisible(true).setAngle(t * 120 % 360);
-      cam.setFollowOffset(-R.dirOf(s.h).x * 140 * Math.min(1, s.v / 90), -R.dirOf(s.h).y * 110 * Math.min(1, s.v / 90));
+      // camera: glide toward a point a little ahead of the aircraft (frame-rate independent)
+      const lead = Math.min(1, s.v / 90), hd = R.dirOf(s.h);
+      this.camLead = this.camLead || { x: 0, y: 0 };
+      const lk = 1 - Math.pow(0.985, realDt * 60);   // the look-ahead swings slowly when turning
+      this.camLead.x += (hd.x * 140 * lead - this.camLead.x) * lk; this.camLead.y += (hd.y * 110 * lead - this.camLead.y) * lk;
+      const ck = 1 - Math.pow(0.88, realDt * 60);
+      cam.scrollX += (s.x + this.camLead.x - W / 2 - cam.scrollX) * ck;
+      cam.scrollY += (s.y + this.camLead.y - H / 2 - cam.scrollY) * ck;
       this.waves.tilePositionX = cam.scrollX; this.waves.tilePositionY = cam.scrollY;
       // night: navigation lights (red left, green right) and a blinking beacon
       this.navG.clear();
