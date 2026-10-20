@@ -10,7 +10,7 @@
 - **對象**：5–7 歲孩子，由家長陪著玩。
 - **語言**：內容全英文（句子短、白話），每頁有「📖 Read to me」用瀏覽器語音朗讀。
 - **調性**：可愛，但不陽春；有科學根據，不誇大。
-- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊、洋流游泳、氣動賽車、駕駛艙模擬飛行）。
+- **形式**：每本約 7–10 頁互動繪本，可延伸成一個小遊戲（目前：塔防、垂直射擊、洋流游泳、氣動賽車、駕駛艙模擬飛行、蓋大教堂）。
 - **上線**：GitHub Pages（`lioneer32232002-commits/kids-picture-books`），**不用 Cloudflare**。
 
 ---
@@ -52,6 +52,8 @@
 | 氣動車 | Rio | cheerful 6-year-old kid, short messy dark-brown hair, orange racing jacket with a white star, blue jeans, red sneakers |
 | 飛機 | Lin | cheerful 6-year-old Taiwanese kid pilot, short black bob hair, brown leather aviator cap with round goggles pushed up on the forehead, red scarf, sky-blue pilot jumpsuit with a little gold wing badge, white sneakers |
 | 飛機 | Poppy | small chubby sunny-yellow propeller airplane, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), round bubble cockpit window, white wings with a red stripe, red propeller |
+| 巴黎 | Lea | cheerful 6-year-old Parisian girl, wavy chestnut-brown hair in a short ponytail, red beret, navy-and-white striped long-sleeve shirt, yellow overalls, red sneakers |
+| 巴黎 | Gus | small chubby friendly pale-gray stone gargoyle, tiny bat wings, two little round horns, big shiny eyes, rosy cheeks, wide happy open mouth（遊戲裡的排水石獸用 side view facing RIGHT, mouth wide open like a water spout） |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -67,6 +69,9 @@
 - **提示詞不要有換行**：在輸入框打 `
 ` 會直接送出前半段，Gemini 會照半段提示亂畫（曾畫出熊和兔子野餐）。整段寫成一行。
 - **地圖不要叫 Gemini 畫**：地理位置一定會錯。洋流書的地圖是 `currents/geo.js` 用經緯度手動簡化海岸線，再用 SVG／Phaser 畫，洋流箭頭才對得準。
+- **要會動的地標另外畫**：巴黎書第 7 頁的艾菲爾鐵塔要隨太陽傾斜，插圖明寫「NO Eiffel Tower in this picture」，鐵塔另畫一張 9:16 白底單張素材（`SPRITES` 裡的 `tower`）再疊上去。
+- **新舊對照要同角度**：羅浮宮「城堡 → 博物館」兩張圖，第二張提示詞寫「same camera angle and composition as the castle picture」，切換時才對得上。
+- 歷史頁的提示詞要寫「no signs with writing, no flags with writing」，不然招牌、旗子會冒出亂碼字。
 - 白底素材表裡「白色或透明」的東西（塑膠袋、寶特瓶）要指定淡紫灰、淡藍等顏色，不然去背會被吃掉；網子這類有破洞的東西在 `process_images.py` 的 `HOLES` 加名字，會把洞裡的白色一起去掉。
 
 ### 2.5 取圖
@@ -124,6 +129,8 @@ Chrome 會擋 Gemini 連續自動下載：
 - **教育連結**：遊戲機制對應真實科學，例如免疫記憶給傷害加成、吃彩虹蔬果觸發彩虹力量、垃圾食物會讓英雄血糖崩盤、順著洋流游超快而逆流幾乎游不動、冬天和夏天台灣海峽的流向相反。
 - **模擬器要讓真的飛行員也服氣**（飛機遊戲，使用者要求）：儀表板照真實小飛機配置——六大儀表（空速、姿態、高度／轉彎協調、航向、升降速度）、轉速表、STALL／GEAR 警告燈、MASTER 開關＋鑰匙啟動、襟翼分段手柄（UP／10°／30°）、輪子形把手的起落架手柄＋三顆綠燈（收放中亮紅燈、約 4 秒、地面鎖住不能收）、油門、煞車、GPS 洋紅色航線。空速表的白／綠／黃弧與紅線要和物理模型的失速速度一致。單位用 km/h 和公尺（書裡一致），頁面註明很多飛機用節和英尺。
   簡化但不亂做：搖桿是有防失速保護的 fly-by-wire（放手＝平飛），太慢只會下沉並亮 STALL；這點在頁面明寫。
+- **敏感時事只帶到能懂的程度**：巴黎書遇到暴動新聞，書裡不談暴動原因，只在法國大革命那頁寫「人們會為不公平發聲，最好的工具是說話、傾聽、投票」，畫面用 7 月 14 日的煙火，不畫衝突。
+- **蓋東西的遊戲不讓東西壞掉**（Cathedral Builders!）：石頭沒對準只會「Bonk!」滑掉再來一顆，沒有飛扶壁的牆只會搖晃，鴿子下雨時自己飛走再飛回來。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。
 - 測試時先 `localStorage.setItem('pb-muted','1')` 靜音；測完關掉測試分頁和伺服器。

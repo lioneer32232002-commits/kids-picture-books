@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello, Paris! The Story of a City for Kids | Picture Book + Cathedral Building Game</title>
+<meta name="description" content="How did a little island village become Paris? Travel 2,000 years with Lea and Gus the gargoyle: Notre-Dame, the Louvre, the Eiffel Tower, the Metro and the rebuilding of Notre-Dame, then build your own cathedral in Cathedral Builders! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hello, Paris! 🗼 A picture book + a cathedral building game for kids">
+<meta property="og:description" content="From a tiny island village to the Eiffel Tower: travel through 2,000 years of Paris with Lea and Gus the gargoyle, then build Notre-Dame with flying buttresses and rain-spitting gargoyles. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/paris-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/paris/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗼</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #3d6fd8; --accent-4: #e4574f;
+    --bg: radial-gradient(circle at 12% 8%, #e3ecff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #ffe6e3 0, transparent 45%), #f7f4ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 60%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #3d6fd8; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.red { background: #e4574f; } .bigbtn.gold { background: #e9a21f; }
+  .bigbtn[disabled] { opacity: .45; }
+  /* page 2: coat of arms */
+  .arms { position: absolute; left: 3%; top: 5%; z-index: 4; width: clamp(64px, 11vw, 120px); cursor: pointer; border: none; background: none; padding: 0; filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
+  .arms svg { width: 100%; display: block; }
+  /* page 4: castle -> museum */
+  .swap { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 1s; pointer-events: none; }
+  .eras { position: absolute; left: 3%; top: 5%; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; }
+  .eras .bigbtn { font-size: clamp(12px, 1.7vw, 19px); padding: 6px 14px; background: #8a7aa8; }
+  .eras .bigbtn.on { background: #3d6fd8; }
+  /* page 7: sunny tower */
+  .tower { position: absolute; left: 57.5%; bottom: 36%; width: 17%; z-index: 2; transform-origin: 50% 100%; transition: transform .6s cubic-bezier(.2,.9,.3,1.2); pointer-events: none; }
+  .tower img { width: 100%; display: block; filter: drop-shadow(0 8px 6px rgba(0,0,0,.25)); }
+  .sun { position: absolute; z-index: 3; width: clamp(40px, 7vw, 80px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #fff6b0 0, #ffd23f 55%, #ffb020 100%); box-shadow: 0 0 40px 14px rgba(255,210,63,.55); transform: translate(-50%, -50%); transition: left .4s, top .4s, opacity .4s; pointer-events: none; }
+  .slider { position: absolute; left: 3%; right: 3%; bottom: 4%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 18px; padding: 6px 14px; font-weight: 800; font-size: clamp(12px, 1.7vw, 19px); display: flex; gap: 12px; align-items: center; max-width: 52%; }
+  .slider input { flex: 1; accent-color: #e9a21f; height: 28px; }
+  .bar { height: 14px; background: #e8e3f1; border-radius: 8px; overflow: hidden; margin: 3px 0 6px; position: relative; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 8px; transition: width .3s; }
+  /* page 9: rebuild */
+  .rebuild { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 12px; font-weight: 800; font-size: clamp(12px, 1.6vw, 18px); width: min(42%, 340px); }
+  .rebuild .bigbtn { font-size: clamp(12px, 1.6vw, 18px); padding: 5px 14px; margin-top: 4px; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #3d6fd8; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #2a50a3; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#bcd9ff, #eef5ff 70%, #d9cdb8 70%); }
+  .firework { position: absolute; z-index: 3; width: 4px; height: 4px; pointer-events: none; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🗼</span>Hello, Paris!</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Lea, a girl in a red beret, sits on a high stone ledge of Notre-Dame next to Gus, a chubby smiling stone gargoyle. Below them, Paris, the river Seine and the Eiffel Tower far away."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Hello, Paris!</h1>
+        <p>Paris is one of the most famous cities in the world. It has wide streets, old bridges, a giant iron tower and a cathedral full of stone creatures. But Paris wasn't always big. Long, long ago, it was just a <span class="hl">tiny village on an island</span>.</p>
+        <p>This is Lea, who lives in Paris, and her friend Gus, a little stone gargoyle. Gus has been watching Paris grow for a very long time. Let's travel back in time with them!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 THE ISLAND VILLAGE -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Long ago: a small green island in a wide river, with round thatched huts, fishing boats and a river boat with a square sail. Lea and Gus peek out from the reeds.">
+        <button class="arms" id="arms" data-noread aria-label="The coat of arms of Paris">
+          <svg viewBox="0 0 100 120"><path d="M8 6 H92 V64 Q92 104 50 116 Q8 104 8 64 Z" fill="#d6372e" stroke="#fff" stroke-width="5"/><path d="M8 6 H92 V34 H8 Z" fill="#2c4fa3"/><g fill="#ffd23f"><circle cx="26" cy="20" r="5"/><circle cx="50" cy="20" r="5"/><circle cx="74" cy="20" r="5"/></g><path d="M22 74 H78 L70 88 H30 Z" fill="#fff"/><path d="M50 40 V74" stroke="#fff" stroke-width="3"/><path d="M50 42 Q70 52 50 70 Z" fill="#fff"/><path d="M50 46 Q36 56 50 68 Z" fill="#fff"/><path d="M18 96 Q34 90 50 96 T82 96" stroke="#fff" stroke-width="3" fill="none"/></svg>
+        </button>
+        <div class="layer"></div></div>
+      <div class="text">
+        <p>More than 2,000 years ago, a group of people called the <b>Parisii</b> lived by a big river, the <b>Seine</b>. They fished, traded, and sailed boats up and down the water. Later, the Romans came and built a town there called <b>Lutetia</b>.</p>
+        <p>Paris got its name from the Parisii! And the river made Paris busy and rich. That's why there's a <span class="hl">boat</span> on Paris's flag even today. 👆 Tap the shield.</p>
+        <span class="fact">⛵ Paris's motto is in Latin: <b>"Fluctuat nec mergitur."</b> It means "Tossed by the waves, but never sinks." Like a brave little boat!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 BUILDING NOTRE-DAME -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p03.webp" alt="Medieval builders put up Notre-Dame. Wooden scaffolding, a big wooden wheel crane lifting stone blocks, stone arches on the outside of the walls, and Lea and Gus watching with a stonemason."><div class="layer"></div></div>
+      <div class="text">
+        <p>In <b>1163</b>, the people of Paris started building a giant cathedral called <b>Notre-Dame</b>. There were no trucks and no electric cranes. Workers carved every stone by hand and lifted them with wooden wheels. It took almost <span class="big">200 years</span> to finish!</p>
+        <p>The roof is so heavy that it pushes the tall walls <b>outward</b>. So the builders added stone arms outside, called <span class="hl">flying buttresses</span>. They push back and hold the walls up. 👆 Tap the builders' tricks.</p>
+        <span class="fact">🐉 <b>Gargoyles</b> are really rain spouts! Rainwater runs through a little channel on their backs and shoots out of their mouths, far away from the walls, so the stones stay dry.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 THE LOUVRE -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="louvre"><img class="art" src="img/p04.webp" alt="A medieval stone castle with round towers and a moat beside the river.">
+        <img class="swap" id="louvreNow" src="img/p04b.webp" style="opacity:0" alt="The Louvre museum today: a long golden palace around a big glass pyramid, with visitors and fountains.">
+        <div class="eras" data-noread>
+          <button class="bigbtn on" data-era="0">🏰 Long ago</button>
+          <button class="bigbtn" data-era="1">🖼️ Today</button>
+        </div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Around <b>1190</b>, a king built a strong <b>castle</b> by the river to guard Paris. It was called the <b>Louvre</b>. Later kings turned it into a huge, fancy <b>palace</b>.</p>
+        <p>Then, in <b>1793</b>, the palace became a <span class="hl">museum</span> for everyone. Now it's one of the biggest art museums in the world! 👆 Tap <b>Long ago</b> and <b>Today</b>.</p>
+        <span class="fact">🔺 The glass <b>pyramid</b> is the museum's front door. When it was built in 1989, lots of people said it looked strange. Today, it's one of the most famous sights in Paris!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 SPEAKING UP -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="fireworks"><img class="art" src="img/p05.webp" alt="Fireworks burst over the Eiffel Tower at night. Lea and Gus wave little blue, white and red flags on a riverside wall."><div class="layer"></div></div>
+      <div class="text">
+        <p>Long ago, France had kings and queens who made all the rules. In <b>1789</b>, many people in Paris were hungry, and they felt nobody was listening to them. On <b>July 14</b>, a big crowd took over an old castle-prison called the <b>Bastille</b>. Big changes began.</p>
+        <p>France chose three big ideas: <span class="hl">Liberty, Equality, Fraternity</span>. That means being free, being fair to everyone, and caring for each other. People in Paris still speak up when they think something isn't fair. The best tools are <b>words</b>, <b>listening</b> and <b>voting</b>. 👆 Tap the sky!</p>
+        <span class="fact">🎆 Every <b>July 14</b> is France's big birthday party, with a parade and fireworks over the Eiffel Tower. The Bastille is gone now. Some of its stones were used to build a bridge!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 BIG MAKEOVER -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="A wide tree-lined boulevard with cream stone buildings and iron balconies, horse carriages and gas lamps. Below the street, a cut-away view shows a big stone sewer tunnel with a little boat."><div class="layer"></div></div>
+      <div class="text">
+        <p>About 170 years ago, old Paris was crowded and dark. The streets were tiny and twisty, and dirty water ran right down the middle. So from <b>1853</b> to <b>1870</b>, a man named <b>Haussmann</b> gave Paris a giant <span class="hl">makeover</span>.</p>
+        <p>Workers built long, wide streets called <b>boulevards</b>, parks, and rows of creamy stone buildings. And under the streets, they built huge <b>sewer tunnels</b> to carry dirty water away. 👆 Peek underground!</p>
+        <span class="fact">🦨 Paris's sewers are so big that people once took <b>boat tours</b> through them! The tunnels under Paris are longer than the road from Paris to Rome.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 THE EIFFEL TOWER -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="eiffel"><img class="art" src="img/p07.webp" alt="Lea and Gus look up from a sunny park with a lawn and trees.">
+        <div class="tower" id="tower"><img src="img/tower.webp" alt="The Eiffel Tower"></div>
+        <div class="sun" id="sun" style="left:10%;top:22%"></div>
+        <div class="readout" id="sunOut" style="left:auto;right:3%">☀️ Make it sunny!</div>
+        <div class="slider" data-noread><span>🌙</span><input id="sunny" type="range" min="0" max="100" value="0" aria-label="How sunny"><span>☀️</span></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>In <b>1889</b>, Paris threw a giant world's fair. For it, Gustave Eiffel's company built the tallest tower in the world, out of <b>18,038 iron pieces</b> and about <b>2.5 million rivets</b>! Many artists said it was ugly, and it was only supposed to stay for <b>20 years</b>.</p>
+        <p>But the tower was great for sending <b>radio</b> messages, so it was saved. Now people love it! On a hot, sunny day, the iron on the sunny side stretches a tiny bit, and the top <span class="hl">leans away from the sun</span>. 👆 Slide the sun.</p>
+        <span class="fact">🎨 Every 7 years, painters give the tower a new coat, about <b>60 tonnes</b> of paint. That's as heavy as 10 big elephants!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 THE METRO -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="metro"><img class="art" src="img/p08.webp" alt="A green iron Metro entrance shaped like curly plant stems with two glowing lamps like flower buds. Stairs lead down to a tunnel where a little train waits. Lea and Gus walk down the steps."><div class="layer"></div></div>
+      <div class="text">
+        <p>In <b>1900</b>, Paris opened its first underground train, the <b>Métro</b>. Now trains zoom through tunnels under the whole city, and almost nobody in Paris lives far from a station.</p>
+        <p>Look at the entrance! An architect named <b>Hector Guimard</b> made it out of green iron that curls like <span class="hl">plants and flowers</span>. 👆 Tap the lamps, and listen for the train!</p>
+        <span class="fact">🌱 Guimard's plant-like style is called <b>Art Nouveau</b>, which means "new art." You can still walk through about <b>86</b> of his entrances in Paris today.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 FIRE AND REBUILDING -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="rebuild"><img class="art" src="img/p09.webp" alt="Carpenters shape big oak beams with axes in front of Notre-Dame, which is covered with scaffolding. A new pointed spire with a golden rooster on top rises above the roof.">
+        <div class="rebuild" data-noread>
+          <div>🔨 Rebuild Notre-Dame</div>
+          <div class="bar"><i id="rbBar" style="background:#e9a21f"></i></div>
+          <div id="rbOut">Tap to help!</div>
+          <button class="bigbtn gold" id="rbBtn">🪓 Shape an oak beam</button>
+        </div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>On <b>April 15, 2019</b>, a fire burned Notre-Dame's old wooden roof, and its tall spire fell. People all over the world felt very sad. But the people of Paris said: <b>"We will build it again."</b></p>
+        <p>Carpenters chose big <b>oak trees</b> and shaped the beams by hand with axes, the way builders did 800 years ago. Stonemasons, glassmakers and painters helped too. In <b>December 2024</b>, Notre-Dame <span class="hl">opened again</span>, with a new spire and a golden rooster on top! 👆 Help rebuild!</p>
+        <span class="fact">🐓 The new golden rooster on the spire has flame-shaped feathers. Its designer calls it a <b>phoenix</b>, a bird from old stories that rises again after a fire.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 HOW TO PLAY -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:24%;top:55%;width:15%" data-say="Let's build a cathedral! Stack the stones nice and straight."><img src="img/lea.webp" alt="Lea"></button>
+          <button class="actor idle" style="left:46%;top:60%;width:15%;animation-delay:.4s" data-say="When it rains, put gargoyles like me on the roof. We'll spit the water far away from the walls!"><img src="img/gus.webp" alt="Gus"></button>
+          <button class="actor idle" style="left:72%;top:42%;width:22%;animation-delay:.8s" data-say="I am a rose window, made of hundreds of pieces of colored glass. I shine in the middle of your cathedral when the walls are done!"><img src="img/window.webp" alt="Rose window"></button>
+          <button class="actor idle" style="left:88%;top:70%;width:8%;animation-delay:1.2s" data-say="Coo! I like to sit on cathedrals. Don't worry, nothing in the game can hurt me."><img src="img/pigeon.webp" alt="Pigeon"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Cathedral Builders!</h2>
+        <ol class="steps">
+          <li><b>Stack the walls</b>: the crane swings a stone. Tap to drop it right on top!</li>
+          <li><b>Hold up the roof</b>: the heavy roof pushes the walls out. Drag a <b>flying buttress</b> to where the red push arrow is.</li>
+          <li><b>Storm!</b> Drag <b>gargoyles</b> to the gutters so the rain shoots far away and the walls stay dry.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Cathedral Builders!</a>
+        <span class="fact" data-noread>8 levels, from a little chapel to the new spire with its golden rooster, plus <b>Free Build</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 QUIZ + SOURCES -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Lea and Gus on the cathedral looking over Paris."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Paris!</h2>
+        <p>A tiny island village became a giant city. People built a cathedral, a castle that became a museum, wide boulevards, an iron tower and trains under the ground. And when something broke, they <b>built it again</b>.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What do gargoyles really do?</div>
+          <div class="choice-row"><button class="choice">🦇 Scare away bats</button><button class="choice" data-ok>💧 Spit rainwater away from the walls</button><button class="choice">🎶 Sing at night</button></div>
+          <div class="q">2. Why does Notre-Dame have flying buttresses?</div>
+          <div class="choice-row"><button class="choice" data-ok>🧱 To push back and hold the walls up</button><button class="choice">🪽 So it can fly</button><button class="choice">🪜 For climbing</button></div>
+          <div class="q">3. What saved the Eiffel Tower?</div>
+          <div class="choice-row"><button class="choice">🍦 An ice cream shop</button><button class="choice">🐘 An elephant</button><button class="choice" data-ok>📻 It was great for radio</button></div>
+        </div>
+        <span class="fact" data-noread>🧱 Try it at home: build an arch with books or blocks. Push down on the top. Can you feel the sides want to slide out? Hold them with your hands, just like flying buttresses!</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://en.wikipedia.org/wiki/Notre-Dame_de_Paris" target="_blank" rel="noopener">Notre-Dame de Paris (begun 1163, largely finished by 1260, works until about 1345; fire 15 April 2019; reopened 7–8 December 2024)</a> ·
+          <a href="https://www.theartnewspaper.com/2024/12/02/green-wood-axes-and-oaks-how-ancient-skills-helped-to-raise-notre-dames-new-roof" target="_blank" rel="noopener">The Art Newspaper, green wood, axes and oaks: the new roof</a> ·
+          <a href="https://www.theartnewspaper.com/2024/03/08/new-notre-dame-spire-now-topped-with-golden-rooster" target="_blank" rel="noopener">The Art Newspaper, the new spire and its golden rooster</a> ·
+          <a href="https://en.wikipedia.org/wiki/Coat_of_arms_of_Paris" target="_blank" rel="noopener">Coat of arms of Paris and "Fluctuat nec mergitur"</a> ·
+          <a href="https://www.britannica.com/topic/Louvre-Museum" target="_blank" rel="noopener">Britannica, the Louvre (fortress of Philip II, museum since 1793)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Haussmann%27s_renovation_of_Paris" target="_blank" rel="noopener">Haussmann's renovation of Paris (1853–1870)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Eiffel_Tower" target="_blank" rel="noopener">Eiffel Tower (1889; 18,038 parts, 2.5 million rivets; 20-year permit, saved by radio; 60 tonnes of paint every 7 years; the top leans up to 18 cm away from the sun)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Paris_M%C3%A9tro_entrances_by_Hector_Guimard" target="_blank" rel="noopener">Paris Métro entrances by Hector Guimard (Métro opened 19 July 1900; 86 entrances remain)</a> ·
+          <a href="https://www.nationalzoo.si.edu/node/1153" target="_blank" rel="noopener">Smithsonian's National Zoo, Asian elephants weigh about 2.7 to 5.4 tonnes</a><br>
+          Lea and Gus are pretend: real gargoyles don't talk, and most of Notre-Dame's gargoyles were carved later than the first stones. Archaeologists are still not sure exactly where the Parisii village stood. Numbers are rounded for kids: "almost 200 years" counts from 1163 to the last works around 1345; "10 big elephants" means elephants of about 6 tonnes; the sewer tunnels (more than 2,000 km) are longer than the roughly 1,400 km road from Paris to Rome.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Cathedral Builders!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  // a little water arc, used by gargoyles
+  const spit = (st, x, y, dir) => { const [px, py] = B.px(st, x, y); S.splash(); for (let i = 0; i < 6; i++) setTimeout(() => F.jet(st, px, py, dir, 0.35, 14), i * 70); };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .2); build(1, st => {
+    say(st, 72, 50, 9, 34, "Lea", "<b>Bonjour! I'm Lea!</b>That means hello in French. I live in Paris!", S.chirp, 4, 6);
+    say(st, 85, 58, 9, 28, "Gus", "<b>I'm Gus the gargoyle!</b>I live up here on Notre-Dame and watch the city all day. Want to hear its story?", S.pop, 98, 6, true);
+    say(st, 27, 26, 7, 24, "Eiffel Tower", "<b>The Eiffel Tower!</b>It's made of iron and it's 330 meters tall. We'll visit it later!", S.ding, 4, 50);
+  }); });
+
+  /* -------- 2 island village -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .4); build(2, st => {
+    $("#arms").onclick = e => {
+      e.stopPropagation(); S.splash(); F.sparkles(st, ...B.px(st, 9, 16), 18);
+      $("#arms").animate([{ transform: "rotate(0)" }, { transform: "rotate(-8deg)" }, { transform: "rotate(8deg)" }, { transform: "rotate(0)" }], { duration: 900 });
+      B.bubble(st, 16, 6, "<b>Paris's shield</b>A ship on the waves! Boat traders on the Seine were so important that their boat became the sign of the whole city.");
+    };
+    say(st, 60, 47, 12, 22, "River boat", "<b>A river boat!</b>The Seine was like a big road made of water. Boats carried fish, wood, wine and grain.", S.splash, 4, 40);
+    say(st, 38, 39, 14, 16, "Huts", "<b>Round huts</b> with roofs made of dry grass. Cozy and warm!", S.pop, 98, 6, true);
+    say(st, 84, 80, 16, 26, "Lea and Gus", "<b>Lea:</b> Where's the Eiffel Tower? <b>Gus:</b> Not yet! We are 2,000 years too early!", S.chirp, 98, 40, true);
+  }); });
+
+  /* -------- 3 Notre-Dame -------- */
+  B.on(3, () => build(3, st => {
+    say(st, 13, 52, 16, 34, "Wheel crane", "<b>A treadwheel crane!</b>Workers walked inside the big wooden wheel, like a hamster, to wind up a rope and lift heavy stones.", S.rumble, 4, 6);
+    say(st, 82, 32, 12, 22, "Flying buttress", "<b>A flying buttress!</b>The heavy roof pushes the wall out ➡. This stone arm pushes it back ⬅. Push and push back, and the wall stands still!", S.dig, 98, 6, true);
+    B.hot(st, 64, 8, 7, 10, "Gargoyle", () => {
+      spit(st, 64, 8, -1);
+      B.bubble(st, 4, 6, "<b>Splash!</b>Rain runs down the roof, into the gargoyle, and out of its mouth, far from the walls. Gus does this job too!");
+    });
+  }));
+
+  /* -------- 4 Louvre -------- */
+  B.on(4, () => build(4, st => {
+    const now = $("#louvreNow");
+    const MSG = ["<b>Around 1190:</b> a strong castle with thick walls, round towers and a moat to guard Paris.",
+                 "<b>Today:</b> a giant museum with about 35,000 artworks on display, including the famous painting the <b>Mona Lisa</b>!"];
+    st.querySelectorAll("[data-era]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = +b.dataset.era;
+      st.querySelectorAll("[data-era]").forEach(x => x.classList.toggle("on", x === b));
+      now.style.opacity = k; S.sparkle(); F.sparkles(st, ...B.px(st, 50, 50), 28);
+      B.bubble(st, 98, 6, MSG[k], { right: true });
+    });
+  }));
+
+  /* -------- 5 fireworks -------- */
+  const COLS = ["#ff5a5f", "#ffffff", "#4f86f7", "#ffd23f", "#7ee0a1"];
+  function firework(st, x, y) {
+    S.pop(); setTimeout(() => S.sparkle(), 120);
+    const [px, py] = B.px(st, x, y);
+    for (let i = 0; i < 3; i++) setTimeout(() => F.sparkles(st, px + (Math.random() - .5) * 30, py + (Math.random() - .5) * 30, 34), i * 120);
+  }
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "stars", .5); build(5, st => {
+    let n = 0;
+    st.addEventListener("click", e => {
+      if (e.target.closest(".hot,button")) return;
+      const r = st.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;
+      if (y > 60) return;
+      firework(st, x, y);
+      if (++n === 1) B.bubble(st, 4, 64, "<b>Happy July 14!</b>Tap more of the sky for more fireworks!");
+    });
+    say(st, 80, 74, 18, 30, "Lea and Gus", "<b>Lea:</b> Blue, white and red are the colors of France's flag. <b>Gus:</b> When people disagree, we talk it out, listen, and vote. That's how a city works together!", S.chirp, 98, 6, true);
+  }); });
+
+  /* -------- 6 makeover -------- */
+  B.on(6, () => build(6, st => {
+    say(st, 45, 87, 16, 16, "Sewer tunnel", "<b>The sewers!</b>Big stone tunnels under the streets carry dirty water away, so the city stays clean and healthy.", S.splash, 4, 6);
+    say(st, 12, 20, 14, 26, "Buildings", "<b>Haussmann buildings</b> are made of creamy stone with iron balconies, and many on the same street are about the same height.", S.ding, 98, 6, true);
+    say(st, 83, 28, 6, 16, "Gas lamp", "<b>A gas lamp!</b>Paris lit up its streets with lots of lamps. People called it the <b>City of Light</b>.", S.sparkle, 98, 6, true);
+  }));
+
+  /* -------- 7 Eiffel Tower in the sun -------- */
+  B.on(7, () => build(7, st => {
+    const sun = $("#sun"), out = $("#sunOut"), inp = $("#sunny");
+    let last = -1;
+    const upd = () => {
+      const v = +inp.value / 100;
+      // the sun rises over the left of the picture
+      sun.style.left = (10 + 14 * v) + "%"; sun.style.top = (34 - 22 * v) + "%"; sun.style.opacity = .25 + .75 * v;
+      const st2 = v < .3 ? 0 : v < .75 ? 1 : 2;
+      if (st2 !== last) {
+        last = st2; S.tick();
+        out.innerHTML = ["🌙 Cool night: the iron is all the same size.", "🌤️ Warming up: the sunny side starts to stretch...", "☀️ Hot sun: the sunny side stretches, so the top leans <b>away</b> from the sun!"][st2];
+        if (st2 === 2) { S.sparkle(); F.sparkles(st, ...B.px(st, 50, 18), 20); B.bubble(st, 4, 34, "<b>Up to 18 cm!</b>That's about as long as a pencil. The real tower moves so little you can't see it, so we made it bigger here."); }
+      }
+    };
+    inp.oninput = upd; upd();
+    // the tower leans away from the sun (hugely exaggerated)
+    inp.addEventListener("input", () => { $("#tower").style.transform = "rotate(" + (+inp.value / 100 * 4).toFixed(2) + "deg) scaleY(" + (1 + +inp.value / 100 * .02).toFixed(3) + ")"; });
+    say(st, 66, 36, 8, 34, "Eiffel Tower", "<b>Gus:</b> It's about 330 meters tall. Climbing to the second floor takes about 600 steps!", S.ding, 4, 40);
+  }));
+
+  /* -------- 8 Metro -------- */
+  B.on(8, () => build(8, st => {
+    const lamp = () => { S.ding(); F.flash(st, "#fff4c2"); B.bubble(st, 4, 6, "<b>Lamps like flower buds!</b>Guimard made the iron grow like plant stems, with lamps like flowers that are about to open."); };
+    B.hot(st, 37, 12, 7, 12, "Left lamp", lamp);
+    B.hot(st, 69, 12, 7, 12, "Right lamp", lamp);
+    B.hot(st, 74, 85, 16, 16, "Train", () => {
+      S.rumble(); F.shake(st);
+      B.bubble(st, 98, 6, "<b>Rumble rumble!</b>Paris has 16 Métro lines and more than 300 stations. Hop on!", { right: true });
+    });
+  }));
+
+  /* -------- 9 rebuild -------- */
+  B.on(9, () => build(9, st => {
+    const STEPS = [
+      "🪓 Chop chop! An oak beam, shaped by hand.",
+      "🪵 More beams! The roof frame grows like a forest.",
+      "🧱 Stonemasons fix the stone vaults.",
+      "🪟 Glassmakers clean the colorful windows.",
+      "⛪ The new spire rises, 96 meters tall!",
+      "🐓 The golden rooster goes on top. Notre-Dame is back!",
+    ];
+    const LBL = ["🪓 Shape an oak beam", "🪵 Add more beams", "🧱 Fix the stones", "🪟 Clean the windows", "⛪ Raise the spire", "🐓 Add the rooster", "🔁 Again"];
+    let k = 0; const btn = $("#rbBtn"), bar = $("#rbBar"), out = $("#rbOut");
+    btn.onclick = e => {
+      e.stopPropagation();
+      if (k >= STEPS.length) { k = 0; bar.style.width = "0"; out.textContent = "Tap to help!"; btn.textContent = LBL[0]; return; }
+      out.textContent = STEPS[k]; k++;
+      bar.style.width = (k / STEPS.length * 100) + "%"; btn.textContent = LBL[k];
+      if (k < STEPS.length) { S.dig(); F.dust(st, ...B.px(st, 30, 80), 12); }
+      else { S.yay(); B.confetti(100); F.sparkles(st, ...B.px(st, 71, 5), 40); }
+    };
+    say(st, 71, 5, 6, 10, "Golden rooster", "<b>The golden rooster!</b>The rooster is a symbol of France. This one looks like it's made of flames, rising again.", S.sparkle, 98, 40, true);
+    say(st, 28, 72, 18, 24, "Carpenters", "<b>Carpenters with axes!</b>They shaped fresh oak by hand, just like builders in the Middle Ages, and used computers to plan every beam.", S.dig, 98, 40, true);
+  }));
+
+  /* -------- 10 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(10), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    const name = btn.querySelector("img:last-child").alt;
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), Math.min(70, y + 16), "<b>" + name + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(10, () => F.weather(stageOf(10), "pollen", .3));
+
+  /* -------- 11 -------- */
+  B.on(11, () => { const st = stageOf(11); F.weather(st, "pollen", .3); build(11, st => {
+    say(st, 72, 64, 10, 28, "Gus", "<b>Gus:</b> Thanks for visiting Paris! Now come and build a cathedral with me!", S.yay, 98, 6, true);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

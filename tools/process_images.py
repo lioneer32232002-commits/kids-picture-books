@@ -14,9 +14,9 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris"}
 # sprite name -> max size (px)
-SPRITES = {"asteroid": 360, "boss": 520}
+SPRITES = {"asteroid": 360, "boss": 520, "tower": 760}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
 _c = lambda col, row: (col / 3, row / 3, (col + 1) / 3, (row + 1) / 3)
 SHEETS: dict = {
@@ -68,8 +68,27 @@ SHEETS: dict = {
                 [("is_lanyu", 0, 0), ("is_green", 1, 0), ("is_turtle", 2, 0),
                  ("is_penghu", 0, 1), ("is_harbor", 1, 1), ("is_palm", 2, 1)]},
 }
+# per-book sheets that reuse a sheet name (Songshan Airport book + Sky Rescue!: side views face right, top-down views point up)
+SHEETS_BY_BOOK = {
+    "tsa": {
+        "sheet_cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                       [("anan", 0, 0, 320), ("jetty", 1, 0, 420), ("jetty_top", 2, 0, 300),
+                        ("whirly", 0, 1, 400), ("whirly_top", 1, 1, 300), ("ambulance", 2, 1, 320)]},
+        "sheet_items": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                        [("storm", 0, 0, 360), ("cloud", 1, 0, 320), ("gulls", 2, 0, 220),
+                         ("nurse", 0, 1, 260), ("grandma", 1, 1, 300), ("cooler", 2, 1, 160)]},
+    },
+    # Paris book + Cathedral Builders! (4 x 2 sheet; the gargoyle spout faces right)
+    "paris": {
+        "sheet_paris": {n: ((c / 4, r / 2, (c + 1) / 4, (r + 1) / 2), s) for n, c, r, s in
+                        [("lea", 0, 0, 340), ("gus", 1, 0, 300), ("garg", 2, 0, 220), ("pigeon", 3, 0, 160),
+                         ("window", 0, 1, 320), ("rooster", 1, 1, 200), ("cloud", 2, 1, 340), ("lea_wave", 3, 1, 340)]},
+    },
+}
 # sprites that must face right but were drawn facing left
-FLIP = {"rocket"}
+FLIP = {"rocket", "ambulance", "jetty"}
+# sprites made of several blobs (a cloud and its lightning bolt, a flock of birds): keep every blob in the box
+MULTI = {"storm", "gulls"}
 # see-through sprites (nets): white holes inside the shape are cleared too
 HOLES = {"net", "bignet"}
 
@@ -129,15 +148,18 @@ def sheet_sprites(src: Path, out_dir: Path, parts: dict):
     W, H = full.size
     for name, (box, size) in parts.items():
         l, t, r, b = box
-        best, best_size = None, 0
+        best, best_size, keep = None, 0, []
         for i in range(n):
             if sizes[i] < 2000:
                 continue
             ys, xs = np.nonzero(labels == i + 1)
             cx, cy = xs.mean() / W, ys.mean() / H
-            if l <= cx < r and t <= cy < b and sizes[i] > best_size:
-                best, best_size = i + 1, sizes[i]
-        mask = Image.fromarray(((labels == best) * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(1))
+            if l <= cx < r and t <= cy < b:
+                keep.append(i + 1)
+                if sizes[i] > best_size:
+                    best, best_size = i + 1, sizes[i]
+        sel = np.isin(labels, keep) if name in MULTI else (labels == best)
+        mask = Image.fromarray((sel * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(1))
         a = Image.fromarray(np.minimum(np.array(mask), np.array(full.getchannel("A"))))
         if name in HOLES:
             rgb = np.array(full.convert("RGB")).astype(int)
@@ -177,7 +199,7 @@ def main():
             continue
         out = ROOT / folder / "img"
         out.mkdir(parents=True, exist_ok=True)
-        for f in sorted(src_dir.glob("p[0-9][0-9].jpg")) + sorted(src_dir.glob("map[0-9].jpg")) + sorted(src_dir.glob("bg_*.jpg")):
+        for f in sorted(src_dir.glob("p[0-9][0-9].jpg")) + sorted(src_dir.glob("p[0-9][0-9]b.jpg")) + sorted(src_dir.glob("map[0-9].jpg")) + sorted(src_dir.glob("bg_*.jpg")):
             page(f, out / (f.stem + ".webp"))
             print("page", f.name)
         for name, size in SPRITES.items():
@@ -185,7 +207,7 @@ def main():
             if f.exists():
                 sprite(f, out / f"{name}.webp", size)
                 print("sprite", name)
-        for sheet, parts in SHEETS.items():
+        for sheet, parts in {**SHEETS, **SHEETS_BY_BOOK.get(key, {})}.items():
             f = src_dir / f"{sheet}.jpg"
             if f.exists():
                 sheet_sprites(f, out, parts)

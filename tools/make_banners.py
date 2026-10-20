@@ -36,6 +36,10 @@ JOBS = [
     ("flight", "square", "flight-square", (1080, 1080)),
     ("skypilot", "wide", "skypilot-fb", (1200, 630)),
     ("skypilot", "square", "skypilot-square", (1080, 1080)),
+    ("paris", "wide", "paris-fb", (1200, 630)),
+    ("paris", "square", "paris-square", (1080, 1080)),
+    ("cathedral", "wide", "cathedral-fb", (1200, 630)),
+    ("cathedral", "square", "cathedral-square", (1080, 1080)),
 ]
 
 
