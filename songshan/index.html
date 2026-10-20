@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Airport in the Middle of the City: Taipei Songshan Airport for Kids | Picture Book + Rescue Flight Game</title>
+<meta name="description" content="Why is there an airport right in the middle of Taipei? Learn Songshan Airport's story from 1936 to today, how runways get their numbers, private jets, and how air ambulances and rescue helicopters bring people from the islands to big hospitals. Then fly the rescues yourself in Sky Rescue! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Airport in the Middle of the City 🛬 A picture book + a rescue flight game for kids">
+<meta property="og:description" content="Songshan Airport has been in the middle of Taipei since 1936. Meet Jetty the little jet and Whirly the rescue helicopter, then fly patients from the islands to the hospital. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/songshan-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/songshan/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #139c94; --accent-4: #ff8a3d;
+    --bg: radial-gradient(circle at 12% 8%, #d9f6f1 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #ffeedd 0, transparent 45%), #f1fbf9;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #139c94; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.orange { background: #ff8a3d; } .bigbtn.blue { background: #4f86f7; } .bigbtn.purple { background: #9b6cf2; }
+  .bigbtn[disabled] { opacity: .45; }
+  /* page 3: timeline */
+  .timeline { position: absolute; left: 3%; right: 3%; bottom: 4%; z-index: 4; display: flex; gap: 6px; justify-content: space-between; background: rgba(255,255,255,.94); border-radius: 18px; padding: 6px; }
+  .timeline button { flex: 1; border: none; border-radius: 12px; background: #e3f4f2; font: 800 clamp(12px, 1.7vw, 19px) "Baloo 2", sans-serif; color: #24305e; cursor: pointer; padding: 4px 2px; }
+  .timeline button.on { background: #139c94; color: #fff; }
+  /* page 4: runway length */
+  .rwbar { position: absolute; left: 3%; right: 3%; bottom: 5%; z-index: 4; height: clamp(46px, 8vw, 80px); background: rgba(255,255,255,.94); border-radius: 18px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; }
+  .rwbar .strip { position: relative; flex: 1; height: 60%; background: #6b7280; border-radius: 6px; overflow: visible; }
+  .rwbar .strip::after { content: ""; position: absolute; left: 3%; right: 3%; top: 50%; border-top: 3px dashed #fff; }
+  .rwbar .tower { position: absolute; bottom: 4px; height: 70%; width: 19.4%; background: linear-gradient(90deg, #5aa6a0, #8fd0c8); border-radius: 0 50% 50% 0 / 0 50% 50% 0; transform-origin: left bottom; transform: scaleX(0); transition: transform .35s cubic-bezier(.2,.9,.3,1.3); }
+  .rwbar .tower.on { transform: scaleX(1); }
+  /* page 5: runway numbers */
+  .rwybg { background: linear-gradient(#bfe6fb, #e6f6ff); }
+  #rwysvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* page 7: route map */
+  .mapstage { background: linear-gradient(#bfe6fb, #9fd3f2); }
+  .mapstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mapstage .land { fill: #cfe7a6; stroke: #8dbb6a; stroke-width: 3; stroke-linejoin: round; }
+  .mapstage .land.far { fill: #e3dcc0; stroke: #c3b78f; }
+  .mapstage .route { fill: none; stroke: #ff8a3d; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 2 12; opacity: 0; transition: opacity .3s; }
+  .mapstage .route.on { opacity: 1; animation: dash 1s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -28; } }
+  .mapstage .pin { cursor: pointer; }
+  .mapstage .pin circle { fill: #fff; stroke: #139c94; stroke-width: 5; }
+  .mapstage .pin.home circle { fill: #ff8a3d; stroke: #fff; }
+  .mapstage .lbl { font: 800 40px "Baloo 2", sans-serif; fill: #24305e; paint-order: stroke; stroke: #fff; stroke-width: 6px; pointer-events: none; }
+  .mapstage .lbl.sea { fill: #2f6f9f; font-weight: 700; font-style: italic; font-size: 34px; }
+  /* page 9: get ready checklist */
+  .check { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 12px; font-weight: 800; font-size: clamp(12px, 1.6vw, 18px); display: grid; gap: 6px; }
+  .check .bigbtn { text-align: left; font-size: clamp(12px, 1.6vw, 18px); padding: 5px 14px; }
+  /* page 10: drive timer */
+  .clock { position: absolute; right: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 6px 14px; font-weight: 800; font-size: clamp(14px, 2vw, 24px); text-align: center; }
+  .mover { position: absolute; z-index: 3; transform: translate(-50%, -50%); pointer-events: none; }
+  .mover img { width: 100%; display: block; filter: drop-shadow(0 6px 5px rgba(0,0,0,.25)); }
+  /* page 11: compare */
+  .cmp { position: absolute; right: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 12px; width: min(44%, 340px); font-weight: 700; font-size: clamp(11px, 1.5vw, 16px); }
+  .cmp .row { display: flex; gap: 6px; justify-content: center; margin-bottom: 6px; }
+  .cmp .bigbtn { font-size: clamp(12px, 1.6vw, 17px); padding: 4px 12px; }
+  .cmp table { width: 100%; border-collapse: collapse; }
+  .cmp td { padding: 2px 4px; border-top: 1px solid #e3eceb; }
+  .cmp td:first-child { color: var(--ink-soft); }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #ff8a3d; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #d16a24; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#9fd6ff, #e8f7ff 62%, #7cc6e6 62%, #4fb0dc); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🛬</span>The Airport in the City</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Jetty, a chubby little white jet with a friendly face, flies low over Taipei's rooftops toward a runway in the middle of the city. Taipei 101 stands behind. An-An waves from a rooftop."><div class="layer"></div></div>
+      <div class="text">
+        <h1>The Airport in the Middle of the City</h1>
+        <p>Most big airports are far away, out past the edge of the city. But in Taipei, there is an airport <span class="hl">right in the middle of town</span>! It's called <b>Songshan Airport</b>.</p>
+        <p>This is An-An, who loves watching planes. And this is Jetty, a little jet who lives at Songshan. Let's visit!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 1936 -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="A small grassy airfield in 1936 surrounded by rice paddies. A shiny old silver propeller airliner is parked by a little white building with a red tile roof. People in 1930s clothes wave, and a water buffalo watches."><div class="layer"></div></div>
+      <div class="text">
+        <p>Long, long ago, in <b>1936</b>, there were rice fields here. Then workers built a grassy airfield, and the first passenger planes came. It was one of the first big airports in Taiwan!</p>
+        <p>Back then, it was called <b>Taihoku Airfield</b>. Planes had <span class="hl">propellers</span>, and flying was a big adventure. 👆 Tap the old plane.</p>
+        <span class="fact">🚂 From 1936 to 1976, a little <b>train line</b> ran right to the airport. Today you can ride the MRT's brown <b>Wenhu Line</b> there instead!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 DOOR TO THE WORLD + TIMELINE -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="tl"><img class="art" src="img/p03.webp" alt="A busy airport in the 1970s. A big jet airliner is parked with boarding stairs while families on a rooftop terrace wave goodbye.">
+        <div class="readout" id="tlOut">👇 Tap a year!</div>
+        <div class="timeline" data-noread>
+          <button data-y="0">1936</button><button data-y="1">1950</button><button data-y="2">1979</button><button data-y="3">1997</button><button data-y="4">2008</button><button data-y="5">Today</button>
+        </div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Later, big <b>jets</b> came. For almost 30 years, Songshan was Taiwan's <span class="hl">door to the world</span>. Families came to wave goodbye to the planes.</p>
+        <p>But the city kept growing all around the airport, and there was no room to make it bigger. So in <b>1979</b>, the flights to faraway countries moved to a brand-new airport in Taoyuan. 👆 Tap the years!</p>
+        <span class="fact">👨‍👩‍👧 In its busiest year, <b>1997</b>, more than <b>15 million</b> people flew from Songshan. That's like two out of every three people in all of Taiwan!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 THE RUNWAY IN THE CITY -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="rw"><img class="art" src="img/p04.webp" alt="A bird's-eye view of one long runway in the middle of a busy city, with short buildings close by and taller ones farther away. Jetty is taking off.">
+        <div class="rwbar" data-noread>
+          <div class="strip" id="strip"></div>
+          <button class="bigbtn" id="rwBtn">🏙️ Lay down Taipei 101!</button>
+        </div>
+        <div class="readout" id="rwOut" style="top:5%">How long is the runway?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Songshan has just <b>one runway</b>, the long road where planes take off and land. It is <b>2,605 meters</b> long. If you laid Taipei 101 down on its side, you'd need about <span class="big">5</span> of them to cover it! 👆 Try it.</p>
+        <p>Look at the buildings near the runway. They are <span class="hl">short</span>. Near an airport, buildings must stay low, so planes have safe, open sky to fly through.</p>
+        <span class="fact">🌊 The airport sits only about <b>5 meters</b> above the sea, about as tall as a two-story house.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 RUNWAY NUMBERS + WIND -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage rwybg" id="rwy">
+        <svg id="rwysvg" viewBox="0 0 1000 560" aria-label="Songshan's runway with a compass and a windsock"></svg>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn blue" data-w="east">💨 Wind from the east</button><button class="bigbtn purple" data-w="west">Wind from the west 💨</button></div>
+        <div class="readout" id="rwyOut" style="left:auto;right:3%;max-width:46%">👇 Pick a wind!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>The runway has big numbers painted on each end: <b>10</b> and <b>28</b>. They are compass directions! Land on Runway 10 and you're heading <b>100°</b>, almost due east. Runway 28 points <b>280°</b>, almost due west.</p>
+        <p>Pilots like to take off and land <span class="hl">into the wind</span>. The wind gives the wings extra air, so the plane can touch the ground slower. 👆 Change the wind and watch which way Jetty lands.</p>
+        <span class="fact">🧭 Every runway in the world is named this way: take its compass direction and drop the last zero. 100° becomes 10.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 QUIET NIGHTS -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="The city airport at night. Soft runway lights glow, planes sleep by the terminal, and An-An yawns in pajamas at an apartment window under a crescent moon."><div class="layer"></div></div>
+      <div class="text">
+        <p>Lots of people live right next to Songshan Airport. Jet engines are <b>loud</b>! So the airport opens early in the morning and closes at <b>11 at night</b>, and the planes get some sleep too.</p>
+        <p>At night, the runway lights glow softly in the dark: <span class="hl">white</span> along the runway and <span class="hl">blue</span> along the little roads where planes drive. 👆 Tap the lights.</p>
+        <span class="fact">😴 Airports near homes often have quiet hours. Pilots also use special take-off steps to make less noise over houses.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 WHERE DO PLANES GO? MAP -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage mapstage" id="map">
+        <div class="readout" id="mapOut" style="left:auto;right:3%;top:auto;bottom:5%;max-width:34%">👆 Tap a place on the map!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Where do planes from Songshan go? Most fly to Taiwan's <b>islands</b>: <b>Kinmen</b>, <b>Matsu</b> and <b>Penghu</b>, and to <b>Hualien</b> and <b>Taitung</b> on the east coast.</p>
+        <p>For people who live on the islands, the plane is like a <span class="hl">bridge in the sky</span> to visit family, go to school, or see a doctor in Taipei. 👆 Tap the places.</p>
+        <span class="fact">🏝️ About <b>9 out of 10</b> people who fly inside Taiwan from Songshan are going to or coming from Kinmen, Matsu or Penghu. Some planes also fly to cities like Tokyo, Seoul and Shanghai.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 PRIVATE JETS -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p07.webp" alt="Inside a bright hangar, Jetty is parked with its little stairs open while a pilot waves. An-An peeks in, amazed. Other small private jets are parked behind."><div class="layer"></div></div>
+      <div class="text">
+        <p>Jetty is a <b>private jet</b>, a small jet for just a few people. It's like a taxi in the sky: it flies when and where its passengers need.</p>
+        <p>In <b>2011</b>, an old Air Force hangar on the east side of Songshan became a home for private jets. Last year, they made about <span class="big">1,300</span> flights here, three or four every day! 👆 Tap around the hangar.</p>
+        <span class="fact">🇹🇼 Part of Songshan is an <b>Air Force base</b> too. Its special planes carry Taiwan's president on trips.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 FLYING AMBULANCE -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="amb"><img class="art" src="img/p08.webp" alt="A peek inside Jetty, now a flying ambulance above the clouds: a smiling grandma rests on a stretcher bed while a kind flight nurse holds her hand, with a heart monitor and an oxygen bottle nearby.">
+        <div class="check" data-noread>
+          <button class="bigbtn" data-k="bed">🛏️ Stretcher bed</button>
+          <button class="bigbtn" data-k="o2">💨 Oxygen</button>
+          <button class="bigbtn" data-k="mon">💓 Heart monitor</button>
+          <button class="bigbtn" data-k="nurse">👩‍⚕️ Flight nurse</button>
+        </div>
+        <div class="readout" id="ambOut" style="left:auto;right:3%;top:auto;bottom:5%">Get Jetty ready!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>What happens if someone on a little island gets very sick, and the island's hospital is too small? They need a <b>big hospital</b>, fast!</p>
+        <p>Then a doctor calls for an <span class="hl">air ambulance</span>: a plane or helicopter that is like a tiny flying hospital, with a bed, oxygen, a heart monitor and a nurse. 👆 Pack the air ambulance!</p>
+        <span class="fact">🩺 Kinmen, Matsu and Penghu each have their own air ambulance waiting, ready to fly. Some air ambulances are small private jets with a special bed inside, just like Jetty!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 HOSPITALS CLOSE BY -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage" id="hos"><img class="art" src="img/p09.webp" alt="At the city airport in the evening, medics and the flight nurse roll a smiling grandpa on a stretcher from Jetty to a cute white ambulance. A big hospital with a helipad stands just past the fence.">
+        <div class="clock" id="clock" data-noread>🚑 <span id="clockV">0</span> min</div>
+        <div class="ctl" data-noread><button class="bigbtn orange" id="hosBtn">🚑 Go to the hospital!</button></div>
+        <div class="readout" id="hosOut" style="top:auto;bottom:5%;max-width:52%">The ambulance is waiting!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>When the air ambulance lands at Songshan, a regular ambulance is already waiting right beside the plane. The patient rolls from the jet to the ambulance, and off they go!</p>
+        <p>Because the airport is in the city, <span class="big">9</span> big emergency hospitals are just a <b>10 to 15 minute</b> drive away. 👆 Press the button.</p>
+        <span class="fact">🏝️ Last year, about <b>38,000</b> people from the islands came to Taiwan to see doctors. Most came on regular flights and boats. The very sick ones came by air ambulance.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 RESCUE HELICOPTERS -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage" id="heli"><img class="art" src="img/p10.webp" alt="Whirly, a chubby orange rescue helicopter with a friendly face, lands on a round helipad with a big H on a small green island. A doctor and a family wave.">
+        <div class="cmp" data-noread>
+          <div class="row"><button class="bigbtn" data-v="jet">✈️ Jet</button><button class="bigbtn orange" data-v="heli">🚁 Helicopter</button></div>
+          <table id="cmpT"><tr><td>Tap a button</td><td>to compare!</td></tr></table>
+        </div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Some islands are tiny, like <b>Orchid Island</b> and <b>Green Island</b>. Their runways are too short for jets. So <span class="hl">rescue helicopters</span> come instead!</p>
+        <p>A helicopter doesn't need a runway. Its spinning blades lift it straight up, and it can land on a small circle with a big <b>H</b>, called a <b>helipad</b>. 👆 Compare Whirly and Jetty.</p>
+        <span class="fact">🚁 Taiwan's rescue helicopter team, the <b>National Airborne Service Corps</b>, is building a new home for its helicopters at Songshan Airport. Some of their pilots wear night-vision goggles to fly rescues in the dark!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 HOW TO PLAY -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:24%;top:42%;width:30%" data-say="I'm Jetty! I fly fast and far, from Kinmen and Matsu all the way to Taipei. I need a runway to land."><img src="img/jetty.webp" alt="Jetty"></button>
+          <button class="actor idle" style="left:70%;top:34%;width:26%;animation-delay:.5s" data-say="I'm Whirly! I fly slower, but I can hover and land on a little helipad on tiny islands."><img src="img/whirly.webp" alt="Whirly"></button>
+          <button class="actor idle" style="left:49%;top:70%;width:12%;animation-delay:.9s" data-say="Keep your patient cozy! When a bubble pops up, tap the right button: blanket, oxygen, water or check."><img src="img/nurse.webp" alt="Flight nurse Hana"></button>
+          <button class="actor idle" style="left:86%;top:76%;width:15%;animation-delay:1.3s" data-say="Fly around the storm clouds, please. Bumpy rides are no fun for a patient!"><img src="img/storm.webp" alt="Storm cloud"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Sky Rescue!</h2>
+        <ol class="steps">
+          <li>Press <b>TAKE OFF</b>. Then <b>touch the map</b> where you want to fly (or use the arrow keys).</li>
+          <li>Follow the pink <b>GPS line</b> to the island. Fly around <b>storm clouds</b> and give <b>birds</b> lots of room.</li>
+          <li>Jetty lands on a runway: <b>gear down</b> (3 green lights), <b>SLOW</b>, and fly into the glowing arrows. Whirly lands on an <b>H</b>: slow down over it and press <b>LAND</b>.</li>
+          <li>Keep your patient cozy: tap the button the nurse asks for. Then bring them to the ambulance!</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Sky Rescue!</a>
+        <span class="fact" data-noread>8 missions over a real map of Taiwan's islands, from a first flight to a night rescue with a jet and a helicopter, plus <b>Free Flight</b> to collect airport stamps. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 QUIZ + SOURCES -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Jetty flying over Taipei toward Songshan Airport."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Songshan Airport!</h2>
+        <p>Songshan has been in the middle of Taipei since <b>1936</b>. Today it is a <b>bridge in the sky</b> to the islands, a home for private jets, and a fast way to bring very sick people to big hospitals.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Why do planes land into the wind?</div>
+          <div class="choice-row"><button class="choice">🎈 It's more fun</button><button class="choice" data-ok>🐢 They can touch down slower</button><button class="choice">🎶 The wind sings</button></div>
+          <div class="q">2. Which can land on a small H on a tiny island?</div>
+          <div class="choice-row"><button class="choice">✈️ A big jet</button><button class="choice" data-ok>🚁 A helicopter</button><button class="choice">🚂 A train</button></div>
+          <div class="q">3. Why is a city airport great for air ambulances?</div>
+          <div class="choice-row"><button class="choice" data-ok>🏥 Big hospitals are close by</button><button class="choice">🍜 Yummy noodles</button><button class="choice">🌙 It's open all night</button></div>
+        </div>
+        <span class="fact" data-noread>🔭 Try it with a grown-up: watch planes from a park near an airport. Look at a windsock or a flag. Are the planes landing into the wind?</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www.tsa.gov.tw/" target="_blank" rel="noopener">Taipei Songshan Airport (official site: opening hours 05:00 to 23:00)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Songshan_Airport" target="_blank" rel="noopener">Songshan Airport (1936 opening, 1950, 1979 move, runway 10/28 of 2,605 m, 5 m elevation, 15.3 million passengers in 1997, Air Force base)</a> ·
+          <a href="https://cna.com.tw/news/aipl/202610140040.aspx" target="_blank" rel="noopener">Central News Agency, Oct 2026 (92% of domestic trips are to the islands; 1,322 business jet flights last year; 9 emergency hospitals 10 to 15 minutes away; 38,651 island patients last year)</a> ·
+          <a href="https://udn.com/news/story/124787/9370940" target="_blank" rel="noopener">United Daily News (the Air Force hangar handed over for business jets in 2011)</a> ·
+          <a href="https://mohw.gov.tw/cp-3797-43178-1.html" target="_blank" rel="noopener">Ministry of Health and Welfare (one air ambulance on standby each in Kinmen, Matsu and Penghu)</a> ·
+          <a href="https://udn.com/news/story/10930/9352240" target="_blank" rel="noopener">United Daily News (National Airborne Service Corps helicopters for Orchid Island and Green Island, night-vision goggles)</a> ·
+          <a href="https://www.ctee.com.tw/news/20251116700583-430104" target="_blank" rel="noopener">Commercial Times (new helicopter base at Songshan, planned for 2029)</a> ·
+          <a href="https://www.skybrary.aero/articles/runway-designation" target="_blank" rel="noopener">SKYbrary, how runways get their numbers</a> ·
+          <a href="https://www.taipei-101.com.tw/en/" target="_blank" rel="noopener">Taipei 101 (508 m)</a><br>
+          An-An, Jetty and Whirly are pretend, and the faces are just for fun. Numbers are rounded for kids: 5 Taipei 101s (5 × 508 m = 2,540 m) is about the runway's 2,605 m; 15 million passengers is about two thirds of Taiwan's 23 million people; 1,322 flights a year is about 3.6 a day. The book does not show real patients or real aircraft.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Sky Rescue!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx, G = TaiwanGeo;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .2); build(1, st => {
+    say(st, 25, 36, 30, 30, "Jetty", "<b>Hi, I'm Jetty!</b>I'm a little jet. I live right here at Songshan Airport, in the middle of Taipei!", S.jet, 4, 60);
+    say(st, 80, 60, 14, 44, "An-An", "<b>I'm An-An!</b>I bring my binoculars to watch the planes come in. Look how close they fly!", S.chirp, 98, 6, true);
+    say(st, 61, 16, 6, 30, "Taipei 101", "<b>Taipei 101!</b>One of the tallest buildings in Taiwan. It's 508 meters tall.", S.ding, 4, 6);
+    say(st, 30, 74, 18, 12, "Runway", "<b>The runway!</b>Houses, shops and streets are all around it. That's a city airport!", S.whoosh, 4, 6);
+  }); });
+
+  /* -------- 2 1936 -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .4); build(2, st => {
+    B.hot(st, 30, 48, 26, 26, "Old plane", () => {
+      S.rumble(); const [x, y] = B.px(st, 36, 48);
+      for (let i = 0; i < 4; i++) setTimeout(() => F.jet(st, x + 40, y + (i - 2) * 12, 1, 0.05, 14), i * 100);
+      B.bubble(st, 4, 6, "<b>Brrrrm!</b>Old planes like this one flew much lower and slower than today's jets, and only a few people fit inside.");
+    });
+    say(st, 61, 30, 6, 12, "Windsock", "<b>A windsock!</b>It shows pilots which way the wind blows. Airports still use them today.", S.wind, 98, 6, true);
+    say(st, 83, 80, 12, 14, "Water buffalo", "<b>Moooo!</b>Water buffaloes helped farmers in the rice fields. Now the fields are gone, and the city is here instead.", S.chirp, 98, 50, true);
+    say(st, 72, 60, 20, 16, "People", "<b>Hello, airplane!</b>Seeing a plane up close was very exciting in 1936.", S.yay, 4, 50);
+  }); });
+
+  /* -------- 3 timeline -------- */
+  const YEARS = [
+    "<b>1936:</b> Taihoku Airfield opens among the rice fields. Little propeller planes fly to Japan and around Taiwan.",
+    "<b>1950:</b> It becomes Taipei's airport, Songshan, for flights at home and to other countries.",
+    "<b>1979:</b> Faraway flights move to the new, bigger airport in Taoyuan. Songshan flies inside Taiwan.",
+    "<b>1997:</b> The busiest year ever: more than 15 million people fly from Songshan!",
+    "<b>2008:</b> Flights to other places start again. Today you can fly to Tokyo, Seoul and Shanghai.",
+    "<b>Today:</b> Planes to the islands, private jets, air ambulances, rescue helicopters and Air Force planes all share one runway.",
+  ];
+  B.on(3, () => build(3, st => {
+    const bs = st.querySelectorAll(".timeline button");
+    bs.forEach(b => b.onclick = e => {
+      e.stopPropagation(); bs.forEach(x => x.classList.remove("on")); b.classList.add("on");
+      S.tick(); $("#tlOut").innerHTML = YEARS[+b.dataset.y];
+    });
+    say(st, 46, 52, 30, 22, "Jet", "<b>A big jet!</b>Jets fly much faster and farther than the old propeller planes.", S.jet, 4, 14);
+    say(st, 82, 62, 18, 30, "Families", "<b>Bye-bye! Come back soon!</b>Families waved from the rooftop terrace to say goodbye.", S.yay, 98, 14, true);
+  }));
+
+  /* -------- 4 runway + Taipei 101 -------- */
+  B.on(4, () => build(4, st => {
+    const strip = $("#strip"), out = $("#rwOut");
+    const towers = [];
+    for (let i = 0; i < 5; i++) { const t = document.createElement("i"); t.className = "tower"; t.style.left = (i * 19.5) + "%"; strip.appendChild(t); towers.push(t); }
+    let busy = false;
+    $("#rwBtn").onclick = () => {
+      if (busy) return; busy = true; towers.forEach(t => t.classList.remove("on"));
+      let i = 0;
+      const go = setInterval(() => {
+        if (i >= 5) { clearInterval(go); busy = false; S.yay(); out.innerHTML = "5 Taipei 101s ≈ <b>2,540 m</b>. The runway is <b>2,605 m</b>!"; return; }
+        towers[i].classList.add("on"); S.pop(); i++; out.textContent = i + " × Taipei 101 = " + (i * 508).toLocaleString() + " m";
+      }, 380);
+    };
+    say(st, 44, 80, 20, 20, "Jetty", "<b>Whee!</b>I need lots of runway to get fast enough to lift off.", S.jet, 4, 22);
+    say(st, 76, 88, 14, 14, "Short buildings", "<b>Short buildings</b> near the runway leave open sky for planes to climb and land safely.", S.ding, 98, 22, true);
+    say(st, 70, 54, 7, 12, "Windsock", "<b>The windsock</b> points the way the wind is blowing.", S.wind, 98, 22, true);
+  }));
+
+  /* -------- 5 runway numbers + wind (SVG) -------- */
+  const RW = (function () {
+    const svg = $("#rwysvg"), cx = 520, cy = 300, ang = 100 - 90;   // runway 10/28 on screen: east = right (true ~96°, drawn at 100° magnetic)
+    const rad = ang * Math.PI / 180, L = 640, Wd = 70;
+    const ux = Math.cos(rad), uy = Math.sin(rad);
+    const P = (a, b) => [cx + ux * a - uy * b, cy + uy * a + ux * b];
+    let jet = null, sock = null, arrow = null;
+    function draw() {
+      svg.appendChild(el("rect", { x: 0, y: 0, width: 1000, height: 560, fill: "#a7d8a0" }));
+      // compass rose
+      const cr = el("g", { transform: "translate(110,110)" });
+      cr.appendChild(el("circle", { r: 78, fill: "#fff", stroke: "#24305e", "stroke-width": 5 }));
+      [["N", 0], ["E", 90], ["S", 180], ["W", 270]].forEach(([t, a]) => {
+        const r = a * Math.PI / 180;
+        cr.appendChild(el("path", { d: "M0 0 L" + (Math.sin(r) * 60 - Math.cos(r) * 10) + " " + (-Math.cos(r) * 60 - Math.sin(r) * 10) + " L" + (Math.sin(r) * 60 + Math.cos(r) * 10) + " " + (-Math.cos(r) * 60 + Math.sin(r) * 10) + "Z", fill: t === "N" ? "#e0535a" : "#24305e", opacity: 0.85 }));
+        cr.appendChild(el("text", { x: Math.sin(r) * 98, y: -Math.cos(r) * 98 + 11, "text-anchor": "middle", "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 30, fill: "#24305e" }, t));
+      });
+      svg.appendChild(cr);
+      // runway
+      const c = [P(-L / 2, -Wd / 2), P(L / 2, -Wd / 2), P(L / 2, Wd / 2), P(-L / 2, Wd / 2)];
+      svg.appendChild(el("path", { d: "M" + c.map(p => p.join(" ")).join(" L") + "Z", fill: "#5d6470", stroke: "#3d434c", "stroke-width": 4 }));
+      for (let a = -L / 2 + 120; a < L / 2 - 120; a += 50) { const p0 = P(a, 0), p1 = P(a + 26, 0); svg.appendChild(el("line", { x1: p0[0], y1: p0[1], x2: p1[0], y2: p1[1], stroke: "#fff", "stroke-width": 5 })); }
+      // painted numbers: "10" at the west end (you read it landing toward the east), "28" at the east end
+      [[-L / 2 + 62, "10", ang + 90], [L / 2 - 62, "28", ang - 90]].forEach(([a, t, r]) => {
+        const p = P(a, 0);
+        svg.appendChild(el("text", { x: p[0], y: p[1] + 15, "text-anchor": "middle", "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 46, fill: "#fff", transform: "rotate(" + r + " " + p[0] + " " + p[1] + ")" }, t));
+      });
+      // labels
+      const lw = P(-L / 2 - 10, 92), le = P(L / 2 + 10, 92);
+      svg.appendChild(el("text", { x: lw[0], y: lw[1], "text-anchor": "middle", "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 24, fill: "#24305e" }, "Runway 10 → 100°"));
+      svg.appendChild(el("text", { x: le[0], y: le[1], "text-anchor": "middle", "font-family": "Baloo 2, sans-serif", "font-weight": 800, "font-size": 24, fill: "#24305e" }, "280° ← Runway 28"));
+      // windsock on a pole
+      const sp = P(90, 150);
+      svg.appendChild(el("line", { x1: sp[0], y1: sp[1], x2: sp[0], y2: sp[1] - 70, stroke: "#24305e", "stroke-width": 6 }));
+      sock = el("g", { transform: "translate(" + sp[0] + " " + (sp[1] - 66) + ")" });
+      [0, 1, 2, 3].forEach(i => sock.appendChild(el("path", { d: "M" + (i * 22) + " " + (-14 + i * 2) + " L" + (i * 22 + 22) + " " + (-12 + i * 2) + " L" + (i * 22 + 22) + " " + (12 - i * 2) + " L" + (i * 22) + " " + (14 - i * 2) + "Z", fill: i % 2 ? "#fff" : "#ff7a2f", stroke: "#24305e", "stroke-width": 2 })));
+      svg.appendChild(sock);
+      arrow = el("g", { opacity: 0 });
+      svg.appendChild(arrow);
+      const img = el("image", { href: "img/jetty_top.webp", width: 120, height: 120, x: -60, y: -60 });
+      jet = el("g", { opacity: 0 }); jet.appendChild(img); svg.appendChild(jet);
+    }
+    let anim = 0;
+    function wind(from) {
+      if (!jet) draw();
+      cancelAnimationFrame(anim);
+      const east = from === "east";
+      // the sock points where the wind blows TO
+      sock.setAttribute("transform", sock.getAttribute("transform").replace(/ rotate\([^)]*\)/, "") + " rotate(" + (east ? 180 : 0) + ")");
+      while (arrow.firstChild) arrow.removeChild(arrow.firstChild);
+      for (let i = 0; i < 3; i++) {
+        const y = 40 + i * 32, x0 = east ? 520 : 300, x1 = east ? 420 : 400;
+        arrow.appendChild(el("path", { d: "M" + x0 + " " + y + " L" + x1 + " " + y, stroke: "#4f86f7", "stroke-width": 8, "stroke-linecap": "round", "stroke-dasharray": "14 10", class: "wflow" }));
+        arrow.appendChild(el("path", { d: east ? "M" + (x1 - 16) + " " + y + " l18 -12 v24 z" : "M" + (x1 + 16) + " " + y + " l-18 -12 v24 z", fill: "#4f86f7" }));
+      }
+      arrow.setAttribute("opacity", 1);
+      // land INTO the wind: wind from the east -> fly toward the east -> Runway 10
+      const dir = east ? 1 : -1, t0 = performance.now(), D = 4200;
+      jet.setAttribute("opacity", 1);
+      const step = now => {
+        const k = Math.min(1, (now - t0) / D);
+        const a = dir * (-L / 2 - 340 + (L + 300) * (1 - Math.pow(1 - k, 1.6)));
+        const [x, y] = P(a, 0), s = 1.25 - 0.45 * Math.min(1, k * 1.6);
+        jet.setAttribute("transform", "translate(" + x + " " + y + ") rotate(" + (east ? ang + 90 : ang - 90) + ") scale(" + s + ")");
+        if (k < 1) anim = requestAnimationFrame(step);
+      };
+      anim = requestAnimationFrame(step);
+      $("#rwyOut").innerHTML = east
+        ? "💨 Wind from the <b>east</b>, so Jetty lands heading <b>east</b>, into the wind: <b>Runway 10</b>!"
+        : "💨 Wind from the <b>west</b>, so Jetty lands heading <b>west</b>, into the wind: <b>Runway 28</b>!";
+      S.wind();
+    }
+    const css = document.createElement("style");
+    css.textContent = "#rwysvg .wflow { animation: wf .7s linear infinite; } @keyframes wf { to { stroke-dashoffset: -24; } }";
+    document.head.appendChild(css);
+    return { draw, wind };
+  })();
+  B.on(5, () => build(5, st => {
+    RW.draw();
+    st.querySelectorAll("[data-w]").forEach(b => b.onclick = e => { e.stopPropagation(); RW.wind(b.dataset.w); });
+  }));
+
+  /* -------- 6 night -------- */
+  B.on(6, () => { const st = stageOf(6); F.weather(st, "stars", .5); build(6, st => {
+    B.hot(st, 40, 66, 22, 14, "Runway lights", () => {
+      S.sparkle(); const [x, y] = B.px(st, 40, 66); F.sparkles(st, x, y, 30);
+      B.bubble(st, 4, 6, "<b>Twinkle!</b>The white lights show the edges of the runway. The blue lights line the taxiways, the little roads planes use to drive to the gate.");
+    });
+    say(st, 90, 82, 12, 16, "An-An", "<b>An-An:</b> *yawn* Good night, Jetty! See you in the morning.", S.snore, 98, 60, true);
+    say(st, 52, 52, 10, 12, "Jetty", "<b>Jetty:</b> Zzzz... Even planes need quiet time, so the neighbors can sleep.", S.snore, 4, 6);
+    say(st, 32, 5, 8, 12, "Moon", "<b>The moon!</b>When the last flight lands, the airport goes quiet until early morning.", S.chime || S.ding, 4, 22);
+  }); });
+
+  /* -------- 7 route map (SVG from the shared Taiwan map) -------- */
+  const PLACES = [
+    { k: "tsa", name: "Songshan", at: [121.55, 25.07], home: true, say: "<b>Songshan Airport</b>, Taipei. All the routes start here!" },
+    { k: "kinmen", name: "Kinmen", at: [118.36, 24.43], dx: 0, dy: 50, say: "<b>Kinmen</b> is about <b>330 km</b> away, near the coast of China. About an hour by plane." },
+    { k: "matsu", name: "Matsu", at: [119.96, 26.16], dx: 0, dy: -30, say: "<b>Matsu</b>: a group of rocky islands in the north, close to the coast of China." },
+    { k: "penghu", name: "Penghu", at: [119.63, 23.57], dx: -10, dy: 52, say: "<b>Penghu</b>: about 90 islands in the middle of the Taiwan Strait, famous for windy winters." },
+    { k: "hualien", name: "Hualien", at: [121.62, 24.02], dx: 92, dy: 10, say: "<b>Hualien</b>, on the east coast, with tall mountains right next to the sea." },
+    { k: "taitung", name: "Taitung", at: [121.10, 22.75], dx: -92, dy: 10, say: "<b>Taitung</b>. From here, little planes and rescue helicopters hop to Green Island and Orchid Island." },
+    { k: "green", name: "Green Island", at: [121.47, 22.67], dx: 134, dy: 10, say: "<b>Green Island</b>: a tiny island with a short runway, too short for jets." },
+    { k: "lanyu", name: "Orchid Island", at: [121.55, 22.04], dx: 144, dy: 10, say: "<b>Orchid Island</b> (Lanyu): home of the Tao people and their colorful carved boats." },
+  ];
+  const ABROAD = [
+    { name: "Tokyo", to: [124.6, 27.2], say: "<b>To Tokyo</b>, Japan: about 3 hours. Planes land at Haneda, Tokyo's own city airport!" },
+    { name: "Seoul", to: [122.6, 27.35], say: "<b>To Seoul</b>, South Korea: about 2 and a half hours, to Gimpo, Seoul's city airport." },
+    { name: "Shanghai", to: [120.7, 27.4], say: "<b>To Shanghai</b>: about 2 hours, to Hongqiao, Shanghai's city airport." },
+  ];
+  B.on(7, () => build(7, st => {
+    const P = G.projector(1600);
+    // crop the shared map to the islands around Taiwan
+    const [x0, y0] = P([116.4, 27.5]), [x1, y1] = P([125.0, 21.75]);
+    const svg = el("svg", { viewBox: x0 + " " + y0 + " " + (x1 - x0) + " " + (y1 - y0), preserveAspectRatio: "xMidYMid meet" });
+    const path = (pts) => { const sm = G.smooth(pts.map(P), true, 5); return "M" + sm.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L") + "Z"; };
+    for (const k in G.LAND) svg.appendChild(el("path", { class: "land" + (["china", "luzon", "okinawa", "yonaguni", "iriomote", "ishigaki", "miyako", "batanes", "babuyan"].includes(k) ? " far" : ""), d: path(G.LAND[k]) }));
+    svg.appendChild(el("text", { class: "lbl sea", x: P([118.9, 23.6])[0], y: P([118.9, 23.6])[1], "text-anchor": "middle" }, "Taiwan Strait"));
+    svg.appendChild(el("text", { class: "lbl sea", x: P([123.0, 23.2])[0], y: P([123.0, 23.2])[1], "text-anchor": "middle" }, "Pacific Ocean"));
+    const home = P(PLACES[0].at), out = $("#mapOut");
+    const routes = {};
+    const curve = (a, b) => { const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1]; return "M" + a.join(",") + " Q" + (mx - dy * 0.18) + "," + (my + dx * 0.18) + " " + b.join(","); };
+    PLACES.slice(1).concat(ABROAD).forEach(p => {
+      const to = P(p.at || p.to);
+      // the tiny islands are reached from Taitung, not straight from Taipei
+      const from = (p.k === "green" || p.k === "lanyu") ? P(PLACES[5].at) : home;
+      const r = el("path", { class: "route", d: curve(from, to) }); svg.appendChild(r); routes[p.name] = r;
+    });
+    const show = (p, extra) => {
+      Object.values(routes).forEach(r => r.classList.remove("on"));
+      if (routes[p.name]) routes[p.name].classList.add("on");
+      if (extra) routes[extra].classList.add("on");
+      S.whoosh(); out.innerHTML = p.say;
+    };
+    PLACES.forEach(p => {
+      const [x, y] = P(p.at), g = el("g", { class: "pin" + (p.home ? " home" : ""), tabindex: 0, role: "button", "aria-label": p.name });
+      g.appendChild(el("circle", { cx: x, cy: y, r: p.home ? 20 : 15 }));
+      g.appendChild(el("circle", { cx: x, cy: y, r: 34, fill: "transparent", stroke: "none" }));
+      g.appendChild(el("text", { class: "lbl", x: x + (p.dx || 0), y: y + (p.dy != null ? p.dy : -24), "text-anchor": "middle" }, p.name));
+      g.onclick = e => { e.stopPropagation(); show(p, (p.k === "green" || p.k === "lanyu") ? "Taitung" : null); };
+      svg.appendChild(g);
+    });
+    ABROAD.forEach(p => {
+      const [x, y] = P(p.to), g = el("g", { class: "pin", tabindex: 0, role: "button", "aria-label": p.name });
+      g.appendChild(el("rect", { x: x - 95, y: y - 36, width: 190, height: 56, rx: 28, fill: "#fff", stroke: "#ff8a3d", "stroke-width": 4 }));
+      g.appendChild(el("text", { class: "lbl", x: x, y: y + 6, "text-anchor": "middle", style: "stroke-width:0;font-size:34px" }, p.name + " ➚"));
+      g.onclick = e => { e.stopPropagation(); show(p); };
+      svg.appendChild(g);
+    });
+    st.insertBefore(svg, st.firstChild);
+  }));
+
+  /* -------- 8 hangar -------- */
+  B.on(8, () => build(8, st => {
+    say(st, 33, 55, 24, 24, "Jetty", "<b>Jetty:</b> My little door folds down into stairs. Small private jets like me carry about 6 to 10 passengers.", S.jet, 4, 6);
+    say(st, 48, 48, 5, 12, "Pilot", "<b>The pilot:</b> Jets like Jetty usually fly with two pilots, just like big airliners. Safety first!", S.chirp, 4, 6);
+    say(st, 92, 82, 9, 22, "An-An", "<b>An-An:</b> Wow, a whole house just for airplanes!", S.yay, 98, 6, true);
+    say(st, 14, 42, 14, 12, "Other jets", "<b>More private jets!</b>They come from all over Asia and beyond.", S.whoosh, 4, 50);
+  }));
+
+  /* -------- 9 pack the air ambulance -------- */
+  B.on(9, () => build(9, st => {
+    const done = {}, out = $("#ambOut");
+    const MSG = { bed: "🛏️ A stretcher bed, locked down tight.", o2: "💨 Oxygen, to help with breathing.", mon: "💓 A heart monitor, to watch the heartbeat.", nurse: "👩‍⚕️ A flight nurse, trained to care for people in the air." };
+    st.querySelectorAll("[data-k]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.k;
+      if (done[k]) return; done[k] = true; b.classList.add("on"); b.textContent = "✔ " + b.textContent.replace(/^\S+ /, "");
+      S.ding(); out.innerHTML = MSG[k];
+      if (Object.keys(done).length === 4) { S.yay(); B.confetti && B.confetti(60); out.innerHTML = "✨ <b>Ready to fly!</b> Jetty is now a flying hospital."; B.speak(out.innerText); }
+    });
+    say(st, 34, 56, 12, 18, "Grandma", "<b>Grandma:</b> Thank you, dear. This bed is very comfy!", S.chirp, 4, 50);
+    say(st, 47, 30, 8, 12, "Heart monitor", "<b>Beep... beep...</b> The monitor shows the heartbeat as a wavy line.", S.tick, 4, 50);
+  }));
+
+  /* -------- 10 drive to the hospital -------- */
+  let hosTimer = null;
+  B.on(10, () => build(10, st => {
+    const btn = $("#hosBtn"), v = $("#clockV"), out = $("#hosOut");
+    const amb = document.createElement("div"); amb.className = "mover"; amb.style.cssText = "left:38%;top:62%;width:15%;display:none"; amb.innerHTML = '<img src="img/ambulance.webp" alt="">';
+    st.appendChild(amb);
+    btn.onclick = () => {
+      if (hosTimer) return; btn.disabled = true; S.ding();
+      amb.style.display = "block"; let m = 0, t = 0;
+      hosTimer = setInterval(() => {
+        t++; const k = Math.min(1, t / 60);
+        amb.style.left = (38 + 34 * k) + "%"; amb.style.top = (62 - 30 * k) + "%"; amb.style.width = (15 - 9 * k) + "%";
+        m = Math.round(12 * k); v.textContent = m;
+        if (t % 12 === 0) S.tick();
+        if (k >= 1) { clearInterval(hosTimer); hosTimer = null; btn.disabled = false; btn.textContent = "🔁 Again"; S.yay(); out.innerHTML = "🏥 At the hospital in about <b>12 minutes</b>! The doctors are ready."; amb.style.display = "none"; }
+      }, 60);
+    };
+    say(st, 34, 62, 14, 22, "Ambulance", "<b>Nee-naw!</b>The ambulance drives right up to the plane. No time wasted!", S.ding, 4, 6);
+    say(st, 56, 72, 10, 16, "Grandpa", "<b>Grandpa:</b> Thumbs up! I feel safe with all these helpers.", S.chirp, 4, 6);
+    say(st, 68, 18, 14, 22, "Hospital", "<b>A big hospital</b>, just past the airport fence. It even has a helipad on the roof for helicopters!", S.whoosh, 98, 22, true);
+  }), () => { if (hosTimer) { clearInterval(hosTimer); hosTimer = null; $("#hosBtn").disabled = false; } });
+
+  /* -------- 11 helicopter vs jet -------- */
+  const CMP = {
+    jet: [["Speed", "fast: about 750 km/h"], ["Lands on", "a long runway"], ["Best for", "long trips: Kinmen, Matsu, Penghu"], ["Hover?", "no, it must keep moving"]],
+    heli: [["Speed", "slower: about 250 km/h"], ["Lands on", "a small helipad (H)"], ["Best for", "tiny islands and mountains"], ["Hover?", "yes, like a hummingbird!"]],
+  };
+  B.on(11, () => build(11, st => {
+    st.querySelectorAll("[data-v]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const v = b.dataset.v; v === "jet" ? S.jet() : S.whoosh();
+      $("#cmpT").innerHTML = CMP[v].map(r => "<tr><td>" + r[0] + "</td><td><b>" + r[1] + "</b></td></tr>").join("");
+    });
+    B.hot(st, 50, 36, 22, 24, "Whirly", () => {
+      S.whoosh(); const [x, y] = B.px(st, 50, 24);
+      for (let i = 0; i < 6; i++) setTimeout(() => F.jet(st, x + (i - 2.5) * 30, y + 30, 0, 1, 12), i * 70);
+      B.bubble(st, 4, 6, "<b>Whup-whup-whup!</b>Whirly's blades are spinning wings. They push air down, so the air pushes Whirly up. It can hover in one spot!");
+    });
+    say(st, 33, 62, 8, 18, "Doctor", "<b>The island doctor:</b> Over here! Our patient is ready to go to the big hospital in Taitung.", S.chirp, 4, 50);
+    say(st, 20, 88, 18, 12, "Canoes", "<b>Carved canoes!</b>On Orchid Island, the Tao people build beautiful boats like these.", S.splash, 4, 50);
+  }));
+
+  /* -------- 12 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(12), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), y > 55 ? 6 : Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(12, () => F.weather(stageOf(12), "pollen", .3));
+
+  /* -------- 13 -------- */
+  B.on(13, () => { const st = stageOf(13); F.weather(st, "pollen", .3); build(13, st => {
+    say(st, 35, 32, 24, 24, "Jetty", "<b>Jetty:</b> Thanks for visiting Songshan! Ready to fly a rescue with me?", S.yay, 4, 60);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

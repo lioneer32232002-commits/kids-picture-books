@@ -38,6 +38,10 @@ JOBS = [
     ("skypilot", "square", "skypilot-square", (1080, 1080)),
     ("paris", "wide", "paris-fb", (1200, 630)),
     ("paris", "square", "paris-square", (1080, 1080)),
+    ("songshan", "wide", "songshan-fb", (1200, 630)),
+    ("songshan", "square", "songshan-square", (1080, 1080)),
+    ("skyrescue", "wide", "skyrescue-fb", (1200, 630)),
+    ("skyrescue", "square", "skyrescue-square", (1080, 1080)),
     ("cathedral", "wide", "cathedral-fb", (1200, 630)),
     ("cathedral", "square", "cathedral-square", (1080, 1080)),
 ]

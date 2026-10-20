@@ -54,6 +54,9 @@
 | 飛機 | Poppy | small chubby sunny-yellow propeller airplane, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), round bubble cockpit window, white wings with a red stripe, red propeller |
 | 巴黎 | Lea | cheerful 6-year-old Parisian girl, wavy chestnut-brown hair in a short ponytail, red beret, navy-and-white striped long-sleeve shirt, yellow overalls, red sneakers |
 | 巴黎 | Gus | small chubby friendly pale-gray stone gargoyle, tiny bat wings, two little round horns, big shiny eyes, rosy cheeks, wide happy open mouth（遊戲裡的排水石獸用 side view facing RIGHT, mouth wide open like a water spout） |
+| 松山機場 | An-An | cheerful 6-year-old Taiwanese kid plane spotter, very short black hair with straight bangs, round binoculars around the neck, mint-green hoodie with a little white airplane on the chest, navy shorts, yellow sneakers |
+| 松山機場 | Jetty | small chubby white business jet, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), teal stripe along its side, round windows, two small engines at the back next to a T-shaped tail with a little red heart（遊戲用 top-down 圖：nose pointing UP） |
+| 松山機場 | Whirly | chubby bright orange rescue helicopter, friendly face on its nose, white stripe, round bubble window, gray rotor blades, landing skids（top-down 圖 nose UP；旋翼由程式加一層轉動的圓盤） |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -81,6 +84,7 @@ Chrome 會擋 Gemini 連續自動下載：
 - 被擋時改用 `tools/dev/gemini_capture.js`：在頁面內載入原圖、分段截圖，再用 `tools/dev/stitch_tiles.py` 拼回來，約 1550px 寬，網頁用足夠。
 - **不要撿下載資料夾裡舊的 `Gemini_Generated_Image_*`**：曾經撿錯一張使用者自己的圖。
 - 不按下載鈕的取圖法（洋流書用這個）：頁面裡的預覽圖是 1024 px 的 blob，在頁面內用全螢幕 overlay 以 1:1 顯示，再用 zoom 截圖（`scale: 1`、`save_to_disk`）存下來，直式圖分兩段截再拼。網頁用夠了，也不會觸發瀏覽器下載。
+- 醫療主題：病人一律微笑、蓋毯子，提示詞寫 `calm, caring, not scary, no blood, no needles, no red cross symbols`（紅十字是受保護的標誌）。真的飛機（1936 年老客機、1970 年代噴射機）寫 `real plane, NO face`，只有主角有臉。
 - **最快的取圖法（飛機書用這個，連續 8 張以上沒被擋）**：在 Gemini 頁面內把 1024 px 預覽 blob 畫到 canvas → `toDataURL('image/jpeg', .93)` → 用 `<a download="flight_p05.jpg">` 觸發「data URL 下載」，檔名自己取，再從下載資料夾搬到 `_raw/`。不經過下載鈕，不會撿錯舊檔。
   輸入框用 `document.querySelector('rich-textarea .ql-editor').focus()` 對焦再打字，比點座標可靠（視窗大小一變，座標就點不到）。
 
@@ -131,6 +135,7 @@ Chrome 會擋 Gemini 連續自動下載：
   簡化但不亂做：搖桿是有防失速保護的 fly-by-wire（放手＝平飛），太慢只會下沉並亮 STALL；這點在頁面明寫。
 - **敏感時事只帶到能懂的程度**：巴黎書遇到暴動新聞，書裡不談暴動原因，只在法國大革命那頁寫「人們會為不公平發聲，最好的工具是說話、傾聽、投票」，畫面用 7 月 14 日的煙火，不畫衝突。
 - **蓋東西的遊戲不讓東西壞掉**（Cathedral Builders!）：石頭沒對準只會「Bonk!」滑掉再來一顆，沒有飛扶壁的牆只會搖晃，鴿子下雨時自己飛走再飛回來。
+- **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。
 - 測試時先 `localStorage.setItem('pb-muted','1')` 靜音；測完關掉測試分頁和伺服器。

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -178,6 +178,34 @@
   .cathedral.square .art { background-position: 80% 50%; }
   .cathedral.square .veil { background: linear-gradient(180deg, rgba(42,47,94,0) 0%, #2a2f5e 25%); }
 
+  /* ---------- songshan airport (the cover is flipped so Jetty sits on the right) ---------- */
+  .songshan .art { background-image: url(../../_raw/tsa/p01.jpg); transform: scaleX(-1); }
+  .songshan.wide .art { background-size: cover; background-position: 0% 50%; }
+  .songshan .veil { background: linear-gradient(90deg, rgba(236,251,248,.96) 0%, rgba(230,248,245,.84) 38%, rgba(230,248,245,0) 58%); }
+  .songshan .copy { color: #1d3a52; }
+  .songshan .kicker { background: #139c94; color: #fff; }
+  .songshan h1 { color: #1d3a52; text-shadow: 0 4px 0 #fff, 0 6px 18px rgba(255,255,255,.9); }
+  .songshan h1 span { color: #ff8a3d; }
+  .songshan .chip { background: #fff; color: #1d3a52; }
+  .songshan .cta { background: #ff8a3d; box-shadow: 0 6px 0 #d16a24; }
+  .songshan.wide h1 { font-size: 64px; }
+  .songshan.square .art { background-position: 20% 50%; }
+  .songshan.square .veil { background: linear-gradient(180deg, rgba(230,248,245,0) 0%, #e6f8f5 25%); }
+
+  /* ---------- sky rescue (game) ---------- */
+  .skyrescue .art { background-image: url(../../_raw/tsa/banner_game.jpg); }
+  .skyrescue.wide .art { background-size: cover; background-position: 80% 50%; }
+  .skyrescue .veil { background: linear-gradient(90deg, rgba(120,60,20,.82) 0%, rgba(150,80,30,.58) 36%, rgba(150,80,30,0) 56%); }
+  .skyrescue .copy { color: #fff; }
+  .skyrescue .kicker { background: #fff3c4; color: #8a3a10; }
+  .skyrescue h1 { color: #fff; text-shadow: 0 4px 0 #8a3a10, 0 8px 24px rgba(0,0,0,.45); }
+  .skyrescue h1 span { color: #fff36b; }
+  .skyrescue .chip { background: rgba(255,255,255,.95); color: #8a3a10; }
+  .skyrescue .cta { background: #139c94; box-shadow: 0 6px 0 #0d6f69; }
+  .skyrescue.wide h1 { font-size: 80px; }
+  .skyrescue.square .art { background-position: 80% 50%; }
+  .skyrescue.square .veil { background: linear-gradient(180deg, rgba(150,80,30,0) 0%, #8a4a1c 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -283,6 +311,20 @@
       title: "Cathedral <span>Builders!</span>",
       sub: "Stack the stones, hold up the roof with flying buttresses, and let gargoyles spit the rain away!",
       chips: ["🧱 Stack & build", "🌧️ Beat the storm", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
+    },
+    songshan: {
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "The Airport in the <span>Middle of the City</span>",
+      sub: "Songshan Airport since 1936: runway numbers, private jets, and air ambulances that bring islanders to big hospitals.",
+      chips: ["🛬 Taipei Songshan", "🚁 Rescue game", "🧒 Ages 5–7"],
+      cta: "Read & fly free ▶",
+    },
+    skyrescue: {
+      kicker: "FREE RESCUE FLIGHT GAME",
+      title: "Sky <span>Rescue!</span>",
+      sub: "Fly Jetty the jet and Whirly the helicopter to Taiwan's islands, dodge storms, and bring patients to the hospital.",
+      chips: ["🗺️ Real Taiwan map", "🚑 8 missions", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
     planet: {

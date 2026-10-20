@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sky Rescue! | A Kids' Air Ambulance Game from "The Airport in the Middle of the City"</title>
+<meta name="description" content="A free rescue flight game for kids 5-7: fly Jetty the little jet and Whirly the rescue helicopter over a real map of Taiwan's islands, land on runways and helipads, keep your patient cozy and bring them to the ambulance at Songshan Airport.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sky Rescue! 🚁 A rescue flight game for kids">
+<meta property="og:description" content="Fly to Kinmen, Matsu, Penghu and Orchid Island, dodge storms, land on the runway or the H, and bring patients to the hospital. 8 missions + free flight.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/skyrescue-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #139c94; --bg: radial-gradient(circle at 15% 10%, #d9f6f1 0, transparent 40%), radial-gradient(circle at 90% 90%, #ffeedd 0, transparent 45%), #f1fbf9; }
+  .gamebox { width: min(100% - 24px, calc((100vh - 84px) * 16 / 9), 1280px); margin: 0 auto 16px; }
+  #game { width: 100%; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #3f9fd6; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #game canvas { display: block; }
+  .side { max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.45; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .side ul { margin: 4px 0; padding-left: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .gamebox { width: min(100% - 12px, calc((100vh - 64px) * 16 / 9)); } }
+  @media (orientation: portrait) and (max-width: 860px) { .turn { display: block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🚁</span>Sky Rescue!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<p class="turn" style="display:none;text-align:center;margin:0 12px 8px;font-weight:800">📱 Turn your phone sideways for a bigger map!</p>
+<div class="gamebox"><div id="game"></div></div>
+<div class="side">
+  <div class="box">
+    <h3>🕹️ How to fly</h3>
+    <ul>
+      <li><b>TAKE OFF</b>, then <b>touch and hold the map</b> where you want to go. Follow the pink GPS line.</li>
+      <li><b>POWER</b> lever: FAST for long trips, SLOW to land. Whirly can also <b>HOVER</b>.</li>
+      <li><b>Jetty</b> lands on a runway: <b>GEAR</b> down (wait for 3 green lights), SLOW, and fly into the glowing arrows.</li>
+      <li><b>Whirly</b> lands on the <b>H</b>: slow down over it and press <b>LAND</b>.</li>
+      <li>When the nurse asks, tap <b>🛏️ 💨 💧 💓</b> to keep your patient cozy.</li>
+    </ul>
+    <p class="note">Keyboard: ← → steer, ↑ ↓ power, G = gear, Space = take off / land, 1–4 = care buttons.</p>
+  </div>
+  <div class="box">
+    <h3>🔬 Is it real?</h3>
+    The map is a real map of Taiwan and its islands, and the runways point the right way, with their real numbers. Planes take off and land <b>into the wind</b>. A jet's wheels take a few seconds to come down, and they can't fold up on the ground. Pilots really use <b>weather radar</b> to fly around storms, and rescue helicopters really fly to Green Island and Orchid Island.
+    <p class="note">Game note: the islands and airports are drawn bigger than real, and the trips are much shorter. Real air ambulances are flown by trained crews, and doctors decide who needs one. The people in the game are pretend, and nothing can get hurt: birds always fly away safely.</p>
+  </div>
+  <div class="box">
+    <h3>🏥 Why Songshan?</h3>
+    Songshan Airport is right in the middle of Taipei, so big hospitals are only a short ambulance ride away. Planes from Songshan are a bridge in the sky to Kinmen, Matsu and Penghu, and some private jets there can carry a stretcher bed, like Jetty.
+    <p class="note">Read the story first: <a href="./">The Airport in the Middle of the City</a>.</p>
+  </div>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Map of Taiwan's seas from <a href="../currents/">Rivers in the Sea</a> · Built with Phaser · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script src="sim.js"></script>
+<script src="game.js"></script>
+<script>
+  SkyRescue.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__srGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>
