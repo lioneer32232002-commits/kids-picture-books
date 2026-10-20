@@ -136,7 +136,11 @@
   /* ============================================================ PLAY */
   class Play extends Phaser.Scene {
     constructor() { super("play"); }
-    init(d) { this.li = d.level; this.round = d.round || 0; this.built = d.built || 0; }
+    init(d) {
+      this.li = d.level; this.round = d.round || 0; this.built = d.built || 0;
+      // Phaser reuses this scene object for every level, so clear what the last level left behind
+      this.ended = false; this.pushLabels = null; this.dryLbl = null; this.bub = null; this.dragging = null;
+    }
     create() {
       const L = this.L = this.li < 0 ? Object.assign(C.endless(this.round), { endless: true }) : LEVELS[this.li];
       const sim = this.sim = new C.Sim(L), G = this.G = sim.G;
@@ -175,7 +179,10 @@
       this.input.on("pointerdown", p => this.onDown(p));
       this.input.on("pointermove", p => this.onMove(p));
       this.input.on("pointerup", p => this.onUp(p));
-      this.input.keyboard && this.input.keyboard.on("keydown-SPACE", () => { if (this.sim.drop()) S.tick(); });
+      if (this.input.keyboard) {
+        this.input.keyboard.addCapture("SPACE");   // otherwise Space also scrolls the page down
+        this.input.keyboard.on("keydown-SPACE", () => { if (this.sim.drop()) S.tick(); });
+      }
       this.wobble = [0, 0];
       this.phaseUi();
     }
@@ -443,9 +450,16 @@
         g.fillStyle(0x8a5a2b, 1).fillRect(0, 22, W, 14);
         g.lineStyle(3, 0x5e3f22, 1).lineBetween(hx, 36, hx, hy);
         g.fillStyle(0x5e3f22, 1).fillRect(hx - 12, 30, 24, 12);
-        // where to drop: a dotted outline on top of the wall
-        fx.lineStyle(3, 0xffffff, 0.55 + 0.3 * Math.sin(t * 6)).strokeRect(T.x - T.w / 2, T.y - T.h, T.w, T.h);
+        // where to drop: a glowing yellow box on top of the wall, with a bouncing arrow
+        const pulse = 0.5 + 0.5 * Math.sin(t * 6), over = Math.abs(hx - T.x) < (T.spire ? C.BEAM_W * 0.4 : BW * 0.35);
+        fx.fillStyle(over ? 0x5ccf6a : 0xffd23f, 0.3 + 0.2 * pulse).fillRect(T.x - T.w / 2, T.y - T.h, T.w, T.h);
+        fx.lineStyle(5, over ? 0x2f9e44 : 0xffb020, 1).strokeRect(T.x - T.w / 2, T.y - T.h, T.w, T.h);
+        const ay = T.y - T.h - 16 - 8 * pulse;
+        fx.fillStyle(0xffb020, 1).fillTriangle(T.x - 16, ay - 18, T.x + 16, ay - 18, T.x, ay);
+        fx.fillRect(T.x - 6, ay - 38, 12, 22);
         const f = sim.falling;
+        // a dotted line straight down from the stone shows where it will land (green when it's right above the box)
+        if (!f) for (let y = hy + 30; y < T.y - T.h - 4; y += 18) fx.fillStyle(over ? 0x5ccf6a : 0xffffff, over ? 0.95 : 0.6).fillRect(hx - 2, y, 4, 9);
         const bx = f ? f.x : hx, by = f ? f.y : hy + 4 + T.h / 2;
         if (T.spire) { g.fillStyle(0x9a6a3c, 1).fillRect(bx - T.w / 2, by - T.h / 2, T.w, T.h); g.lineStyle(2, 0x5e3f22, 1).strokeRect(bx - T.w / 2, by - T.h / 2, T.w, T.h); }
         else { g.fillStyle(0xeadcbf, 1).fillRect(bx - BW / 2, by - BH / 2, BW, BH); g.lineStyle(2, 0x9c8664, 1).strokeRect(bx - BW / 2, by - BH / 2, BW, BH); }
