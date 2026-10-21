@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Typhoon Chasers! | A Kids' Typhoon Game from "Here Comes a Typhoon!"</title>
+<meta name="description" content="A free typhoon game for kids 5-7: fly Swoop the weather jet around a spinning typhoon to drop dropsondes, ride the counterclockwise wind, stay out of the eyewall, and help Mei get her home ready before the typhoon arrives.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Typhoon Chasers! 🌀 A typhoon game for kids">
+<meta property="og:description" content="Fly around a spinning typhoon, drop dropsondes for the forecasters, then bring everything inside before the wind gets strong. 8 missions + Free Chase.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/typhoonchasers-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #3b7dd8; --bg: radial-gradient(circle at 15% 10%, #dbeaff 0, transparent 40%), radial-gradient(circle at 90% 90%, #fff3cf 0, transparent 45%), #f2f7ff; }
+  .gamebox { width: min(100% - 24px, calc((100vh - 84px) * 16 / 9), 1280px); margin: 0 auto 16px; }
+  #game { width: 100%; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #2f6fae; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #game canvas { display: block; }
+  .side { max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.45; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .side ul { margin: 4px 0; padding-left: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .gamebox { width: min(100% - 12px, calc((100vh - 64px) * 16 / 9)); } }
+  @media (orientation: portrait) and (max-width: 860px) { .turn { display: block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🌀</span>Typhoon Chasers!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<p class="turn" style="display:none;text-align:center;margin:0 12px 8px;font-weight:800">📱 Turn your phone sideways for a bigger map!</p>
+<div class="gamebox"><div id="game"></div></div>
+<div class="side">
+  <div class="box">
+    <h3>🕹️ How to play</h3>
+    <ul>
+      <li><b>✈️ Chase:</b> touch and hold where you want Swoop to fly (or use ← →). Fly through the glowing <b>rings</b> to drop dropsondes, then follow the pink line home.</li>
+      <li>Stay outside the red dashed <b>eyewall</b> ring, and fly around the red <b>thunderstorms</b>.</li>
+      <li>Fly the same way the wind spins (counterclockwise) for a <b>tailwind</b>!</li>
+      <li><b>🏠 Get Ready:</b> tap things in the yard and Mei fetches them; Grandpa gets the balcony. Save the <b>wobbling</b> ones first, and pack the typhoon kit.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <h3>🔬 Is it real?</h3>
+    Typhoon winds really spin counterclockwise north of the equator, with a calm eye and the strongest wind in the eyewall. Taiwan really sends a jet to fly around typhoons about 13,000 meters up and drop dropsondes, and the data really helps forecasters. Bringing things inside, a flashlight, water and food are the real ways families get ready.
+    <p class="note">Game note: the typhoon is drawn smaller than real, it moves much faster, and the trips are much shorter. The real jet takes off from Taichung and flies around the storm, never through the eyewall. People and faces are pretend, and nothing gets hurt: things that blow away just roll off the screen.</p>
+  </div>
+  <div class="box">
+    <h3>🌀 Read the story</h3>
+    Why does a typhoon spin? Why is the eye calm? What do the warnings mean? Read <a href="./">Here Comes a Typhoon!</a> with Mei and Swoop first.
+  </div>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Map of Taiwan's seas from <a href="../currents/">Rivers in the Sea</a> · Built with Phaser · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script src="sim.js"></script>
+<script src="game.js"></script>
+<script>
+  window.__tcGame = TyphoonChasers.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__tcGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>

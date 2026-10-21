@@ -57,6 +57,9 @@
 | 松山機場 | An-An | cheerful 6-year-old Taiwanese kid plane spotter, very short black hair with straight bangs, round binoculars around the neck, mint-green hoodie with a little white airplane on the chest, navy shorts, yellow sneakers |
 | 松山機場 | Jetty | small chubby white business jet, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), teal stripe along its side, round windows, two small engines at the back next to a T-shaped tail with a little red heart（遊戲用 top-down 圖：nose pointing UP） |
 | 松山機場 | Whirly | chubby bright orange rescue helicopter, friendly face on its nose, white stripe, round bubble window, gray rotor blades, landing skids（top-down 圖 nose UP；旋翼由程式加一層轉動的圓盤） |
+| 颱風 | Mei | cheerful 6-year-old Taiwanese girl, short black hair in two small round buns on top of her head, bright yellow raincoat, red rain boots, small blue flashlight（晚上穿星星睡衣） |
+| 颱風 | Swoop | small chubby sky-blue jet plane, friendly face on its nose (big shiny eyes, little smile, rosy cheeks), white belly, yellow stripe along its side, round windows, two small engines at the back, T-shaped tail（遊戲 top-down 圖 nose UP；真的追風機沒有臉） |
+| 颱風 | Grandpa | kind Taiwanese grandpa, short gray hair, round glasses, green cardigan |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -75,6 +78,8 @@
 - **要會動的地標另外畫**：巴黎書第 7 頁的艾菲爾鐵塔要隨太陽傾斜，插圖明寫「NO Eiffel Tower in this picture」，鐵塔另畫一張 9:16 白底單張素材（`SPRITES` 裡的 `tower`）再疊上去。
 - **新舊對照要同角度**：羅浮宮「城堡 → 博物館」兩張圖，第二張提示詞寫「same camera angle and composition as the castle picture」，切換時才對得上。
 - 歷史頁的提示詞要寫「no signs with writing, no flags with writing」，不然招牌、旗子會冒出亂碼字。
+- **颱風不是龍捲風**：只寫 typhoon cloud 會畫成細長漏斗。要寫「GIANT WIDE FLAT spiral of clouds ... many times wider than it is tall ... NOT a funnel, NOT a tornado」。從上往下看的颱風要檢查旋臂：北半球往外是**順時針捲出去**（風逆時針吹），畫反了就左右翻圖。
+- 颱風季不要畫山頂積雪；颱風前後的畫面，陽台和院子不能還擺著盆栽（跟「收進屋」的教學矛盾），要明寫 the balcony must be EMPTY。
 - 白底素材表裡「白色或透明」的東西（塑膠袋、寶特瓶）要指定淡紫灰、淡藍等顏色，不然去背會被吃掉；網子這類有破洞的東西在 `process_images.py` 的 `HOLES` 加名字，會把洞裡的白色一起去掉。
 
 ### 2.5 取圖
@@ -85,6 +90,7 @@ Chrome 會擋 Gemini 連續自動下載：
 - **不要撿下載資料夾裡舊的 `Gemini_Generated_Image_*`**：曾經撿錯一張使用者自己的圖。
 - 不按下載鈕的取圖法（洋流書用這個）：頁面裡的預覽圖是 1024 px 的 blob，在頁面內用全螢幕 overlay 以 1:1 顯示，再用 zoom 截圖（`scale: 1`、`save_to_disk`）存下來，直式圖分兩段截再拼。網頁用夠了，也不會觸發瀏覽器下載。
 - 醫療主題：病人一律微笑、蓋毯子，提示詞寫 `calm, caring, not scary, no blood, no needles, no red cross symbols`（紅十字是受保護的標誌）。真的飛機（1936 年老客機、1970 年代噴射機）寫 `real plane, NO face`，只有主角有臉。
+- 颱風書時 data URL 下載只成功第一張，第二張起 Chrome 擋自動下載：改用「頁面內 canvas 全螢幕 overlay（CSS 寬 = naturalWidth / devicePixelRatio）→ `zoom` 截 region `scale: 1`、`save_to_disk`」，存下來剛好 1024×572 原尺寸。截圖前先 `hover` 到畫面右下角，避免游標入鏡。
 - **最快的取圖法（飛機書用這個，連續 8 張以上沒被擋）**：在 Gemini 頁面內把 1024 px 預覽 blob 畫到 canvas → `toDataURL('image/jpeg', .93)` → 用 `<a download="flight_p05.jpg">` 觸發「data URL 下載」，檔名自己取，再從下載資料夾搬到 `_raw/`。不經過下載鈕，不會撿錯舊檔。
   輸入框用 `document.querySelector('rich-textarea .ql-editor').focus()` 對焦再打字，比點座標可靠（視窗大小一變，座標就點不到）。
 
@@ -135,6 +141,8 @@ Chrome 會擋 Gemini 連續自動下載：
   簡化但不亂做：搖桿是有防失速保護的 fly-by-wire（放手＝平飛），太慢只會下沉並亮 STALL；這點在頁面明寫。
 - **敏感時事只帶到能懂的程度**：巴黎書遇到暴動新聞，書裡不談暴動原因，只在法國大革命那頁寫「人們會為不公平發聲，最好的工具是說話、傾聽、投票」，畫面用 7 月 14 日的煙火，不畫衝突。
 - **蓋東西的遊戲不讓東西壞掉**（Cathedral Builders!）：石頭沒對準只會「Bonk!」滑掉再來一顆，沒有飛扶壁的牆只會搖晃，鴿子下雨時自己飛走再飛回來。
+- **追風遊戲**（颱風書）：風場逆時針、眼裡無風、眼牆最強（遊戲裡眼牆外一圈紅色虛線不能飛，進去只會被彈出來、扣一個 bump，不會失敗）；順著旋轉飛會有順風，逆著飛會很慢，這是遊戲的核心教學。雷雨胞沒有臉。準備關不是「點一下就收好」，而是美美走過去搬（重的東西走比較慢），陽台交給爺爺，所以要先救搖晃的東西；機器人用「亂序慢慢點」測試，第 6 關亂點會丟東西。
+- Windows 10 的 canvas 字型畫不出 🪂（emoji 12），遊戲裡改用 📡；HTML 文字可以用。
 - **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。

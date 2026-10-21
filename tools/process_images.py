@@ -14,7 +14,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520, "tower": 760}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -84,13 +84,23 @@ SHEETS_BY_BOOK = {
                         [("lea", 0, 0, 340), ("gus", 1, 0, 300), ("garg", 2, 0, 220), ("pigeon", 3, 0, 160),
                          ("window", 0, 1, 320), ("rooster", 1, 1, 200), ("cloud", 2, 1, 340), ("lea_wave", 3, 1, 340)]},
     },
+    # typhoon book + Typhoon Chasers! (Swoop's side view faces right, its top-down view points up)
+    "typhoon": {
+        "sheet_cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                       [("mei", 0, 0, 320), ("swoop", 1, 0, 420), ("swoop_top", 2, 0, 300),
+                        ("sonde", 0, 1, 200), ("mei_light", 1, 1, 320), ("grandpa", 2, 1, 320)]},
+        "sheet_home": {n: ((c / 4, r / 3, (c + 1) / 4, (r + 1) / 3), 200) for n, c, r in
+                       [("pot", 0, 0), ("tree", 1, 0), ("bike", 2, 0), ("chair", 3, 0),
+                        ("chime", 0, 1), ("bin", 1, 1), ("umbrella", 2, 1), ("laundry", 3, 1),
+                        ("flashlight", 0, 2), ("water", 1, 2), ("radio", 2, 2), ("cans", 3, 2)]},
+    },
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket", "ambulance", "jetty"}
 # sprites made of several blobs (a cloud and its lightning bolt, a flock of birds): keep every blob in the box
-MULTI = {"storm", "gulls"}
+MULTI = {"storm", "gulls", "sonde", "chime", "water"}
 # see-through sprites (nets): white holes inside the shape are cleared too
-HOLES = {"net", "bignet"}
+HOLES = {"net", "bignet", "bike", "chair", "laundry"}
 
 
 def page(src: Path, dst: Path, width=1600):
@@ -150,7 +160,7 @@ def sheet_sprites(src: Path, out_dir: Path, parts: dict):
         l, t, r, b = box
         best, best_size, keep = None, 0, []
         for i in range(n):
-            if sizes[i] < 2000:
+            if sizes[i] < (150 if name in MULTI else 2000):
                 continue
             ys, xs = np.nonzero(labels == i + 1)
             cx, cy = xs.mean() / W, ys.mean() / H

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -206,6 +206,33 @@
   .skyrescue.square .art { background-position: 80% 50%; }
   .skyrescue.square .veil { background: linear-gradient(180deg, rgba(150,80,30,0) 0%, #8a4a1c 25%); }
 
+  /* ---------- typhoon (the banner art leaves the left side empty for the title) ---------- */
+  .typhoon .art { background-image: url(../../_raw/typhoon/banner.jpg); }
+  .typhoon.wide .art { background-size: cover; background-position: 50% 50%; }
+  .typhoon .veil { background: linear-gradient(90deg, rgba(236,244,255,.95) 0%, rgba(228,240,255,.8) 36%, rgba(228,240,255,0) 56%); }
+  .typhoon .copy { color: #1d3354; }
+  .typhoon .kicker { background: #3b7dd8; color: #fff; }
+  .typhoon h1 { color: #1d3354; text-shadow: 0 4px 0 #fff, 0 6px 18px rgba(255,255,255,.9); }
+  .typhoon h1 span { color: #f2a516; }
+  .typhoon .chip { background: #fff; color: #1d3354; }
+  .typhoon .cta { background: #f2a516; box-shadow: 0 6px 0 #c47f05; }
+  .typhoon.square .art { background-position: 85% 50%; }
+  .typhoon.square .veil { background: linear-gradient(180deg, rgba(228,240,255,0) 0%, #e4f0ff 25%); }
+
+  /* ---------- Typhoon Chasers! (the chase picture: Swoop already sits on the right) ---------- */
+  .typhoonchasers .art { background-image: url(../../_raw/typhoon/p04.jpg); }
+  .typhoonchasers.wide .art { background-size: cover; background-position: 50% 50%; }
+  .typhoonchasers .veil { background: linear-gradient(90deg, rgba(30,50,110,.85) 0%, rgba(40,60,120,.6) 36%, rgba(40,60,120,0) 56%); }
+  .typhoonchasers .copy { color: #fff; }
+  .typhoonchasers .kicker { background: #ffd23d; color: #1d3354; }
+  .typhoonchasers h1 { color: #fff; text-shadow: 0 4px 0 #1d3354, 0 8px 24px rgba(0,0,0,.45); }
+  .typhoonchasers h1 span { color: #ffd23d; }
+  .typhoonchasers .chip { background: rgba(255,255,255,.95); color: #1d3354; }
+  .typhoonchasers .cta { background: #f2a516; box-shadow: 0 6px 0 #c47f05; }
+  .typhoonchasers.wide h1 { font-size: 80px; }
+  .typhoonchasers.square .art { background-position: 75% 50%; }
+  .typhoonchasers.square .veil { background: linear-gradient(180deg, rgba(40,60,120,0) 0%, #2a3f7a 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -325,6 +352,20 @@
       title: "Sky <span>Rescue!</span>",
       sub: "Fly Jetty the jet and Whirly the helicopter to Taiwan's islands, dodge storms, and bring patients to the hospital.",
       chips: ["🗺️ Real Taiwan map", "🚑 8 missions", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
+    },
+    typhoon: {
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "Here Comes a <span>Typhoon!</span>",
+      sub: "Why does a typhoon spin? Why is the eye so calm? How do we get ready? Learn with Mei and Swoop the weather jet.",
+      chips: ["🌀 The calm eye", "✈️ Chasing game", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    typhoonchasers: {
+      kicker: "FREE TYPHOON GAME FOR KIDS",
+      title: "Typhoon <span>Chasers!</span>",
+      sub: "Fly around a spinning typhoon, drop weather probes for the forecasters, then get Mei's home ready before the wind comes!",
+      chips: ["🌀 Ride the spin", "🏠 Get ready", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
     planet: {

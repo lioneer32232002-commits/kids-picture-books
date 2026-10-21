@@ -44,6 +44,10 @@ JOBS = [
     ("skyrescue", "square", "skyrescue-square", (1080, 1080)),
     ("cathedral", "wide", "cathedral-fb", (1200, 630)),
     ("cathedral", "square", "cathedral-square", (1080, 1080)),
+    ("typhoon", "wide", "typhoon-fb", (1200, 630)),
+    ("typhoon", "square", "typhoon-square", (1080, 1080)),
+    ("typhoonchasers", "wide", "typhoonchasers-fb", (1200, 630)),
+    ("typhoonchasers", "square", "typhoonchasers-square", (1080, 1080)),
 ]
 
 

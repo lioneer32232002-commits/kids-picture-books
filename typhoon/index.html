@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Here Comes a Typhoon! A Typhoon Picture Book for Kids | Picture Book + Typhoon Chasers! Game</title>
+<meta name="description" content="How is a typhoon born? Why does it spin, and why is the eye calm? How do forecasters know where it will go, and how do we get ready? A picture book about typhoons and Taiwan's typhoon-chasing jet, plus a game where you drop weather probes around a typhoon and get your home ready. For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Here Comes a Typhoon! 🌀 A picture book + a typhoon-chasing game for kids">
+<meta property="og:description" content="Why do typhoons spin? Why is the eye so calm? Meet Mei and Swoop the weather jet, then chase a typhoon and get your home ready before the wind comes. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/typhoon-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/typhoon/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #3b7dd8; --accent-4: #f2a516;
+    --bg: radial-gradient(circle at 12% 8%, #dbeaff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #fff3cf 0, transparent 45%), #f2f7ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #3b7dd8; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.orange { background: #f2a516; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.gray { background: #6b7a90; } .bigbtn.red { background: #e0535a; }
+  .bigbtn[disabled] { opacity: .45; }
+  /* SVG pages */
+  .svgstage { background: linear-gradient(#2d6fb5, #1f5a99); }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mapstage { background: linear-gradient(#9fd3f2, #7fbfe6); }
+  .mapstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mapstage .land { fill: #cfe7a6; stroke: #8dbb6a; stroke-width: 3; stroke-linejoin: round; }
+  .mapstage .land.far { fill: #e3dcc0; stroke: #c3b78f; }
+  .lbl { font: 800 40px "Baloo 2", sans-serif; fill: #24305e; paint-order: stroke; stroke: #fff; stroke-width: 6px; pointer-events: none; }
+  .lbl.sea { fill: #2f5f8f; font-weight: 700; font-style: italic; font-size: 34px; }
+  .spin-ccw { animation: ccw 9s linear infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes ccw { to { transform: rotate(-360deg); } }
+  .spin-ccw.fast { animation-duration: 3.5s; }
+  /* page 2: thermometer */
+  .thermo { position: absolute; left: 3%; bottom: 6%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 12px; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); }
+  .thermo .bar { width: clamp(80px, 16vw, 180px); height: 16px; border-radius: 99px; background: #e3ecf7; overflow: hidden; }
+  .thermo .bar i { display: block; height: 100%; width: 10%; background: linear-gradient(90deg, #6fb7ff, #ffb347, #ff6b5a); border-radius: 99px; transition: width .4s; }
+  .swirl { position: absolute; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 1s; }
+  .swirl.on { opacity: .85; }
+  /* page 4: wind meter slider */
+  .meter { position: absolute; left: 3%; right: 3%; bottom: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 6px 14px; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: clamp(12px, 1.7vw, 18px); }
+  .meter input { flex: 1; accent-color: #3b7dd8; height: 30px; }
+  .dot { position: absolute; z-index: 3; width: 4%; aspect-ratio: 1; border-radius: 50%; background: #ff5a8a; border: 4px solid #fff; transform: translate(-50%, -50%); box-shadow: 0 0 0 6px rgba(255,90,138,.35); pointer-events: none; }
+  /* page 7: dropsonde */
+  .sonde { position: absolute; z-index: 3; width: 7%; transform: translate(-50%, -50%); pointer-events: none; transition: top 2.4s ease-in, left 2.4s ease-out, opacity .6s 1.9s; }
+  .sonde img { width: 100%; display: block; }
+  .cone { position: absolute; right: 3%; bottom: 5%; z-index: 4; width: min(36%, 300px); background: rgba(255,255,255,.95); border-radius: 18px; padding: 6px 10px 2px; font-weight: 800; font-size: clamp(11px, 1.5vw, 16px); text-align: center; }
+  .cone svg { width: 100%; display: block; }
+  /* page 8: get-ready checklist */
+  .check { position: absolute; left: 2%; top: 4%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 10px; font-weight: 800; display: grid; gap: 5px; max-width: 48%; }
+  .check .bigbtn { text-align: left; font-size: clamp(11px, 1.5vw, 17px); padding: 4px 12px; }
+  /* page 9: lights out */
+  .dark { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .5s;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,250,210,0) 0, rgba(255,250,210,0) 11%, rgba(8,12,30,.93) 19%); }
+  .dark.on { opacity: 1; }
+  /* page 10: the eye passes */
+  .storm-over { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1.2s; background: linear-gradient(rgba(60,70,90,.55), rgba(60,70,90,.25)); }
+  .storm-over.on { opacity: 1; }
+  .windarrow { position: absolute; z-index: 3; left: 30%; top: 40%; font-size: clamp(30px, 6vw, 64px); pointer-events: none; opacity: 0; transition: opacity .5s; }
+  .windarrow.on { opacity: 1; animation: blow 1s ease-in-out infinite; }
+  @keyframes blow { 50% { transform: translateX(14px); } }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #f2a516; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #c47f05; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#9fc9ff, #e8f2ff 62%, #5d8fd0 62%, #3f73b8); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🌀</span>Here Comes a Typhoon!</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Mei, a girl in a yellow raincoat, looks out of her window. Far away over the sea, a giant flat spiral of clouds spins, and Swoop, a little sky-blue jet with a friendly face, flies above it."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Here Comes a Typhoon!</h1>
+        <p>Every summer and fall, giant spinning storms called <span class="hl">typhoons</span> form over the warm seas. Each year, about <b>3 or 4</b> of them come close to Taiwan.</p>
+        <p>This is Mei. And that's Swoop, a little weather jet that <b>chases typhoons</b>! Let's find out how a typhoon works, and how to stay safe.</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 HOW A TYPHOON IS BORN -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage" id="born"><img class="art" src="img/p02.webp" alt="A warm sunny ocean. Wisps of warm water vapor rise from the sea, and tall puffy clouds begin to curl into a spiral.">
+        <svg class="swirl" id="bornSwirl" viewBox="-100 -100 200 200" style="left:52%;top:4%;width:34%" aria-hidden="true"></svg>
+        <div class="thermo" data-noread><span>🌡️ Sea: <span id="tempV">24</span>°C</span><span class="bar"><i id="tempBar"></i></span></div>
+        <div class="ctl" data-noread><button class="bigbtn orange" id="sunBtn">☀️ Warm the sea!</button></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>A typhoon is born over a <b>warm, warm ocean</b>. The sun heats the sea until the water is warmer than about <b>26°C</b>, like a warm swimming pool.</p>
+        <p>Warm, wet air rises up and makes tall clouds. More air rushes in to fill the gap, and the clouds start to <span class="hl">spin</span>. 👆 Warm the sea and watch!</p>
+        <span class="fact">🌊 About <b>26</b> typhoons are born over the Pacific Ocean near Asia every year. Most come in <b>July, August and September</b>. August has the most!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 WHICH WAY DOES IT SPIN? -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage svgstage" id="spin">
+        <svg id="spinsvg" viewBox="0 0 1000 560" aria-label="A typhoon seen from above, spinning"></svg>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn on" data-h="n">🧭 North (Taiwan)</button><button class="bigbtn purple" data-h="s">South (Australia) 🧭</button></div>
+        <div class="readout" id="spinOut" style="left:auto;right:3%;max-width:40%">North of the equator: <b>counterclockwise</b> ↺</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Look at a typhoon from high above. Its winds spin around the middle, <span class="hl">counterclockwise</span>: the opposite way from a clock's hands.</p>
+        <p>The Earth turns, and that gives the winds a little sideways push. On the other side of the equator, the push goes the other way, so storms there spin <b>clockwise</b>! 👆 Try both.</p>
+        <span class="fact">📛 Every typhoon gets a name from a list of <b>140 names</b>, shared by 14 countries and places around the Pacific. Some are flowers, animals and stars!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 THE EYE -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="eye"><img class="art" src="img/p03.webp" alt="A typhoon seen from high above: a huge white spiral of clouds with a round, clear eye in the middle, where the calm blue sea shows through. Swoop flies near the edge.">
+        <div class="dot" id="eyeDot" style="left:12%;top:86%"></div>
+        <div class="meter" data-noread><span>Edge</span><input type="range" id="eyeR" min="0" max="100" value="0" aria-label="Move the wind meter from the edge to the eye"><span>Eye</span></div>
+        <div class="readout" id="eyeOut">👇 Slide the wind meter into the storm!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>In the very middle of a typhoon is the <b>eye</b>. Inside the eye, the wind is <span class="hl">calm</span>, and you can even see blue sky!</p>
+        <p>Right around the eye is the <b>eyewall</b>, a ring of giant clouds. That's where the wind blows the <span class="big">strongest</span>. Farther out, the wind gets weaker. 👆 Slide the wind meter.</p>
+        <span class="fact">👁️ A typhoon's eye is about <b>45 km</b> wide, on average. Small eyes are 10 to 20 km wide, and big ones can be 100 km or more!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 HOW BIG? -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage mapstage" id="size">
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start;max-width:60%"><button class="bigbtn" data-s="150">🌀 Small</button><button class="bigbtn orange" data-s="250">🌀 Average</button><button class="bigbtn purple" data-s="450">🌀 Big</button></div>
+        <div class="readout" id="sizeOut" style="left:auto;right:3%;max-width:40%">👇 How big is a typhoon?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Typhoons are <b>huge</b>! The windy part of an average typhoon reaches <b>200 to 300 km</b> out from the middle. A big one can reach <b>400 to 500 km</b>.</p>
+        <p>Taiwan is about <b>394 km</b> long. So one big typhoon can cover <span class="hl">the whole island</span> at once! 👆 Compare the sizes.</p>
+        <span class="fact">💨 Weather forecasters sort typhoons by their strongest wind. <b>Light</b>: 62 to 117 km/h. <b>Medium</b>: 118 to 183 km/h. <b>Strong</b>: 184 km/h or more. That's faster than a car on the highway!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 WHERE WILL IT GO? -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage mapstage" id="track">
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start;max-width:62%"><button class="bigbtn orange" data-t="west">⬅️ The High stretches west</button><button class="bigbtn purple" data-t="east">The High pulls back ➡️</button></div>
+        <div class="readout" id="trackOut" style="max-width:40%">👇 Move the Pacific High!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Where will the typhoon go? It moves like a <b>spinning top</b> drifting across the floor. Over the Pacific Ocean sits a giant area of heavy, sinking air called the <span class="hl">Pacific High</span>.</p>
+        <p>A typhoon can't push through the High. It slides around its edge, like water flowing around a hill. When the High stretches west, the typhoon heads west. When the High pulls back, the typhoon turns north. 👆 Try it!</p>
+        <span class="fact">🚲 Young typhoons move about <b>10 to 25 km</b> an hour, about as fast as you can ride a bike. After they turn north, they can speed up to <b>50 km</b> an hour.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 CHASING THE WIND -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="chase"><img class="art" src="img/p04.webp" alt="At sunrise, Swoop flies high above the swirling top of a typhoon. Three silver tube-shaped instruments float down below it on little orange-and-white parachutes.">
+        <div class="cone" data-noread><div id="coneTxt">🎯 Forecast</div><svg id="conesvg" viewBox="0 0 200 110" aria-label="Forecast cone"></svg></div>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start;bottom:5%"><button class="bigbtn orange" id="dropBtn">🪂 Drop a dropsonde!</button></div>
+        <div class="readout" id="chaseOut">Swoop is flying 13,000 meters high!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Far out at sea, there are no weather stations. So to see where a typhoon will go, Taiwan sends a jet to <span class="hl">chase the wind</span>! It flies around the typhoon about <b>13,000 meters</b> up. That's as high as <b>25 Taipei 101s</b>!</p>
+        <p>The jet drops <b>dropsondes</b>: little tubes on parachutes. As they fall, they measure the wind, the warmth and the wetness of the air, and radio it all to the forecasters. 👆 Drop some!</p>
+        <span class="fact">🇹🇼 Taiwan's typhoon-chasing flights started in <b>2003</b>. By September 2026 they had flown <b>91 times</b> around <b>75 typhoons</b> and dropped <b>1,356</b> dropsondes. The extra data makes 3-day path forecasts about 6% more accurate.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 WARNINGS + GET READY -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="ready"><img class="art" src="img/p06.webp" alt="On a windy afternoon, Mei and her dad carry potted plants inside from the balcony while her mom takes in the laundry. A flashlight, water bottles and a radio wait on a table.">
+        <div class="check" data-noread>
+          <button class="bigbtn" data-k="pots">🪴 Bring in pots &amp; laundry</button>
+          <button class="bigbtn" data-k="light">🔦 Flashlight &amp; batteries</button>
+          <button class="bigbtn" data-k="water">💧 Fill up drinking water</button>
+          <button class="bigbtn" data-k="food">🥫 Food for 1 or 2 days</button>
+          <button class="bigbtn" data-k="radio">📻 Radio for the news</button>
+          <button class="bigbtn" data-k="win">🪟 Close the windows</button>
+        </div>
+        <div class="readout" id="readyOut" style="left:auto;right:3%;top:auto;bottom:5%;max-width:44%">Get ready with Mei!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>When a typhoon's strong winds might reach the seas near Taiwan within about <b>24 hours</b>, the weather service sends out a <b>sea warning</b>. About <b>18 hours</b> before they might reach land, a <b>land warning</b> comes. Time to <span class="hl">get ready</span>!</p>
+        <p>Mei's family brings things inside, so the wind can't blow them away. They get a flashlight, water and food, just in case the power goes out. 👆 Help them get ready.</p>
+        <span class="fact">🏠 Grown-ups also check if their home is in a low place that might flood, and they listen to the news from the weather service, not rumors.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 TYPHOON NIGHT -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="night"><img class="art" src="img/p07.webp" alt="At night during a typhoon, the power is out. Mei's family plays a board game by a lantern on the living room rug while Mei makes a shadow puppet with her flashlight. Rain streaks the window and a cat sleeps.">
+        <div class="dark" id="dark"></div>
+        <div class="ctl" data-noread><button class="bigbtn gray" id="lightBtn">💡 Lights off!</button></div>
+        <div class="readout" id="nightOut">Whooo... hear the wind?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>When the typhoon arrives, the wind howls and the rain pounds on the windows. The safest place to be is <span class="hl">inside</span>.</p>
+        <p>Sometimes the power goes out. That's what the flashlight is for! Mei's family plays games by lantern light. 👆 Turn off the lights and move the flashlight.</p>
+        <span class="fact">🏫 In Taiwan, when a strong typhoon is coming, city and county governments can announce a <b>typhoon day</b>: no school, and many grown-ups stay home from work, so everyone stays safe.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 THE EYE PASSES -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage" id="pass"><img class="art" src="img/p05.webp" alt="Mei and her grandpa stand at a big window. Above the wet city, a round patch of calm blue sky is surrounded by a ring of dark clouds. Mei points up excitedly, and grandpa holds her hand.">
+        <div class="storm-over" id="stormOver"></div>
+        <div class="windarrow" id="windArrow">💨</div>
+        <div class="ctl" data-noread><button class="bigbtn orange" data-p="out">🏃 Go outside to play!</button><button class="bigbtn on" data-p="in">🏠 Stay inside</button></div>
+        <div class="readout" id="passOut">Wow! The wind stopped. Is it over?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Whoa! Suddenly the wind stops, and Mei can see <b>blue sky</b>. Is the typhoon over?</p>
+        <p>No! The <span class="hl">eye</span> is passing over the city. In about <b>20 to 30 minutes</b>, the eyewall arrives and the wind comes back, blowing from the <b>other side</b>. So we stay inside until the grown-ups say the typhoon has gone. 👆 What should Mei do?</p>
+        <span class="fact">🧭 An old Taiwanese saying: when the wind <b>turns around to blow from the south</b>, the typhoon is leaving.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 THE MOUNTAINS HELP -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage" id="mtn"><img class="art" src="img/p08.webp" alt="A side view of an island with tall green mountains. A big storm cloud from the sea bumps into the mountains, breaking into smaller puffs and raining on the slopes, while a little town on the other side gets only a light drizzle.">
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn purple" data-m="east">🌊 East coast wind</button><button class="bigbtn on" data-m="west">🏘️ Behind the mountains</button></div>
+        <div class="readout" id="mtnOut" style="left:auto;right:3%;top:auto;bottom:5%;max-width:40%">Which side is windier?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Taiwan has <b>more than 260</b> mountains taller than 3,000 meters! The tallest, <b>Yushan</b>, is <b>3,952 meters</b> high.</p>
+        <p>When a typhoon crashes into these tall mountains, the bottom of the storm gets <span class="hl">broken up</span>, and the typhoon gets weaker. Places behind the mountains, like <b>Taichung</b>, often get less wind. 👆 Compare the two sides.</p>
+        <span class="fact">⛰️ But the mountains also push the wet air up, so the slopes can get huge amounts of rain. Sometimes a brand-new typhoon center even forms on the other side of the mountains!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 AFTER THE TYPHOON -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage" id="after"><img class="art" src="img/p09.webp" alt="The sunny morning after the typhoon. A rainbow arches over the street. Mei and her grandpa sweep leaves off a drain, and a full blue reservoir sparkles behind the hills.">
+        <div class="readout" id="afterOut">The typhoon is gone! 🌈</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>The next day, the sun comes out. Mei helps Grandpa <b>sweep the leaves</b> off the drain, so the rain water can flow away.</p>
+        <p>Typhoons can be dangerous, but their rain also fills Taiwan's <span class="hl">reservoirs</span>, the big lakes that give us water. In winter, central and southern Taiwan get very little rain, so the water saved from typhoons helps a lot! 👆 Tap around.</p>
+        <span class="fact">🍂 In October and November, a typhoon can team up with the cold <b>northeast monsoon</b> wind from the north. Together they can bring days of rain to northern and northeastern Taiwan.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 HOW TO PLAY -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:26%;top:34%;width:30%" data-say="I'm Swoop! Fly me around the typhoon, through the glowing rings, to drop dropsondes. Fly the same way the wind spins, and I go super fast!"><img src="img/swoop.webp" alt="Swoop"></button>
+          <button class="actor idle" style="left:55%;top:48%;width:9%;animation-delay:.5s" data-say="Each ring drops one of me. I float down on my parachute and send the wind data to the forecasters."><img src="img/sonde.webp" alt="Dropsonde"></button>
+          <button class="actor idle" style="left:74%;top:62%;width:14%;animation-delay:.9s" data-say="Help me get ready at home! Tap the things in the yard to bring them inside before the wind gets strong."><img src="img/mei.webp" alt="Mei"></button>
+          <button class="actor idle" style="left:89%;top:64%;width:13%;animation-delay:1.3s" data-say="And when the wind suddenly stops, remember: that's the eye! We stay inside."><img src="img/grandpa.webp" alt="Grandpa"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Typhoon Chasers!</h2>
+        <ol class="steps">
+          <li><b>✈️ Chase missions:</b> touch where you want Swoop to fly (or use the arrow keys). The typhoon's wind pushes you around, counterclockwise!</li>
+          <li>Fly through the <b>glowing rings</b> to drop dropsondes. Stay out of the <b>eyewall</b> and the red <b>thunderstorms</b>. Then fly home to the airport.</li>
+          <li><b>🏠 Get Ready missions:</b> tap the things in the yard to bring them inside, and pack the typhoon kit before the wind gets strong.</li>
+          <li>Watch the wind meter. If something starts to wobble, save it quick!</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Typhoon Chasers!</a>
+        <span class="fact" data-noread>8 missions, from a first chase to a super typhoon, plus <b>Free Chase</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 QUIZ + SOURCES -->
+  <section class="page" data-page="14">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p09.webp" alt="A rainbow after the typhoon."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Typhoons!</h2>
+        <p>A typhoon is a giant spinning storm born over a warm sea. It has a calm <b>eye</b> and super strong winds in the <b>eyewall</b>. Weather jets help forecasters see where it will go, and getting ready early keeps everyone safe.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What does a typhoon need to be born?</div>
+          <div class="choice-row"><button class="choice">🧊 An icy sea</button><button class="choice" data-ok>🌊 A warm sea</button><button class="choice">🏜️ A desert</button></div>
+          <div class="q">2. The wind suddenly stops and the sky is blue. What is it?</div>
+          <div class="choice-row"><button class="choice">🎉 The typhoon is over</button><button class="choice" data-ok>👁️ The eye is passing</button><button class="choice">🌙 Bedtime</button></div>
+          <div class="q">3. Why do weather jets drop dropsondes?</div>
+          <div class="choice-row"><button class="choice">🎁 To deliver presents</button><button class="choice">🐟 To feed the fish</button><button class="choice" data-ok>📡 To measure the air</button></div>
+        </div>
+        <span class="fact" data-noread>🔭 Try it with a grown-up: next time there's a typhoon, look at the satellite picture on the weather service website. Can you find the eye? Which way do the clouds spin?</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www.cwa.gov.tw/V8/C/K/Encyclopedia/typhoon/typhoon.pdf" target="_blank" rel="noopener">Central Weather Administration, "100 Questions about Typhoons" (September 2026 edition: counterclockwise winds, 26 typhoons a year with August the busiest, eye about 45 km wide, storm radius 200 to 300 km and up to 500 km, light/medium/strong wind speeds, steering by the Pacific High, speeds of 10 to 50 km/h, the Central Mountain Range, the eye passing in 20 to 30 minutes, sea and land warnings 24 and 18 hours ahead, getting ready, typhoon rain for the dry season, the typhoon-chasing flights)</a> ·
+          <a href="https://climate.cwa.gov.tw/ClimatePedia/detail_page/14" target="_blank" rel="noopener">CWA Climate Encyclopedia (about 3 to 4 typhoons affect Taiwan each year)</a> ·
+          <a href="https://typhoon.as.ntu.edu.tw/DOTSTAR/tw/intro/team.php" target="_blank" rel="noopener">DOTSTAR typhoon-chasing project, National Taiwan University</a> ·
+          <a href="https://www.cna.com.tw/news/ahel/202607100104.aspx" target="_blank" rel="noopener">Central News Agency, July 2026 (a chasing flight for Typhoon Bavi)</a> ·
+          <a href="https://www.aoml.noaa.gov/hrd/tcfaq/A16.html" target="_blank" rel="noopener">NOAA Hurricane Research Division (the 26.5°C sea temperature rule of thumb)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Taiwan_(island)" target="_blank" rel="noopener">Taiwan island (about 394 km long)</a> ·
+          <a href="https://www.taipei-101.com.tw/en/" target="_blank" rel="noopener">Taipei 101 (508 m)</a><br>
+          Mei, Swoop and their family are pretend, and the faces are just for fun. The real typhoon-chasing jet has no face, and it flies around the typhoon, not through the eyewall. Numbers are rounded for kids: 13,000 m ÷ 508 m is about 25 Taipei 101s; "about 6% more accurate" means 3-day path errors got about 6.2% smaller on average. The maps are simplified, and the typhoon paths on page 6 are examples, not real storms.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Typhoon Chasers!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx, G = TaiwanGeo;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+
+  /** spiral cloud arms for a northern-hemisphere storm (screen y points down):
+      going outward, each arm curls clockwise, so the winds spin counterclockwise */
+  function swirl(g, R, arms, eye, color, width, alpha) {
+    for (let a = 0; a < arms; a++) {
+      const th0 = a / arms * Math.PI * 2, pts = [];
+      for (let i = 0; i <= 40; i++) {
+        const k = i / 40, r = eye * 1.25 + (R - eye * 1.25) * k, th = th0 + 2.4 * k;
+        pts.push([Math.cos(th) * r, Math.sin(th) * r]);
+      }
+      g.appendChild(el("path", { d: "M" + pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L"), fill: "none", stroke: color || "#fff",
+        "stroke-width": R * (width || 0.16), "stroke-linecap": "round", opacity: alpha || 0.85 }));
+    }
+    g.appendChild(el("circle", { r: eye * 1.25, fill: "none", stroke: color || "#fff", "stroke-width": eye * 0.9, opacity: 0.95 }));
+  }
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .2); build(1, st => {
+    say(st, 39, 18, 16, 16, "Swoop", "<b>Hi, I'm Swoop!</b>I'm a weather jet. I fly around typhoons to measure the wind, so forecasters know where they'll go.", S.jet, 4, 40);
+    say(st, 84, 62, 14, 40, "Mei", "<b>I'm Mei!</b>When a typhoon comes, I help my family get ready. And I always have my flashlight!", S.chirp, 98, 6, true);
+    say(st, 34, 66, 26, 22, "Typhoon", "<b>A typhoon!</b>It's a giant storm that spins around and around. From far away, it looks like a huge whirlpool of clouds.", S.wind, 4, 6);
+  }); });
+
+  /* -------- 2 born -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "pollen", .3); build(2, st => {
+    const sv = $("#bornSwirl"), g = el("g", { class: "spin-ccw" }); swirl(g, 92, 3, 14, "#ffffff"); sv.appendChild(g);
+    let t = 24;
+    $("#sunBtn").onclick = e => {
+      e.stopPropagation();
+      if (t < 29) t++;
+      $("#tempV").textContent = t; $("#tempBar").style.width = ((t - 23) / 6 * 100) + "%";
+      for (let i = 0; i < 5; i++) { const [x, y] = B.px(st, 35 + Math.random() * 40, 70 + Math.random() * 15); setTimeout(() => F.smoke(st, x, y, 6, "#ffffff"), i * 90); }
+      S.whoosh();
+      if (t >= 27) { sv.classList.add("on"); S.wind(); B.bubble(st, 4, 6, "<b>Spin, spin!</b>The sea is warm enough. Warm wet air rises, more air rushes in, and the clouds start to spin. A baby typhoon!"); }
+      else B.bubble(st, 4, 6, "<b>" + t + "°C</b>" + (t < 26 ? "Warmer, warmer... The sea needs to be warmer than about 26°C." : "Almost there! Warm, wet air is rising up into the clouds."));
+    };
+    say(st, 15, 22, 14, 24, "Sun", "<b>The sun</b> shines on the sea all summer long and warms it up, day after day.", S.sparkle, 30, 6);
+    say(st, 47, 66, 16, 20, "Water vapor", "<b>Water vapor!</b>Warm water turns into invisible vapor and rises up, like steam from a warm bath.", S.whoosh, 4, 6);
+  }); });
+
+  /* -------- 3 which way does it spin -------- */
+  B.on(3, () => build(3, st => {
+    const svg = $("#spinsvg");
+    for (let i = 0; i < 70; i++) svg.appendChild(el("circle", { cx: Math.random() * 1000, cy: Math.random() * 560, r: 1 + Math.random() * 2, fill: "#cfe6ff", opacity: 0.35 }));
+    const flip = el("g", { transform: "translate(400 285)" }), rot = el("g", { class: "spin-ccw" });
+    rot.appendChild(el("circle", { r: 250, fill: "#3d82c6", opacity: 0.35 }));
+    swirl(rot, 240, 4, 26, "#ffffff");
+    // wind arrows ride the spinning clouds: counterclockwise and a little inward
+    for (let a = 0; a < 6; a++) {
+      const th = a / 6 * Math.PI * 2, r = 165, x = Math.cos(th) * r, y = Math.sin(th) * r;
+      const tx = Math.sin(th), ty = -Math.cos(th);            // counterclockwise tangent on screen
+      const ang = Math.atan2(ty - 0.3 * Math.sin(th), tx - 0.3 * Math.cos(th)) * 180 / Math.PI;
+      const ar = el("g", { transform: "translate(" + x + " " + y + ") rotate(" + ang + ")" });
+      ar.appendChild(el("path", { d: "M-34 0 L18 0 M6 -14 L24 0 L6 14", stroke: "#ffcf3d", "stroke-width": 10, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      rot.appendChild(ar);
+    }
+    flip.appendChild(rot); svg.appendChild(flip);
+    // a little globe that shows which half of the Earth we're on
+    const globe = el("g", { transform: "translate(830 300)" });
+    globe.appendChild(el("circle", { r: 90, fill: "#4f9be0", stroke: "#fff", "stroke-width": 5 }));
+    const half = el("path", { d: "M-90 0 A90 90 0 0 1 90 0 Z", fill: "#ffcf3d", opacity: 0.45 }); globe.appendChild(half);
+    globe.appendChild(el("line", { x1: -98, y1: 0, x2: 98, y2: 0, stroke: "#fff", "stroke-width": 4, "stroke-dasharray": "10 8" }));
+    globe.appendChild(el("text", { x: 0, y: 122, "text-anchor": "middle", class: "lbl", style: "font-size:30px" }, "equator"));
+    const pin = el("circle", { cx: 30, cy: -40, r: 12, fill: "#e0535a", stroke: "#fff", "stroke-width": 4 }); globe.appendChild(pin);
+    svg.appendChild(globe);
+    const bs = st.querySelectorAll("[data-h]");
+    bs.forEach(b => b.onclick = e => {
+      e.stopPropagation(); const north = b.dataset.h === "n";
+      flip.setAttribute("transform", "translate(400 285)" + (north ? "" : " scale(-1 1)"));
+      half.setAttribute("d", north ? "M-90 0 A90 90 0 0 1 90 0 Z" : "M-90 0 A90 90 0 0 0 90 0 Z");
+      pin.setAttribute("cy", north ? -40 : 40);
+      bs.forEach(x => x.classList.toggle("on", x === b)); S.wind();
+      $("#spinOut").innerHTML = north ? "North of the equator, like Taiwan: <b>counterclockwise</b> ↺" : "South of the equator, like Australia: <b>clockwise</b> ↻";
+    });
+  }));
+
+  /* -------- 4 the eye: wind meter -------- */
+  B.on(4, () => { const st = stageOf(4); F.weather(st, "pollen", .15); build(4, st => {
+    const dot = $("#eyeDot"), out = $("#eyeOut"), A = [12, 86], C = [51, 45];
+    // r = 1 at the storm's edge, 0 in the middle. Calm eye, strongest at the eyewall, weaker outward (about 50 km/h at the edge)
+    const wind = r => r < 0.06 ? 8 + r / 0.06 * 20 : r < 0.14 ? 190 : Math.round(190 * Math.pow(0.14 / r, 0.7));
+    let last = "";
+    $("#eyeR").oninput = e => {
+      const p = +e.target.value / 100, r = 1 - p;
+      dot.style.left = (A[0] + (C[0] - A[0]) * p) + "%"; dot.style.top = (A[1] + (C[1] - A[1]) * p) + "%";
+      const v = Math.round(wind(r));
+      const zone = r < 0.06 ? "eye" : r < 0.14 ? "wall" : r < 0.5 ? "band" : "edge";
+      out.innerHTML = { eye: "👁️ The <b>eye</b>: calm! Only about " + v + " km/h. Blue sky above!", wall: "🌀 The <b>eyewall</b>: the STRONGEST wind, about " + v + " km/h!",
+        band: "🌧️ Rain bands: " + v + " km/h, heavy rain and strong gusts.", edge: "🍃 The edge: " + v + " km/h, getting windy..." }[zone];
+      if (zone !== last) { last = zone; zone === "wall" ? S.wind() : zone === "eye" ? S.sparkle() : S.tick(); if (zone === "wall") F.shake(st); }
+    };
+    say(st, 51, 45, 10, 14, "The eye", "<b>The eye!</b>Air sinks down in the middle, so the clouds melt away. That's why it's clear and calm.", S.sparkle, 4, 6);
+    say(st, 83, 17, 14, 18, "Swoop", "<b>Swoop:</b> I fly around the outside of the storm, far above it. The eyewall is much too bumpy!", S.jet, 98, 30, true);
+    say(st, 14, 82, 10, 14, "Island", "<b>A little island.</b>Typhoons are so big, they could cover hundreds of islands like this one!", S.chirp, 4, 6);
+  }); });
+
+  /* -------- 5 size on the map -------- */
+  B.on(5, () => build(5, st => {
+    const P = G.projector(1300);
+    const [x0, y0] = P([117.6, 27.4]), [x1, y1] = P([127.4, 19.6]);
+    const svg = el("svg", { viewBox: x0 + " " + y0 + " " + (x1 - x0) + " " + (y1 - y0), preserveAspectRatio: "xMidYMid meet" });
+    const path = pts => { const sm = G.smooth(pts.map(P), true, 5); return "M" + sm.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L") + "Z"; };
+    for (const k in G.LAND) svg.appendChild(el("path", { class: "land" + (["china", "luzon", "okinawa", "yonaguni", "iriomote", "ishigaki", "miyako", "batanes", "babuyan"].includes(k) ? " far" : ""), d: path(G.LAND[k]) }));
+    const kmPx = (P([121, 23])[1] - P([121, 24])[1]) / 111.2;   // px per km going north
+    const c = P([123.3, 22.9]);
+    const storm = el("g", { transform: "translate(" + c[0] + " " + c[1] + ")" }), rot = el("g", { class: "spin-ccw" });
+    storm.appendChild(rot); svg.appendChild(storm);
+    const ring = el("circle", { cx: c[0], cy: c[1], r: 0, fill: "none", stroke: "#ff5a8a", "stroke-width": 6, "stroke-dasharray": "16 12" }); svg.appendChild(ring);
+    // 394 km ruler along Taiwan's west side, drawn over the storm
+    const a = P([120.0, 25.3]), b = P([120.0, 21.75]);
+    svg.appendChild(el("line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: "#24305e", "stroke-width": 5, "stroke-dasharray": "14 10" }));
+    svg.appendChild(el("text", { class: "lbl", x: a[0] - 14, y: (a[1] + b[1]) / 2 + 40, "text-anchor": "end", style: "font-size:56px" }, "394 km"));
+    const tw = P([120.0, 25.3]);
+    svg.appendChild(el("text", { class: "lbl", x: tw[0] - 14, y: (a[1] + b[1]) / 2 - 10, "text-anchor": "end", style: "font-size:64px" }, "Taiwan"));
+    st.insertBefore(svg, st.firstChild);
+    const SAY = { 150: "A <b>small</b> typhoon: windy up to about <b>150 km</b> from the middle.", 250: "An <b>average</b> typhoon: windy up to about <b>250 km</b> out. Most of Taiwan is inside!", 450: "A <b>big</b> typhoon: windy up to about <b>450 km</b> out. All of Taiwan fits inside, with lots of room to spare!" };
+    st.querySelectorAll("[data-s]").forEach(btn => btn.onclick = e => {
+      e.stopPropagation(); const km = +btn.dataset.s, r = km * kmPx;
+      while (rot.firstChild) rot.removeChild(rot.firstChild);
+      rot.appendChild(el("circle", { r: r, fill: "#ffffff", opacity: 0.3 }));
+      swirl(rot, r, 4, r * 0.09, "#ffffff", 0.09, 0.7);
+      ring.setAttribute("r", r);
+      S.wind(); $("#sizeOut").innerHTML = SAY[km];
+    });
+  }));
+
+  /* -------- 6 where will it go -------- */
+  let trackAnim = 0;
+  B.on(6, () => build(6, st => {
+    const P = G.projector(900);
+    const [x0, y0] = P([115.2, 30.4]), [x1, y1] = P([135.0, 15.6]);
+    const svg = el("svg", { viewBox: x0 + " " + y0 + " " + (x1 - x0) + " " + (y1 - y0), preserveAspectRatio: "xMidYMid meet" });
+    const path = pts => { const sm = G.smooth(pts.map(P), true, 5); return "M" + sm.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L") + "Z"; };
+    // the Pacific High: a big soft blob of heavy, sinking air (drawn first, under the land)
+    const high = el("g", {});
+    const hb = el("ellipse", { rx: 640, ry: 390, fill: "#ffb347", opacity: 0.33, stroke: "#f08a24", "stroke-width": 5, "stroke-dasharray": "18 12" }); high.appendChild(hb);
+    high.appendChild(el("text", { class: "lbl", x: 0, y: 30, "text-anchor": "middle", style: "font-size:200px;fill:#c25e00" }, "H"));
+    high.appendChild(el("text", { class: "lbl", x: 0, y: 150, "text-anchor": "middle", style: "font-size:64px" }, "Pacific High"));
+    // air flows clockwise around a High (north of the equator)
+    for (let i = 0; i < 4; i++) {
+      const th = i / 4 * Math.PI * 2 + 0.4, x = Math.cos(th) * 540, y = Math.sin(th) * 330;
+      const ang = Math.atan2(Math.cos(th) * 330, -Math.sin(th) * 540) * 180 / Math.PI;
+      const ar = el("g", { transform: "translate(" + x + " " + y + ") rotate(" + ang + ")" });
+      ar.appendChild(el("path", { d: "M-52 0 L28 0 M6 -22 L34 0 L6 22", stroke: "#c25e00", "stroke-width": 13, fill: "none", "stroke-linecap": "round" }));
+      high.appendChild(ar);
+    }
+    svg.appendChild(high);
+    for (const k in G.LAND) svg.appendChild(el("path", { class: "land" + (k === "taiwan" ? "" : " far"), d: path(G.LAND[k]) }));
+    const tw = P([121.0, 23.6]);
+    svg.appendChild(el("text", { class: "lbl", x: tw[0] - 50, y: tw[1] + 10, "text-anchor": "end", style: "font-size:64px" }, "Taiwan"));
+    const trail = el("path", { fill: "none", stroke: "#e0535a", "stroke-width": 12, "stroke-dasharray": "6 22", "stroke-linecap": "round" }); svg.appendChild(trail);
+    const ty = el("g", {}), tr = el("g", { class: "spin-ccw fast" });
+    tr.appendChild(el("circle", { r: 80, fill: "#fff", opacity: 0.45 })); swirl(tr, 90, 3, 15, "#ffffff"); ty.appendChild(tr); svg.appendChild(ty);
+    st.insertBefore(svg, st.firstChild);
+    const ROUTES = {
+      west: { high: [129.5, 26.6], pts: [[131.5, 16.8], [128.6, 18.9], [125.6, 20.9], [123.2, 22.5], [121.2, 23.6], [119.3, 24.7], [117.6, 25.7]],
+        say: "⬅️ The High stretches <b>west</b>, so the typhoon slides along its south side, heading <b>west toward Taiwan</b>. Time to get ready!" },
+      east: { high: [134.5, 25.0], pts: [[131.5, 16.8], [128.8, 18.8], [126.5, 21.0], [125.2, 23.4], [125.4, 25.6], [126.8, 27.6], [129.2, 29.6]],
+        say: "➡️ The High pulls back <b>east</b>, so the typhoon finds a gap and <b>turns north</b>, staying out at sea. Phew!" },
+    };
+    const place = (lonlat) => { const q = P(lonlat); ty.setAttribute("transform", "translate(" + q[0] + " " + q[1] + ")"); };
+    const showHigh = lonlat => { const q = P(lonlat); high.setAttribute("transform", "translate(" + q[0] + " " + q[1] + ")"); high.style.transition = "transform 1s"; };
+    showHigh([131.5, 26.2]); place(ROUTES.west.pts[0]);
+    st.querySelectorAll("[data-t]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); cancelAnimationFrame(trackAnim);
+      const r = ROUTES[b.dataset.t], pts = G.smooth(r.pts.map(P), false, 6);
+      showHigh(r.high); S.whoosh(); $("#trackOut").innerHTML = "🌀 Here it comes...";
+      const t0 = performance.now(), D = 4200;
+      const step = now => {
+        const k = Math.min(1, (now - t0) / D), n = Math.max(1, Math.round(k * (pts.length - 1)));
+        trail.setAttribute("d", "M" + pts.slice(0, n + 1).map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L"));
+        ty.setAttribute("transform", "translate(" + pts[n][0] + " " + pts[n][1] + ")");
+        if (k < 1) trackAnim = requestAnimationFrame(step); else { $("#trackOut").innerHTML = r.say; S.ding(); }
+      };
+      trackAnim = requestAnimationFrame(step);
+    });
+  }), () => cancelAnimationFrame(trackAnim));
+
+  /* -------- 7 dropsondes + forecast cone -------- */
+  B.on(7, () => build(7, st => {
+    const cs = $("#conesvg");
+    // the cone fans out from the storm (left) toward Taiwan's coast (right); more data = a narrower cone
+    const cone = el("path", { fill: "#ff5a8a", opacity: 0.35, stroke: "#ff5a8a", "stroke-width": 2 }); cs.appendChild(cone);
+    cs.appendChild(el("path", { d: "M20 55 L185 55", stroke: "#24305e", "stroke-width": 3, "stroke-dasharray": "6 6" }));
+    const ico = el("g", { transform: "translate(20 55)" }), ir = el("g", { class: "spin-ccw fast" }); swirl(ir, 16, 3, 3, "#3b7dd8"); ico.appendChild(ir); cs.appendChild(ico);
+    cs.appendChild(el("text", { x: 190, y: 104, "text-anchor": "end", style: "font: 800 15px 'Baloo 2', sans-serif; fill:#24305e" }, "3 days from now"));
+    let drops = 0;
+    const draw = () => { const w = 48 - drops * 6.5; cone.setAttribute("d", "M20 55 L185 " + (55 - w) + " A " + w + " " + w + " 0 0 1 185 " + (55 + w) + " Z"); };
+    draw();
+    const SPOTS = [[63, 30], [70, 34], [58, 36], [75, 32], [66, 38]];
+    $("#dropBtn").onclick = e => {
+      e.stopPropagation(); if (drops >= 5) { drops = 0; draw(); $("#coneTxt").textContent = "🎯 Forecast"; }
+      const s = document.createElement("div"); s.className = "sonde"; s.innerHTML = '<img src="img/sonde.webp" alt="">';
+      const [sx, sy] = SPOTS[drops % SPOTS.length]; s.style.left = sx + "%"; s.style.top = sy + "%"; st.appendChild(s);
+      requestAnimationFrame(() => requestAnimationFrame(() => { s.style.top = "88%"; s.style.left = (sx - 4) + "%"; s.style.opacity = "0"; }));
+      setTimeout(() => s.remove(), 2700);
+      S.whoosh(); drops++;
+      const wind = 60 + Math.round(Math.random() * 90), temp = -55 + Math.round(Math.random() * 6);
+      setTimeout(() => {
+        S.tick(); draw();
+        $("#chaseOut").innerHTML = "📡 Dropsonde " + drops + ": wind " + wind + " km/h, air " + temp + "°C way up high, getting warmer as it falls...";
+        $("#coneTxt").innerHTML = drops >= 5 ? "🎯 <b>Much sharper!</b>" : "🎯 Forecast: " + drops + " of 5";
+        if (drops >= 5) { S.yay(); B.confetti(60); }
+      }, 900);
+    };
+    say(st, 79, 19, 16, 22, "Swoop", "<b>Swoop:</b> Up here the air is about −50°C. Brrr! The pilots fly for hours around the storm.", S.jet, 98, 34, true);
+    say(st, 26, 35, 16, 16, "Sunrise", "<b>Sunrise!</b>Chasing flights often take off very early, so the data is ready for the next forecast.", S.sparkle, 4, 50);
+    say(st, 48, 61, 10, 14, "Eye", "<b>The eye</b>, far below. The dropsondes are dropped all around the typhoon, where the forecasters need data the most.", S.wind, 4, 6);
+  }));
+
+  /* -------- 8 get ready -------- */
+  B.on(8, () => { const st = stageOf(8); F.weather(st, "ash", .25); build(8, st => {
+    const done = {}, out = $("#readyOut");
+    const MSG = { pots: "🪴 Pots, laundry and toys come inside, so the wind can't throw them around.", light: "🔦 A flashlight and spare batteries, in case the power goes out.",
+      water: "💧 Clean water to drink, in case the water stops for a while.", food: "🥫 Food that doesn't need cooking, enough for a day or two.",
+      radio: "📻 A battery radio, to hear the weather news even without power.", win: "🪟 Windows and doors closed tight." };
+    st.querySelectorAll("[data-k]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.k;
+      if (done[k]) return; done[k] = true; b.classList.add("on"); b.textContent = "✔ " + b.textContent.replace(/^\S+ /, "");
+      S.ding(); out.innerHTML = MSG[k];
+      if (Object.keys(done).length === 6) { S.yay(); B.confetti(80); out.innerHTML = "✨ <b>All ready!</b> Now we stay inside and listen to the news."; B.speak(out.innerText); }
+    });
+    say(st, 39, 66, 12, 26, "Mei", "<b>Mei:</b> My little flower pot is safe now! Hold on tight, flowers.", S.chirp, 98, 6, true);
+    say(st, 57, 44, 12, 30, "Dad", "<b>Dad:</b> Heavy pots can blow over and break windows. Everything comes in!", S.pop, 98, 6, true);
+    say(st, 22, 46, 12, 26, "Mom", "<b>Mom:</b> The laundry would fly away like kites. In it comes!", S.whoosh, 98, 6, true);
+  }); });
+
+  /* -------- 9 lights out -------- */
+  B.on(9, () => { const st = stageOf(9); F.weather(st, "rain", .5); build(9, st => {
+    const dark = $("#dark"), btn = $("#lightBtn");
+    const move = e => { const r = st.getBoundingClientRect(), p = e.touches ? e.touches[0] : e;
+      dark.style.setProperty("--x", ((p.clientX - r.left) / r.width * 100) + "%"); dark.style.setProperty("--y", ((p.clientY - r.top) / r.height * 100) + "%"); };
+    st.addEventListener("pointermove", move); st.addEventListener("touchmove", move, { passive: true });
+    btn.onclick = e => {
+      e.stopPropagation(); const on = !dark.classList.contains("on");
+      dark.classList.toggle("on", on); btn.textContent = on ? "💡 Lights back on" : "💡 Lights off!"; S.tick();
+      $("#nightOut").innerHTML = on ? "🔦 Power's out! Move your finger to shine the flashlight." : "💡 The power is back!";
+    };
+    say(st, 22, 60, 12, 26, "Mei", "<b>Mei:</b> Look, a bunny on the ceiling! Flashlights are fun.", S.chirp, 4, 22);
+    say(st, 50, 84, 10, 14, "Lantern", "<b>A battery lantern</b> is much safer than candles. No fire!", S.ding, 4, 22);
+    say(st, 82, 82, 12, 14, "Cat", "<b>Purrr...</b> The cat is safe inside too. Pets stay in during a typhoon.", S.snore, 98, 22, true);
+    say(st, 63, 30, 18, 24, "Window", "<b>Whooo!</b>The wind is strong outside. Never go out to look, and never touch a fallen power line.", S.wind, 98, 6, true);
+  }); });
+
+  /* -------- 10 the eye passes -------- */
+  let passTimer = 0;
+  B.on(10, () => build(10, st => {
+    const out = $("#passOut"), over = $("#stormOver"), arrow = $("#windArrow");
+    st.querySelectorAll("[data-p]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); clearTimeout(passTimer);
+      if (b.dataset.p === "out") {
+        S.oops(); out.innerHTML = "🙅 Not yet! It's the <b>eye</b>. The wind will come back soon.";
+        B.bubble(st, 98, 6, "<b>Grandpa:</b> Wait, Mei! The storm is only taking a breath. Let's watch from here.", { right: true });
+        return;
+      }
+      S.ding(); out.innerHTML = "👍 Good choice! Let's wait and see...";
+      F.weather(st, null); over.classList.remove("on"); arrow.classList.remove("on");
+      passTimer = setTimeout(() => {
+        over.classList.add("on"); arrow.classList.add("on"); F.weather(st, "rain", .8); S.wind(); F.shake(st);
+        out.innerHTML = "💨 <b>20 minutes later:</b> the wind is back, now blowing from the <b>other side</b>!";
+        B.speak("Twenty minutes later, the wind is back, now blowing from the other side!");
+      }, 1800);
+    });
+    say(st, 49, 22, 22, 22, "Blue sky", "<b>Blue sky!</b>We're right under the eye. All around it, the giant eyewall clouds are still spinning.", S.sparkle, 4, 6);
+    say(st, 77, 50, 12, 30, "Grandpa", "<b>Grandpa:</b> When I was little, my grandpa taught me this too. The calm doesn't last!", S.chirp, 98, 6, true);
+  }), () => { clearTimeout(passTimer); const st = stageOf(10); F.weather(st, null); $("#stormOver").classList.remove("on"); $("#windArrow").classList.remove("on"); });
+
+  /* -------- 11 mountains -------- */
+  B.on(11, () => build(11, st => {
+    const SAY = { east: "🌊 <b>East coast</b>, facing the sea: the typhoon hits first. Very strong wind and heavy rain!", west: "🏘️ <b>Behind the mountains</b>: the mountains block the bottom of the storm. Often much less wind!" };
+    st.querySelectorAll("[data-m]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.m; $("#mtnOut").innerHTML = SAY[k];
+      if (k === "east") { S.wind(); F.shake(st); const [x, y] = B.px(st, 88, 45); for (let i = 0; i < 4; i++) setTimeout(() => F.jet(st, x, y + i * 14, -1, 0.15, 14), i * 90); }
+      else { S.chirp(); const [x, y] = B.px(st, 24, 76); F.sparkles(st, x, y, 20); }
+    });
+    say(st, 80, 26, 18, 24, "Storm", "<b>The typhoon</b> rushes in from the warm ocean, full of wind and rain.", S.wind, 98, 50, true);
+    say(st, 62, 52, 12, 16, "Broken clouds", "<b>Crash!</b>The bottom of the storm bumps into the mountains and breaks into smaller pieces.", S.rumble, 98, 6, true);
+    say(st, 51, 36, 12, 18, "Tall mountains", "<b>The Central Mountain Range</b> runs down the middle of Taiwan like a giant wall.", S.ding, 4, 6);
+    say(st, 24, 77, 14, 14, "Town", "<b>A town behind the mountains</b> gets a gentle drizzle instead of a storm.", S.chirp, 4, 6);
+  }));
+
+  /* -------- 12 after -------- */
+  B.on(12, () => { const st = stageOf(12); F.weather(st, "pollen", .3); build(12, st => {
+    B.hot(st, 50, 90, 14, 12, "Drain", () => {
+      S.splash(); const [x, y] = B.px(st, 50, 88); F.dust(st, x, y, 16); F.sparkles(st, x, y, 12);
+      $("#afterOut").innerHTML = "🧹 Swish! <b>Glug glug</b>, the water flows away down the drain.";
+    });
+    say(st, 78, 51, 16, 16, "Reservoir", "<b>A reservoir</b>, full of typhoon rain! This water will be used for drinking, farming and factories all year.", S.splash, 98, 6, true);
+    say(st, 55, 14, 30, 16, "Rainbow", "<b>A rainbow!</b>Sunlight shines through raindrops left in the air and splits into colors.", S.sparkle, 4, 30);
+    say(st, 35, 73, 10, 22, "Mei", "<b>Mei:</b> We did it! The typhoon is gone, and everyone is safe.", S.yay, 4, 22);
+    say(st, 62, 59, 10, 26, "Grandpa", "<b>Grandpa:</b> Clear drains help the next rain flow away, so the streets don't flood.", S.chirp, 98, 22, true);
+  }); });
+
+  /* -------- 13 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(13), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), y > 55 ? 6 : Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(13, () => F.weather(stageOf(13), "pollen", .3));
+
+  /* -------- 14 -------- */
+  B.on(14, () => { const st = stageOf(14); F.weather(st, "pollen", .3); build(14, st => {
+    say(st, 35, 73, 10, 22, "Mei", "<b>Mei:</b> Thanks for getting ready with me! Want to chase a typhoon with Swoop?", S.yay, 4, 22);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>
