@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spoonbill Journey! | A Kids' Bird Game from "Bomi the Black-faced Spoonbill"</title>
+<meta name="description" content="A free game for kids 5-7: sweep your spoon bill through a dark fish pond to catch fish by touch like a black-faced spoonbill, and fly between Korea and Taiwan with the northeast monsoon, resting at wetlands along the way.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Spoonbill Journey! 🪶 A black-faced spoonbill game for kids">
+<meta property="og:description" content="Sweep for fish in a moonlit fish pond, then fly from Korea to Taiwan on the monsoon wind. 8 missions + Free Feeding.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/spoonbilljourney-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪶</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #2f9e8f; --bg: radial-gradient(circle at 15% 10%, #dff5ef 0, transparent 40%), radial-gradient(circle at 90% 90%, #ffeedd 0, transparent 45%), #f3fbf8; }
+  .gamebox { width: min(100% - 24px, calc((100vh - 84px) * 16 / 9), 1280px); margin: 0 auto 16px; }
+  #game { width: 100%; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #26324a; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #game canvas { display: block; }
+  .side { max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.45; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .side ul { margin: 4px 0; padding-left: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .gamebox { width: min(100% - 12px, calc((100vh - 64px) * 16 / 9)); } }
+  @media (orientation: portrait) and (max-width: 860px) { .turn { display: block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🪶</span>Spoonbill Journey!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<p class="turn" style="display:none;text-align:center;margin:0 12px 8px;font-weight:800">📱 Turn your phone sideways for a bigger view!</p>
+<div class="gamebox"><div id="game"></div></div>
+<div class="side">
+  <div class="box">
+    <h3>🕹️ How to play</h3>
+    <ul>
+      <li><b>🐟 Feed:</b> hold your finger on the water and Bomi walks there, sweeping its spoon bill. When the bill touches a fish, snap!</li>
+      <li>Walk <b>slowly</b>: fast steps scare the fish away. Dark blue water is too deep for Bomi's legs.</li>
+      <li><b>🕊️ Fly:</b> touch where you want Bomi to fly. Land in the green wetlands to rest and eat, and fly around the gray rain clouds.</li>
+    </ul>
+    <p class="note">Keyboard: ← → to walk or turn.</p>
+  </div>
+  <div class="box">
+    <h3>🔬 Is it real?</h3>
+    Black-faced spoonbills really sweep their bills side to side and catch fish by touch, mostly at dusk and at night. They really wade only in shallow water, and Tainan's fish farmers really drain their ponds after the harvest, leaving little fish behind. Most nest on islands off Korea, and many fly south on the northeast monsoon, resting at wetlands in China along the way.
+    <p class="note">Game note: the trip is much shorter than the real one (about 1,200 km), the map is simplified, and the fish and spoonbills are drawn bigger. Real spoonbills fly in flocks. Bomi's face is pretend, and nothing gets hurt.</p>
+  </div>
+  <div class="box">
+    <h3>🪶 Read the story</h3>
+    Why do spoonbills fly to Taiwan every winter? How did they come back from only 288 birds? Read <a href="./">Bomi the Black-faced Spoonbill</a> first.
+  </div>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Built with Phaser · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script src="sim.js"></script>
+<script src="game.js"></script>
+<script>
+  window.__sjGame = SpoonbillJourney.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__sjGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>

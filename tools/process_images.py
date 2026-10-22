@@ -14,7 +14,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury", "spoonbill": "spoonbill"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520, "tower": 760, "mercury_big": 820}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -100,9 +100,15 @@ SHEETS_BY_BOOK = {
                        [("bepi", 0, 0, 360), ("mio", 1, 0, 260), ("stack", 2, 0, 460),
                         ("stack2", 0, 1, 400), ("mtm", 1, 1, 380), ("cone", 2, 1, 200)]},
     },
+    # black-faced spoonbill book + Spoonbill Journey! (side views face right; the flying view points up)
+    "spoonbill": {
+        "sheet_cast": {n: ((c / 4, r / 2, (c + 1) / 4, (r + 1) / 2), s) for n, c, r, s in
+                       [("bomi", 0, 0, 320), ("bomi_sweep", 1, 0, 320), ("bomi_fly", 2, 0, 300), ("bomi_spring", 3, 0, 320),
+                        ("fish", 0, 1, 140), ("shrimp", 1, 1, 110), ("ting", 2, 1, 300), ("agong", 3, 1, 300)]},
+    },
 }
 # sprites that must face right but were drawn facing left
-FLIP = {"rocket", "ambulance", "jetty"}
+FLIP = {"rocket", "ambulance", "jetty", "bomi_spring"}
 # sprites made of several blobs (a cloud and its lightning bolt, a flock of birds): keep every blob in the box
 MULTI = {"storm", "gulls", "sonde", "chime", "water", "stack", "stack2"}
 # round sprites (a whole planet): cut with a circle that fits the shape, so a bright rim is not eaten by the white flood-fill

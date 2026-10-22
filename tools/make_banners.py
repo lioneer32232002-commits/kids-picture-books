@@ -52,6 +52,10 @@ JOBS = [
     ("mercury", "square", "mercury-square", (1080, 1080)),
     ("mercurymission", "wide", "mercurymission-fb", (1200, 630)),
     ("mercurymission", "square", "mercurymission-square", (1080, 1080)),
+    ("spoonbill", "wide", "spoonbill-fb", (1200, 630)),
+    ("spoonbill", "square", "spoonbill-square", (1080, 1080)),
+    ("spoonbilljourney", "wide", "spoonbilljourney-fb", (1200, 630)),
+    ("spoonbilljourney", "square", "spoonbilljourney-square", (1080, 1080)),
 ]
 
 

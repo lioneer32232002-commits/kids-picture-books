@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -261,6 +261,34 @@
   .mercurymission.square .art { background-position: 65% 50%; }
   .mercurymission.square .veil { background: linear-gradient(180deg, rgba(14,19,56,0) 0%, #0e1338 25%); }
 
+  /* ---------- spoonbill (the banner art leaves the left side empty for the title) ---------- */
+  .spoonbill .art { background-image: url(../../_raw/spoonbill/banner.jpg); }
+  .spoonbill.wide .art { background-size: cover; background-position: 50% 50%; }
+  .spoonbill .veil { background: linear-gradient(90deg, rgba(255,244,230,.95) 0%, rgba(255,240,224,.8) 36%, rgba(255,240,224,0) 56%); }
+  .spoonbill .copy { color: #26324a; }
+  .spoonbill .kicker { background: #2f9e8f; color: #fff; }
+  .spoonbill h1 { color: #26324a; text-shadow: 0 4px 0 #fff, 0 6px 18px rgba(255,255,255,.9); }
+  .spoonbill h1 span { color: #e86a2c; }
+  .spoonbill .chip { background: #fff; color: #26324a; }
+  .spoonbill .cta { background: #f2a516; box-shadow: 0 6px 0 #c47f05; }
+  .spoonbill.wide h1 { font-size: 70px; }
+  .spoonbill.square .art { background-position: 75% 50%; }
+  .spoonbill.square .veil { background: linear-gradient(180deg, rgba(255,240,224,0) 0%, #fff0e0 25%); }
+
+  /* ---------- Spoonbill Journey! (the night pond picture) ---------- */
+  .spoonbilljourney .art { background-image: url(../../_raw/spoonbill/p05.jpg); }
+  .spoonbilljourney.wide .art { background-size: auto 100%; background-position: 100% 50%; background-color: #1d2a4e; left: 160px; }
+  .spoonbilljourney .veil { background: linear-gradient(90deg, rgba(20,30,60,.92) 0%, rgba(20,30,60,.65) 36%, rgba(20,30,60,0) 56%); }
+  .spoonbilljourney .copy { color: #fff; }
+  .spoonbilljourney .kicker { background: #ffd23d; color: #26324a; }
+  .spoonbilljourney h1 { color: #fff; text-shadow: 0 4px 0 #1d2a4e, 0 8px 24px rgba(0,0,0,.45); }
+  .spoonbilljourney h1 span { color: #ffd23d; }
+  .spoonbilljourney .chip { background: rgba(255,255,255,.95); color: #26324a; }
+  .spoonbilljourney .cta { background: #2f9e8f; box-shadow: 0 6px 0 #1f7368; }
+  .spoonbilljourney.wide h1 { font-size: 78px; }
+  .spoonbilljourney.square .art { background-position: 70% 50%; }
+  .spoonbilljourney.square .veil { background: linear-gradient(180deg, rgba(20,30,60,0) 0%, #1d2a4e 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -408,6 +436,20 @@
       title: "Mercury <span>Mission!</span>",
       sub: "Swing past planets to slow down, arrive slow enough for Mercury to catch you, then map its hot and cold sides!",
       chips: ["🪐 Planet flybys", "📷 Map Mercury", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
+    },
+    spoonbill: {
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "Bomi the <span>Black‑faced Spoonbill</span>",
+      sub: "Why do spoonbills fly to Taiwan every winter? How do they catch fish in the dark? Follow Bomi's year!",
+      chips: ["🥄 Spoon bill", "🌙 Night feeding", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    spoonbilljourney: {
+      kicker: "FREE BIRD GAME FOR KIDS",
+      title: "Spoonbill <span>Journey!</span>",
+      sub: "Sweep for fish in a moonlit fish pond, then ride the monsoon from Korea to Taiwan!",
+      chips: ["🐟 Catch by touch", "🕊️ Fly south", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
     planet: {

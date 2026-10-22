@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bomi the Black-faced Spoonbill: Winter in Tainan | Picture Book + Spoonbill Journey! Game</title>
+<meta name="description" content="Why do black-faced spoonbills fly to Taiwan every winter? Meet Bomi: the spoon-shaped bill that catches fish by touch, night feeding in Tainan's fish ponds, the trip from Korea, and how the world's spoonbills came back from only 288 birds. Then sweep for fish and fly south yourself in Spoonbill Journey! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bomi the Black-faced Spoonbill 🪶 A picture book + a bird game for kids">
+<meta property="og:description" content="More than half of the world's black-faced spoonbills spend the winter in Taiwan! Meet Bomi, Ting and A-gong, then sweep for fish and fly from Korea to Tainan. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/spoonbill-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/spoonbill/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪶</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #2f9e8f; --accent-4: #f2a516;
+    --bg: radial-gradient(circle at 12% 8%, #dff5ef 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #ffeedd 0, transparent 45%), #f3fbf8;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #2f9e8f; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.orange { background: #f2a516; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.blue { background: #4f86f7; } .bigbtn.gray { background: #6b7a90; }
+  .svgstage { background: #eaf6f2; }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .mapstage { background: linear-gradient(#8fc8ec, #6fb2de); }
+  .mapstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .lbl { font: 800 34px "Baloo 2", sans-serif; fill: #26324a; paint-order: stroke; stroke: #fff; stroke-width: 6px; pointer-events: none; }
+  .tag { position: absolute; z-index: 4; transform: translate(-50%, -50%); background: #fff; border: 3px solid #2f9e8f; border-radius: 10px; padding: 0 8px; font: 800 clamp(11px, 1.6vw, 18px) "Baloo 2", sans-serif; color: #26324a; opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .tag.on { opacity: 1; }
+  .check { position: absolute; left: 2%; top: 4%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 8px 10px; font-weight: 800; display: grid; gap: 5px; max-width: 50%; }
+  .check .bigbtn { text-align: left; font-size: clamp(11px, 1.5vw, 17px); padding: 4px 12px; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #f2a516; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #c47f05; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#ffd9b0, #fff1df 60%, #8fc8ec 60%, #5fa8d8); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🪶</span>Bomi the Spoonbill</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="At sunset over the fish ponds of Tainan, Bomi the black-faced spoonbill flies in with spread wings, and Ting, a girl with binoculars, waves from a pond bank."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Bomi the Black-faced Spoonbill</h1>
+        <p>Every autumn, special birds fly all the way to Taiwan for the winter. They have black faces and bills shaped like <span class="hl">spoons</span>!</p>
+        <p>This is Bomi, a <b>black-faced spoonbill</b>. And this is Ting, who loves watching birds in Tainan. Let's follow Bomi's year!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 MEET BOMI -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Bomi stands in shallow water showing its long black bill with a round spoon at the tip. Behind it, another spoonbill sleeps standing on one leg."><div class="layer"></div></div>
+      <div class="text">
+        <p>Look at Bomi's bill: long and flat, with a round <span class="hl">spoon</span> at the tip! In Taiwanese, people call these birds <b>"rice-paddle birds"</b> (飯匙鳥), because the bill looks like the paddle you use to scoop rice.</p>
+        <p>There are six kinds of spoonbills in the world. The black-faced spoonbill is the <b>smallest</b> one. 👆 Tap around.</p>
+        <span class="fact">📏 From the tip of its bill to the end of its tail, a black-faced spoonbill is about <b>75 cm</b> long, about as long as a guitar.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 BORN ON AN ISLAND -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p03.webp" alt="On a grassy ledge of a rocky island, two fluffy white chicks with pink bills sit in a nest while a parent with yellow chest feathers feeds them."><div class="layer"></div></div>
+      <div class="text">
+        <p>Bomi hatched far to the north, on a small <b>rocky island</b> off the coast of <b>Korea</b>. That's where most black-faced spoonbills build their nests.</p>
+        <p>Mom and Dad take turns keeping the eggs warm. Baby spoonbills have <span class="hl">pink bills</span>! Their bills turn black as they grow up. 👆 Tap the chicks.</p>
+        <span class="fact">🥚 Eggs are laid in <b>May and June</b>. The parents feed their chicks for about <b>40 days</b>, until they are big enough to fly.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 FLY SOUTH: MAP -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage mapstage" id="route">
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn orange" id="flyBtn">🕊️ Fly south!</button></div>
+        <div class="readout" id="routeOut" style="left:auto;right:3%;max-width:38%">From Korea to Taiwan</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>In autumn, the north gets cold, and the shallow water where spoonbills find food starts to freeze. So in <b>October</b>, Bomi flies <span class="hl">south</span>! The cool <b>northeast monsoon</b> wind gives a push.</p>
+        <p>Many spoonbills cross the Yellow Sea to China's coast, rest and eat at wetlands along the way, then fly on to Taiwan. 👆 Fly the route!</p>
+        <span class="fact">🛰️ Scientists put tiny trackers on some young spoonbills. On average, they flew about <b>1,200 km</b> from Korea to their winter homes, about 3 times the length of Taiwan, and rested 2 or 3 times on the way.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 REST BY DAY -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="A big flock of black-faced spoonbills rests on a sandbar at a river mouth. Many sleep standing on one leg with their bills tucked into their feathers."><div class="layer"></div></div>
+      <div class="text">
+        <p>Bomi arrives in <b>Tainan</b>! During the day, the spoonbills rest together in big flocks at river mouths and lagoons, where people don't bother them.</p>
+        <p>Many sleep standing on <span class="hl">one leg</span>, with their bills tucked into their back feathers. 👆 Find the sleepy birds.</p>
+        <span class="fact">📅 Black-faced spoonbills stay in Taiwan for about <b>half a year</b>: they arrive in autumn and fly north again in spring.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 SWEEP AND SNAP -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage svgstage" id="sweep">
+        <svg id="sweepsvg" viewBox="0 0 1000 560" aria-label="A spoonbill bill sweeping through water with fish"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" id="sweepBtn">🥄 Swish, swish!</button></div>
+        <div class="readout" id="sweepOut">Can Bomi catch a fish without looking?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>How does Bomi catch fish? It puts its spoon bill in shallow water, and <b>sweeps</b> it from side to side. Swish, swish! When the bill touches a fish, it snaps shut. <span class="hl">Gulp!</span></p>
+        <p>Bomi doesn't need to see the fish. Its bill can <b>feel</b> them! 👆 Sweep the bill.</p>
+        <span class="fact">💧 Spoonbills like to feed where the water is shallow: about <b>16 cm</b> deep or less, a bit shorter than a school ruler.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 NIGHT FEEDING -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="Under a full moon, Bomi wades in a shallow fish pond, sweeping its bill through the silver water, with small fish darting nearby."><div class="layer"></div></div>
+      <div class="text">
+        <p>Most of Bomi's eating happens at <b>night</b>! When the sun goes down, the spoonbills fly from their resting place to shallow fish ponds and wetlands nearby.</p>
+        <p>In the dark, they sweep and feel, sweep and feel, until <span class="hl">morning</span>. 👆 Tap around the pond.</p>
+        <span class="fact">🌙 In Tainan, spoonbills fly about <b>8 km</b> each evening to their feeding spots, and some fly as far as 15 km.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 FISH FARMER FRIENDS -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="farm"><img class="art" src="img/p06.webp" alt="At a fish farm, A-gong in a straw hat stands by a water gate next to a drained pond full of puddles with little fish, while Ting points at spoonbills flying down to feed.">
+        <div class="ctl" data-noread><button class="bigbtn blue" id="gateBtn">🌊 Open the water gate</button></div>
+        <div class="readout" id="farmOut">After the fish harvest...</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Ting's grandpa, <b>A-gong</b>, raises fish in ponds. After he harvests his fish, he lets the water out, so the pond can dry in the sun.</p>
+        <p>The water gets <span class="hl">shallow</span>, and lots of little fish are left behind. For spoonbills, that's a <b>feast</b>! 👆 Open the gate.</p>
+        <span class="fact">🤝 In Taiwan, some fish farmers get a thank-you payment for keeping their drained ponds safe for spoonbills to feed in, with no poison and no nets.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 ALMOST GONE -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage svgstage" id="count">
+        <svg id="countsvg" viewBox="0 0 1000 560" aria-label="A bar chart of black-faced spoonbill numbers from 1989 to 2026"></svg>
+        <div class="ctl" data-noread><button class="bigbtn orange" id="countBtn">📈 Watch them grow</button></div>
+        <div class="readout" id="countOut">How many are there in the whole world?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>About 35 years ago, black-faced spoonbills almost <b>disappeared</b>. In 1989, people counted only <span class="big">288</span> in the whole world!</p>
+        <p>People in many countries worked together: they protected wetlands and nesting islands, and counted the birds every winter. Now there are more than <b>7,700</b>! 👆 Watch the numbers grow.</p>
+        <span class="fact">🔢 Every January, bird watchers in many countries count spoonbills on the same days. It's called the <b>global census</b>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 TAIWAN'S SHARE -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage svgstage" id="share">
+        <svg id="sharesvg" viewBox="0 0 1000 560" aria-label="100 spoonbill dots colored by where they spend the winter"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" data-w="tw">Taiwan</button><button class="bigbtn orange" data-w="cn">China</button><button class="bigbtn blue" data-w="jp">Japan</button><button class="bigbtn purple" data-w="ot">Other places</button></div>
+        <div class="readout" id="shareOut" style="left:auto;right:3%;max-width:40%">If there were only 100 spoonbills...</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Where do all the black-faced spoonbills spend the winter? If the whole world had just 100 of them, about <span class="big">61</span> would be in <b>Taiwan</b>!</p>
+        <p>That means Taiwan has a very important job: keeping these birds safe every winter. 👆 Tap the places.</p>
+        <span class="fact">📍 In the January 2026 count, Taiwan had <b>4,719</b> spoonbills. Tainan had <b>2,034</b>, and Chiayi had <b>1,515</b>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 LEG RINGS -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage" id="rings"><img class="art" src="img/p04.webp" alt="The resting flock of spoonbills on the sandbar.">
+        <div class="tag" id="tag0" style="left:18%;top:72%">T85</div>
+        <div class="tag" id="tag1" style="left:29%;top:84%">N44</div>
+        <div class="tag" id="tag2" style="left:47%;top:77%">N49</div>
+        <div class="tag" id="tag3" style="left:72%;top:94%">Bomi 🟢</div>
+        <div class="readout" id="ringOut">👆 Tap the birds' legs to read their rings!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Some spoonbills wear a little <b>ring</b> on their leg, with letters and numbers on it. Bird watchers read the rings through telescopes, so they know <span class="hl">who's who</span>.</p>
+        <p>A spoonbill named <b>T85</b> was rescued, got better, and was set free. It has come back to Tainan for three winters in a row! 👆 Read the rings.</p>
+        <span class="fact">🔭 The rings don't hurt. They help scientists learn where each bird goes and how long it lives.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 SPRING -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p08.webp" alt="In spring, Bomi with a fluffy yellow crest and a yellow chest patch flies north over the sea, followed by other spoonbills, while Ting waves goodbye from the shore."><div class="layer"></div></div>
+      <div class="text">
+        <p>When spring comes, grown-up spoonbills get dressed up! They grow fluffy <span class="hl">yellow</span> feathers on the back of the head, and a yellow patch on the chest.</p>
+        <p>Then, starting around <b>March</b>, they fly north in small groups, back to the islands to build nests. Bye, Bomi! See you next winter! 👆 Wave goodbye.</p>
+        <span class="fact">🎂 Young spoonbills don't get yellow feathers yet. They grow them when they are about 3 or 4 years old.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 HOW WE CAN HELP -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage" id="help"><img class="art" src="img/p07.webp" alt="In a wooden birdwatching pavilion, Ting looks through binoculars and puts a finger to her lips while A-gong sets up a telescope. Far away, the spoonbills rest calmly.">
+        <div class="check" data-noread>
+          <button class="bigbtn" data-k="far">🔭 Watch from far away</button>
+          <button class="bigbtn" data-k="quiet">🤫 Be quiet, don't chase</button>
+          <button class="bigbtn" data-k="drone">🚫 No drones near the birds</button>
+          <button class="bigbtn" data-k="clean">🧹 Keep wetlands clean</button>
+          <button class="bigbtn" data-k="thanks">🙏 Thank the fish farmers</button>
+        </div>
+        <div class="readout" id="helpOut" style="left:auto;right:3%;top:auto;bottom:5%;max-width:40%">How can we help?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Ting and A-gong go to a <b>birdwatching hut</b>. They watch the spoonbills from far away with binoculars, and stay quiet. If people get too close, the birds fly away and waste the energy they need.</p>
+        <p>Every autumn, Tainan holds a <span class="hl">spoonbill festival</span> to welcome them back. 👆 Tap the ways to help.</p>
+        <span class="fact">🦺 Spoonbills are protected in Taiwan. Keeping wetlands clean and safe helps many other birds too.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 HOW TO PLAY -->
+  <section class="page" data-page="14">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:28%;top:58%;width:24%" data-say="Hold your finger on the water and I'll walk there, sweeping my bill. Walk slowly, or the fish get scared!"><img src="img/bomi_sweep.webp" alt="Bomi"></button>
+          <button class="actor idle" style="left:60%;top:30%;width:26%;animation-delay:.5s" data-say="Then fly me between Korea and Taiwan! Land in the green wetlands to rest, and ride the monsoon wind."><img src="img/bomi_fly.webp" alt="Bomi flying"></button>
+          <button class="actor idle" style="left:86%;top:62%;width:13%;animation-delay:1s" data-say="When I open my water gate, the pond gets shallow. Lots of fish for you!"><img src="img/agong.webp" alt="A-gong"></button>
+          <button class="actor idle" style="left:47%;top:80%;width:7%;animation-delay:1.4s" data-say="Swish, swish... gulp!"><img src="img/fish.webp" alt="A fish"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Spoonbill Journey!</h2>
+        <ol class="steps">
+          <li><b>🐟 Feed missions:</b> hold your finger on the water, and Bomi walks there, sweeping its spoon bill. When the bill touches a fish: gulp!</li>
+          <li>Walk <b>slowly</b>, or the fish swim away. Dark blue water is <b>too deep</b> for Bomi's legs.</li>
+          <li><b>🕊️ Fly missions:</b> touch where you want Bomi to fly. Rest in the <b>green wetlands</b>, and fly around the gray rain clouds.</li>
+          <li>Eat enough before sunrise, and reach Taiwan (or Korea in spring) without getting too tired!</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Spoonbill Journey!</a>
+        <span class="fact" data-noread>8 missions, from your first swish to the long flight across the Yellow Sea, plus <b>Free Feeding</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 QUIZ + SOURCES -->
+  <section class="page" data-page="15">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Bomi flying over the fish ponds at sunset."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Spoonbills!</h2>
+        <p>Black-faced spoonbills nest near Korea and spend the winter in places like Tainan. They catch fish by <b>touch</b> with their spoon bills, mostly at night, and they came back from only 288 birds thanks to people working together.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. How does a spoonbill find fish?</div>
+          <div class="choice-row"><button class="choice">👀 Only by looking</button><button class="choice" data-ok>🥄 By sweeping and feeling</button><button class="choice">👂 By listening</button></div>
+          <div class="q">2. When do spoonbills do most of their eating?</div>
+          <div class="choice-row"><button class="choice" data-ok>🌙 At night</button><button class="choice">☀️ At noon</button><button class="choice">❄️ Only in summer</button></div>
+          <div class="q">3. How should we watch spoonbills?</div>
+          <div class="choice-row"><button class="choice">🏃 Run up close</button><button class="choice" data-ok>🔭 From far away, quietly</button><button class="choice">📣 Call them loudly</button></div>
+        </div>
+        <span class="fact" data-noread>🔭 Try it with a grown-up: visit a birdwatching spot in Tainan's Qigu between October and March, and bring binoculars. How many spoonbills can you count?</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www.bird.org.tw/basicpage/5684" target="_blank" rel="noopener">Chinese Wild Bird Federation, 2026 global census results (7,746 birds; Taiwan 4,719, about 61%; Tainan 2,034; Chiayi 1,515; China 1,849; Japan 757; Hong Kong and Shenzhen 291; Vietnam 72; South Korea 39; Macau 12; Philippines 7)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Black-faced_spoonbill" target="_blank" rel="noopener">Black-faced spoonbill (smallest of six spoonbills, about 288 birds counted in 1988 to 1990, nesting on islands off Korea, sweeping by touch, yellow breeding feathers at 3 to 4 years)</a> ·
+          <a href="https://pansci.asia/archives/179935" target="_blank" rel="noopener">PanSci, the spoonbill's winter home (rice-paddle bird, pink chick bills, about 40 days of feeding, night feeding in water under about 16 cm, flying about 8 km and up to 15 km, arriving in October and leaving from March)</a> ·
+          <a href="https://www.eaaflyway.net/?p=60820" target="_blank" rel="noopener">EAAF Partnership, Korean tracking of black-faced spoonbills (crossing the Yellow Sea to China's coast)</a> ·
+          <a href="https://db.koreascholar.com/Article/Detail/361672" target="_blank" rel="noopener">Korean satellite tracking of juveniles (about 1,201 km on average, 2 to 3 stopovers)</a> ·
+          <a href="https://www.bfsa.org.tw/tc/spoonbill-1.php" target="_blank" rel="noopener">Black-faced Spoonbill Conservation Association (body length 71 to 83 cm)</a> ·
+          <a href="https://newtalk.tw/news/view/2026-10-13/1065291" target="_blank" rel="noopener">Newtalk, October 2026 (spoonbills arriving in Tainan, the 2026 conservation festival, rings T85, N44 and N49 back three years in a row)</a> ·
+          <a href="https://www.agriharvest.tw/archives/134702/" target="_blank" rel="noopener">AgriHarvest, 2026 census and payments to fish farmers</a><br>
+          Bomi, Ting and A-gong are pretend, and the faces are just for fun. Real rings have codes, but Bomi's green ring is pretend. Numbers are rounded for kids: 61 of 100 is Taiwan's 61%; 24 of 100 China (1,849); 10 of 100 Japan (757); the other 5 are Hong Kong and Shenzhen, Vietnam, South Korea, Macau and the Philippines. The map on page 4 is simplified, and the route shows one common way; spoonbills also fly other routes.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Spoonbill Journey!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script src="../currents/geo.js"></script>
+<script src="sim.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx, M = SpoonbillSim;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+  let anims = {};
+  const stop = k => { cancelAnimationFrame(anims[k]); anims[k] = 0; };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "pollen", .2); build(1, st => {
+    say(st, 70, 26, 22, 24, "Bomi", "<b>Hi, I'm Bomi!</b>I'm a black-faced spoonbill. I fly to Taiwan every winter.", S.chirp, 98, 50, true);
+    say(st, 21, 68, 12, 26, "Ting", "<b>I'm Ting!</b>I watch the spoonbills with my binoculars. Welcome back, Bomi!", S.yay, 4, 6);
+    say(st, 83, 84, 12, 14, "Water wheel", "<b>A water wheel</b> stirs the pond, so the fish get enough air.", S.splash, 98, 6, true);
+    say(st, 75, 14, 14, 12, "More spoonbills", "<b>Here come the others!</b>Spoonbills like to travel and rest in groups.", S.whoosh, 98, 30, true);
+  }); });
+
+  /* -------- 2 meet Bomi -------- */
+  B.on(2, () => build(2, st => {
+    say(st, 62, 42, 14, 22, "Spoon bill", "<b>My spoon bill!</b>It's flat and wide at the tip, perfect for sweeping through water.", S.pop, 4, 6);
+    say(st, 88, 30, 10, 22, "Sleeping spoonbill", "<b>Zzz...</b> Standing on one leg keeps the other leg warm in the feathers.", S.snore, 98, 50, true);
+    say(st, 80, 72, 8, 12, "Leg ring", "<b>My green ring</b> is pretend. Real rings have letters and numbers to tell birds apart.", S.ding, 98, 6, true);
+  }));
+
+  /* -------- 3 nest -------- */
+  B.on(3, () => build(3, st => {
+    say(st, 59, 58, 16, 18, "Chicks", "<b>Peep peep!</b>Look at our pink bills! They'll turn black when we grow up.", S.chirp, 4, 6);
+    say(st, 73, 31, 12, 26, "Parent", "<b>Mom:</b> I have yellow feathers now, because it's nesting season!", S.ding, 98, 60, true);
+    say(st, 10, 31, 14, 14, "Islands", "<b>Little rocky islands</b> keep the nests safe from foxes and people.", S.splash, 4, 50);
+  }));
+
+  /* -------- 4 the route on the map -------- */
+  B.on(4, () => build(4, st => {
+    const K = 60, P = M.proj(K), [x1, y1] = P([M.MAP.e, M.MAP.s]);
+    const svg = el("svg", { viewBox: "0 0 " + x1 + " " + y1, preserveAspectRatio: "xMidYMid meet" });
+    for (const k in M.COAST) {
+      const d = "M" + M.COAST[k].map(p => P(p).map(v => v.toFixed(1)).join(",")).join("L") + "Z";
+      svg.appendChild(el("path", { d, fill: k === "taiwan" || k === "nest" ? "#a6d47e" : "#e8dfc0", stroke: k === "taiwan" ? "#6fae52" : "#c3b78f", "stroke-width": 2 }));
+    }
+    const lab = (ll, t, sz, col) => { const q = P(ll); svg.appendChild(el("text", { class: "lbl", x: q[0], y: q[1], "text-anchor": "middle", style: "font-size:" + sz + "px;fill:" + (col || "#26324a") }, t)); };
+    lab([116.8, 36.6], "China", 44); lab([127.7, 36.6], "Korea", 36); lab([130.4, 32.3], "Japan", 32); lab([121.0, 22.4], "Taiwan", 34, "#3f7a2f");
+    lab([123.6, 35.6], "Yellow Sea", 32, "#2f5f8f");
+    const route = ["nest", "jiangsu", "shanghai", "fujian", "tainan"].map(k => P(M.PLACES[k].at));
+    const path = el("path", { d: "M" + route.map(p => p.join(",")).join("L"), fill: "none", stroke: "#ff7a2f", "stroke-width": 5, "stroke-dasharray": "3 9", "stroke-linecap": "round", opacity: 0.35 });
+    svg.appendChild(path);
+    const trail = el("path", { fill: "none", stroke: "#ff7a2f", "stroke-width": 6, "stroke-linecap": "round" }); svg.appendChild(trail);
+    ["jiangsu", "shanghai", "fujian"].forEach(k => { const q = P(M.PLACES[k].at); svg.appendChild(el("circle", { cx: q[0], cy: q[1], r: 9, fill: "#5ccf6a", stroke: "#fff", "stroke-width": 3 })); });
+    [["nest", "#f2a516"], ["tainan", "#e0535a"]].forEach(([k, c]) => { const q = P(M.PLACES[k].at); svg.appendChild(el("circle", { cx: q[0], cy: q[1], r: 11, fill: c, stroke: "#fff", "stroke-width": 3 })); });
+    const bird = el("image", { href: "img/bomi_fly.webp", width: 110, height: 110, x: -55, y: -55 }); svg.appendChild(bird);
+    bird.setAttribute("transform", "translate(" + route[0][0] + " " + route[0][1] + ")");
+    st.insertBefore(svg, st.firstChild);
+    const NOTE = ["🏝️ Start: a nesting island off <b>Korea</b>.", "🟢 Rest and eat at the <b>Jiangsu mudflats</b>, China.", "🟢 Rest at the <b>Shanghai wetlands</b>.", "🟢 Rest at a <b>river mouth in Fujian</b>.", "🎉 Hello, <b>Tainan</b>! About 1,200 km in all."];
+    $("#flyBtn").onclick = e => {
+      e.stopPropagation(); stop("route"); S.whoosh();
+      const t0 = performance.now(), D = 7000, segs = [];
+      let L = 0; for (let i = 1; i < route.length; i++) { const d = Math.hypot(route[i][0] - route[i - 1][0], route[i][1] - route[i - 1][1]); segs.push(d); L += d; }
+      let lastLeg = -1;
+      const step = now => {
+        let want = Math.min(1, (now - t0) / D) * L, i = 0;
+        while (i < segs.length - 1 && want > segs[i]) { want -= segs[i]; i++; }
+        const k = Math.min(1, want / segs[i]), x = route[i][0] + (route[i + 1][0] - route[i][0]) * k, y = route[i][1] + (route[i + 1][1] - route[i][1]) * k;
+        const ang = Math.atan2(route[i + 1][1] - route[i][1], route[i + 1][0] - route[i][0]) * 180 / Math.PI + 90;
+        bird.setAttribute("transform", "translate(" + x + " " + y + ") rotate(" + ang + ")");
+        trail.setAttribute("d", "M" + route.slice(0, i + 1).map(p => p.join(",")).join("L") + " L" + x + "," + y);
+        const leg = k > 0.97 ? i + 1 : i;
+        if (leg !== lastLeg) { lastLeg = leg; $("#routeOut").innerHTML = NOTE[leg]; if (leg > 0) S.ding(); }
+        if (now - t0 < D) anims.route = requestAnimationFrame(step); else { S.yay(); $("#routeOut").innerHTML = NOTE[4]; }
+      };
+      anims.route = requestAnimationFrame(step);
+    };
+  }), () => stop("route"));
+
+  /* -------- 5 resting flock -------- */
+  B.on(5, () => build(5, st => {
+    say(st, 49, 52, 26, 22, "Flock", "<b>Safety in numbers!</b>With many eyes in the flock, someone always notices danger.", S.chirp, 4, 6);
+    say(st, 63, 38, 8, 12, "Yawning spoonbill", "<b>Yaaawn!</b>Being up all night eating is tiring.", S.snore, 98, 6, true);
+    say(st, 70, 68, 14, 22, "Bomi", "<b>Bomi:</b> Shhh. Daytime is nap time for spoonbills.", S.snore, 98, 6, true);
+    say(st, 85, 23, 12, 18, "Birdwatching hut", "<b>A birdwatching hut</b>, far away, so people don't disturb the birds.", S.ding, 98, 50, true);
+  }));
+
+  /* -------- 6 sweep demo (the fish keep swimming while the page is open) -------- */
+  let sweepStart = () => {};
+  B.on(6, () => { build(6, st => {
+    const svg = $("#sweepsvg");
+    svg.appendChild(el("rect", { x: 0, y: 0, width: 1000, height: 220, fill: "#cfeefd" }));
+    svg.appendChild(el("rect", { x: 0, y: 220, width: 1000, height: 260, fill: "#6fb2de" }));
+    svg.appendChild(el("path", { d: "M0 480 Q250 455 500 470 T1000 465 L1000 560 L0 560 Z", fill: "#8a6a4c" }));
+    svg.appendChild(el("line", { x1: 0, y1: 220, x2: 1000, y2: 220, stroke: "#fff", "stroke-width": 5 }));
+    const bird = el("image", { href: "img/bomi_sweep.webp", width: 330, height: 330, x: 230, y: 160 }); svg.appendChild(bird);
+    const swish = el("path", { d: "M430 470 Q500 500 570 470", fill: "none", stroke: "#fff", "stroke-width": 6, "stroke-linecap": "round", opacity: 0 }); svg.appendChild(swish);
+    const fishes = [];
+    for (let i = 0; i < 6; i++) { const f = el("image", { href: "img/fish.webp", width: 70, height: 40, x: 0, y: 0 }); svg.appendChild(f); fishes.push({ el: f, x: 120 + i * 150, y: 300 + (i % 3) * 50, vx: (i % 2 ? 1 : -1) * 40, gone: false }); }
+    let caught = 0, t = 0, last = performance.now(), sweeping = 0;
+    sweepStart = () => { stop("sweep"); last = performance.now(); anims.sweep = requestAnimationFrame(loop); };
+    const loop = now => {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
+      fishes.forEach(f => { if (f.gone) return; f.x += f.vx * dt; if (f.x < 40 || f.x > 940) f.vx = -f.vx; f.el.setAttribute("x", f.x - 35); f.el.setAttribute("y", f.y + Math.sin(t * 2 + f.x) * 6 - 20);
+        f.el.setAttribute("transform", f.vx < 0 ? "scale(-1 1) translate(" + (-2 * f.x) + " 0)" : ""); });
+      if (sweeping > 0) {
+        sweeping -= dt;
+        const tipX = 500 + Math.sin(t * 9) * 90, tipY = 455;
+        bird.setAttribute("x", 230 + Math.sin(t * 9) * 25);
+        swish.setAttribute("opacity", 0.8);
+        fishes.forEach(f => { if (!f.gone) { f.y += (tipY - 30 - f.y) * dt * 0.8; if (Math.abs(f.x - tipX) < 45 && Math.abs(f.y - tipY) < 70) { f.gone = true; f.el.setAttribute("opacity", 0); caught++; S.munch(); $("#sweepOut").innerHTML = "🥄 Snap! <b>" + caught + "</b> caught, all by touch!"; } } });
+      } else swish.setAttribute("opacity", 0);
+      anims.sweep = requestAnimationFrame(loop);
+    };
+    $("#sweepBtn").onclick = e => {
+      e.stopPropagation(); sweeping = 2.5; S.whoosh();
+      if (fishes.every(f => f.gone)) { fishes.forEach((f, i) => { f.gone = false; f.x = 120 + i * 150; f.y = 300 + (i % 3) * 50; f.el.setAttribute("opacity", 1); }); caught = 0; }
+    };
+  }); sweepStart(); }, () => stop("sweep"));
+
+  /* -------- 7 night -------- */
+  B.on(7, () => { const st = stageOf(7); F.weather(st, "stars", .4); build(7, st => {
+    say(st, 67, 56, 14, 26, "Bomi", "<b>Bomi:</b> Swish, swish... It's dark, but I can feel the fish with my bill!", S.whoosh, 98, 6, true);
+    say(st, 39, 81, 14, 12, "Fish", "<b>Little fish</b> like mullet and small shrimp are a spoonbill's favorite food.", S.splash, 4, 6);
+    say(st, 33, 12, 10, 16, "Moon", "<b>The moon</b> lights the water, but spoonbills can feed even on very dark nights.", S.sparkle, 4, 30);
+  }); });
+
+  /* -------- 8 the fish farm -------- */
+  B.on(8, () => build(8, st => {
+    let open = false;
+    $("#gateBtn").onclick = e => {
+      e.stopPropagation(); if (open) return; open = true; S.splash();
+      const [x, y] = B.px(st, 27, 78); for (let i = 0; i < 6; i++) setTimeout(() => F.jet(st, x, y, 0.3, 1, 12), i * 120);
+      $("#farmOut").innerHTML = "🌊 The water flows out... the pond gets <b>shallow</b>!";
+      setTimeout(() => { S.yay(); F.sparkles(st, ...B.px(st, 51, 70), 30); $("#farmOut").innerHTML = "🐟 Little fish are left in the puddles. Here come the spoonbills!"; open = false; }, 1600);
+    };
+    say(st, 77, 52, 12, 30, "A-gong", "<b>A-gong:</b> My ponds feed my family, and in winter they feed the spoonbills too!", S.chirp, 98, 6, true);
+    say(st, 51, 70, 14, 14, "Fish puddle", "<b>A puddle full of little fish!</b>Easy food in very shallow water.", S.splash, 4, 6);
+    say(st, 67, 65, 8, 20, "Ting", "<b>Ting:</b> Look, A-gong! They're coming to eat!", S.yay, 4, 6);
+    say(st, 58, 18, 16, 14, "Spoonbills", "<b>Landing!</b>Spoonbills remember good feeding spots and come back.", S.whoosh, 4, 40);
+  }));
+
+  /* -------- 9 the count -------- */
+  const COUNT = [[1989, 288], [2006, 1679], [2012, 2693], [2019, 4463], [2022, 6162], [2026, 7746]];
+  B.on(9, () => build(9, st => {
+    const svg = $("#countsvg"), base = 470, top = 80, max = 8000;
+    svg.appendChild(el("line", { x1: 80, y1: base, x2: 940, y2: base, stroke: "#26324a", "stroke-width": 4 }));
+    const bars = COUNT.map(([yr, n], i) => {
+      const x = 120 + i * 140;
+      const r = el("rect", { x, y: base, width: 90, height: 0, rx: 10, fill: i === COUNT.length - 1 ? "#f2a516" : "#2f9e8f" }); svg.appendChild(r);
+      svg.appendChild(el("text", { class: "lbl", x: x + 45, y: base + 40, "text-anchor": "middle", style: "font-size:30px" }, String(yr)));
+      const v = el("text", { class: "lbl", x: x + 45, y: base - 10, "text-anchor": "middle", style: "font-size:28px" }, ""); svg.appendChild(v);
+      return { r, v, n, x };
+    });
+    $("#countBtn").onclick = e => {
+      e.stopPropagation(); stop("count"); S.whoosh();
+      const t0 = performance.now();
+      const step = now => {
+        const k = Math.min(1, (now - t0) / 3500);
+        bars.forEach((b, i) => { const kk = clamp01(k * COUNT.length - i), n = Math.round(b.n * kk), h = (base - top) * n / max;
+          b.r.setAttribute("y", base - h); b.r.setAttribute("height", h); b.v.setAttribute("y", base - h - 12); b.v.textContent = n ? n.toLocaleString() : ""; });
+        if (k < 1) anims.count = requestAnimationFrame(step);
+        else { S.yay(); B.confetti(60); $("#countOut").innerHTML = "📈 From <b>288</b> to <b>7,746</b>: about 27 times more!"; }
+      };
+      anims.count = requestAnimationFrame(step);
+    };
+  }), () => stop("count"));
+  const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
+
+  /* -------- 10 100 spoonbills -------- */
+  B.on(10, () => build(10, st => {
+    const svg = $("#sharesvg"), GROUP = [["tw", 61, "#2f9e8f"], ["cn", 24, "#f2a516"], ["jp", 10, "#4f86f7"], ["ot", 5, "#9b6cf2"]];
+    const dots = []; let n = 0;
+    GROUP.forEach(([k, c, col]) => { for (let i = 0; i < c; i++, n++) {
+      const x = 90 + (n % 20) * 34, y = 150 + Math.floor(n / 20) * 62;
+      const d = el("circle", { cx: x, cy: y, r: 13, fill: "#c9d6d2" }); svg.appendChild(d); dots.push({ d, k, col }); } });
+    svg.appendChild(el("text", { class: "lbl", x: 90, y: 470, "text-anchor": "start", style: "font-size:28px" }, "Each dot = 1 of 100 spoonbills"));
+    const SAY = { tw: "🏝️ <b>61</b> of 100 spend the winter in <b>Taiwan</b>!", cn: "<b>24</b> of 100 winter in <b>China</b>, along the coast.", jp: "<b>10</b> of 100 winter in <b>Japan</b>.", ot: "<b>5</b> of 100 winter in Hong Kong, Vietnam, South Korea, Macau and the Philippines." };
+    st.querySelectorAll("[data-w]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.w;
+      dots.forEach(x => x.d.setAttribute("fill", x.k === k ? x.col : "#c9d6d2"));
+      S.ding(); $("#shareOut").innerHTML = SAY[k];
+    });
+  }));
+
+  /* -------- 11 leg rings -------- */
+  B.on(11, () => build(11, st => {
+    const RING = [
+      [18, 66, "<b>T85</b> was rescued, got better, and was set free. It has come back to Tainan three winters in a row!"],
+      [29, 79, "<b>N44</b> is another regular. Bird watchers say hello every winter."],
+      [47, 72, "<b>N49</b> also keeps coming back to the same place."],
+      [72, 88, "<b>Bomi's</b> green ring is pretend. Real rings have letters and numbers you can read through a telescope."],
+    ];
+    RING.forEach(([x, y, txt], i) => B.hot(st, x, y, 9, 14, "Leg ring " + (i + 1), () => {
+      S.ding(); $("#tag" + i).classList.add("on"); $("#ringOut").innerHTML = "🔭 " + txt;
+    }));
+  }));
+
+  /* -------- 12 spring -------- */
+  B.on(12, () => { const st = stageOf(12); F.weather(st, "pollen", .4); build(12, st => {
+    say(st, 74, 30, 18, 26, "Bomi", "<b>Bomi:</b> See my yellow feathers? Bye, Ting! I'm going home to build a nest.", S.chirp, 98, 60, true);
+    say(st, 21, 66, 12, 26, "Ting", "<b>Ting:</b> Bye, Bomi! Have a safe trip! See you next winter!", S.yay, 4, 6);
+    say(st, 70, 21, 8, 10, "Yellow crest", "<b>A fluffy yellow crest!</b>Grown-ups wear it in spring, when it's time to find a partner.", S.sparkle, 98, 60, true);
+  }); });
+
+  /* -------- 13 how to help -------- */
+  B.on(13, () => build(13, st => {
+    const done = {}, out = $("#helpOut");
+    const MSG = { far: "🔭 Binoculars let you see them up close without bothering them.", quiet: "🤫 Scared birds fly away and use up energy they need for the trip.",
+      drone: "🚫 Drones look like hawks to birds. Keep them far from flocks.", clean: "🧹 Trash and fishing line can tangle birds' legs.", thanks: "🙏 Fish farmers' ponds give spoonbills safe places to eat." };
+    st.querySelectorAll("[data-k]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.k;
+      if (done[k]) return; done[k] = true; b.classList.add("on"); b.textContent = "✔ " + b.textContent.replace(/^\S+ /, "");
+      S.ding(); out.innerHTML = MSG[k];
+      if (Object.keys(done).length === 5) { S.yay(); B.confetti(80); out.innerHTML = "✨ <b>You're a spoonbill friend!</b>"; B.speak(out.innerText); }
+    });
+    say(st, 49, 62, 10, 24, "Ting", "<b>Ting:</b> Shhh! I can count them from here: twenty, twenty-one...", S.chirp, 98, 6, true);
+    say(st, 24, 38, 18, 14, "Far-away flock", "<b>The flock</b> is calm, because nobody is too close.", S.snore, 4, 50);
+  }));
+
+  /* -------- 14 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(14), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), y > 55 ? 6 : Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(14, () => F.weather(stageOf(14), "pollen", .3));
+
+  /* -------- 15 -------- */
+  B.on(15, () => { const st = stageOf(15); F.weather(st, "pollen", .3); build(15, st => {
+    say(st, 70, 26, 22, 24, "Bomi", "<b>Bomi:</b> Thanks for following my year! Want to sweep for fish and fly with me?", S.yay, 98, 50, true);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

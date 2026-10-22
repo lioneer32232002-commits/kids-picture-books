@@ -63,6 +63,9 @@
 | 水星 | Bepi | chubby box-shaped spacecraft covered in shiny silver-white blankets, one long dark-blue solar panel wing, round white antenna dish, friendly face（ESA 的水星行星軌道器 MPO；書裡是姊姊） |
 | 水星 | Mio | small chubby eight-sided drum-shaped spacecraft with dark-blue solar cells, silver stripes, two thin antenna sticks, friendly face（JAXA；書裡是弟弟，航行時躲在白色圓錐遮陽帽裡） |
 | 水星 | Engine module | silver cylinder with two very long dark-blue solar panel wings and soft glowing blue engine beams, NO face（疊在最下面：引擎模組、Bepi、白色圓錐帽裡的 Mio） |
+| 黑琵 | Bomi | cute chubby black-faced spoonbill: white feathers, a long flat black bill that widens into a round spoon at the tip, bare black skin around the eyes, big shiny eyes, rosy cheeks, long black legs, one small plain green leg ring（春天：只有後頭的冠羽和胸前一塊是黃色，身體仍是白的） |
+| 黑琵 | Ting | cheerful 6-year-old Taiwanese girl birdwatcher, short black hair with a side clip, green bucket hat, binoculars, orange vest with many pockets, khaki shorts, white sneakers |
+| 黑琵 | A-gong | kind Taiwanese fish-farmer grandpa, tanned face, conical straw hat, light blue shirt, dark rubber boots up to the knees |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -85,6 +88,8 @@
 - 颱風季不要畫山頂積雪；颱風前後的畫面，陽台和院子不能還擺著盆栽（跟「收進屋」的教學矛盾），要明寫 the balcony must be EMPTY。
 - **水星沒有岩漿**：只寫 day side hot 會畫出發光的橘色隕石坑。要寫「Mercury has NO lava, craters must NOT glow」，白天是曬得發白的灰色岩石加熱浪。
 - 整顆星球的素材（`mercury_big`）用 `process_images.py` 的 `CIRCLE`：亮的邊緣會被白底 flood fill 吃掉一塊，改用圓形遮罩。也要請 Gemini「the WHOLE ball fits with white space all around」，第一次常被切掉下半。
+- **繁殖羽不是全身黃**：寫「spring yellow feathers」會畫成整隻黃鳥。要寫「body, neck and wings WHITE, only a fluffy yellow crest on the back of the head and one yellow patch on the chest」。雛鳥的嘴是粉紅色。
+- 被吃的魚、蝦寫 NO face（跟免疫書的食物一樣）。腳環上的編號不要讓 Gemini 畫，由 HTML 標籤疊上去。
 - 白底素材表裡「白色或透明」的東西（塑膠袋、寶特瓶）要指定淡紫灰、淡藍等顏色，不然去背會被吃掉；網子這類有破洞的東西在 `process_images.py` 的 `HOLES` 加名字，會把洞裡的白色一起去掉。
 
 ### 2.5 取圖
@@ -148,6 +153,8 @@ Chrome 會擋 Gemini 連續自動下載：
 - **蓋東西的遊戲不讓東西壞掉**（Cathedral Builders!）：石頭沒對準只會「Bonk!」滑掉再來一顆，沒有飛扶壁的牆只會搖晃，鴿子下雨時自己飛走再飛回來。
 - **追風遊戲**（颱風書）：風場逆時針、眼裡無風、眼牆最強（遊戲裡眼牆外一圈紅色虛線不能飛，進去只會被彈出來、扣一個 bump，不會失敗）；順著旋轉飛會有順風，逆著飛會很慢，這是遊戲的核心教學。雷雨胞沒有臉。準備關不是「點一下就收好」，而是美美走過去搬（重的東西走比較慢），陽台交給爺爺，所以要先救搖晃的東西；機器人用「亂序慢慢點」測試，第 6 關亂點會丟東西。
 - **借力飛行遊戲**（水星書）：能量守恆 E = v²/2 − G/r，越靠近太陽越快，FLYBY 和 BRAKE 都是拿走能量。速度只決定「到水星時抓不抓得住」，移動速度有下限（不然一早煞車會在外圈慢到爬）。太快就多繞一圈再飛掠，繞 3 圈後控制中心自動幫忙，所以一定能過關。轉向煞車時太空船掉頭、引擎朝前，跟真的一樣。
+- **覓食遊戲**（黑琵書）：側面看魚塭，背景用 Gemini 的遠景圖，水和泥底用程式畫在下半部，水位才能動（阿公放水、漲潮）。水太深的地方鳥走不過去（「too deep」標示）。走太快會嚇跑魚，被嚇到的魚 2.5 秒內抓不到，教「慢慢走、左右掃」。夜晚的魚只看得到漣漪，嘴靠近才看得清楚。
+- **遷徙遊戲**：東亞海岸線用經緯度手畫簡化（`spoonbill/sim.js` 的 `COAST`），繪本地圖頁和遊戲共用。秋天東北季風往西南吹，春天換成往北的弱風。中途濕地每處只休息一次（休息完還在光圈裡會一直重新休息，曾經卡住），累了會自動滑翔到最近的濕地。
 - **Phaser 效能**：Graphics 裡上千個小圓點（星空、虛線航線）每一格都會重畫，水星遊戲一度只有每秒 10 格。星空改成一張 512 px 的 tileSprite，航線改成一條 strokePoints，之後的遊戲照這樣做。
 - Windows 10 的 canvas 字型畫不出 🪂（emoji 12），遊戲裡改用 📡；HTML 文字可以用。
 - **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
