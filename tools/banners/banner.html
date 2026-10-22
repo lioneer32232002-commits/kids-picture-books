@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -233,6 +233,34 @@
   .typhoonchasers.square .art { background-position: 75% 50%; }
   .typhoonchasers.square .veil { background: linear-gradient(180deg, rgba(40,60,120,0) 0%, #2a3f7a 25%); }
 
+  /* ---------- Mercury (the banner art leaves the left side empty for the title) ---------- */
+  .mercury .art { background-image: url(../../_raw/mercury/banner.jpg); }
+  .mercury.wide .art { background-size: 125%; background-position: 100% 40%; }
+  .mercury .veil { background: linear-gradient(90deg, rgba(14,19,56,.9) 0%, rgba(14,19,56,.65) 36%, rgba(14,19,56,0) 56%); }
+  .mercury .copy { color: #fff; }
+  .mercury .kicker { background: #ffd23d; color: #0e1338; }
+  .mercury h1 { color: #fff; text-shadow: 0 4px 0 #0e1338, 0 8px 24px rgba(0,0,0,.5); }
+  .mercury h1 span { color: #ffd23d; }
+  .mercury .chip { background: rgba(255,255,255,.95); color: #0e1338; }
+  .mercury .cta { background: #f2a516; box-shadow: 0 6px 0 #c47f05; }
+  .mercury.wide h1 { font-size: 66px; }
+  .mercury.square .art { background-position: 80% 50%; }
+  .mercury.square .veil { background: linear-gradient(180deg, rgba(14,19,56,0) 0%, #0e1338 25%); }
+
+  /* ---------- Mercury Mission! (the cover: the stack flies toward Mercury on the right) ---------- */
+  .mercurymission .art { background-image: url(../../_raw/mercury/p01.jpg); }
+  .mercurymission.wide .art { background-size: auto 100%; background-position: 100% 50%; background-color: #0b0f2e; left: 160px; }
+  .mercurymission .veil { background: linear-gradient(90deg, rgba(14,19,56,.9) 0%, rgba(14,19,56,.6) 36%, rgba(14,19,56,0) 56%); }
+  .mercurymission .copy { color: #fff; }
+  .mercurymission .kicker { background: #9ff0ff; color: #0e1338; }
+  .mercurymission h1 { color: #fff; text-shadow: 0 4px 0 #0e1338, 0 8px 24px rgba(0,0,0,.45); }
+  .mercurymission h1 span { color: #9ff0ff; }
+  .mercurymission .chip { background: rgba(255,255,255,.95); color: #0e1338; }
+  .mercurymission .cta { background: #f2a516; box-shadow: 0 6px 0 #c47f05; }
+  .mercurymission.wide h1 { font-size: 80px; }
+  .mercurymission.square .art { background-position: 65% 50%; }
+  .mercurymission.square .veil { background: linear-gradient(180deg, rgba(14,19,56,0) 0%, #0e1338 25%); }
+
   /* layout: wide */
   .wide .copy { left: 56px; top: 0; bottom: 0; width: 560px; display: flex; flex-direction: column; justify-content: center; }
   .wide .kicker { font-size: 22px; align-self: flex-start; }
@@ -366,6 +394,20 @@
       title: "Typhoon <span>Chasers!</span>",
       sub: "Fly around a spinning typhoon, drop weather probes for the forecasters, then get Mei's home ready before the wind comes!",
       chips: ["🌀 Ride the spin", "🏠 Get ready", "🧒 Ages 5–7"],
+      cta: "Play free ▶",
+    },
+    mercury: {
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "Bepi and Mio's Long Trip to <span>Mercury</span>",
+      sub: "Mercury is the closest planet to the Sun, so why does it take 8 years to get there? Ride along with the BepiColombo spacecraft!",
+      chips: ["🛰️ Arriving Nov 2026", "🪐 9 flybys", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    mercurymission: {
+      kicker: "FREE SPACE GAME FOR KIDS",
+      title: "Mercury <span>Mission!</span>",
+      sub: "Swing past planets to slow down, arrive slow enough for Mercury to catch you, then map its hot and cold sides!",
+      chips: ["🪐 Planet flybys", "📷 Map Mercury", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
     planet: {

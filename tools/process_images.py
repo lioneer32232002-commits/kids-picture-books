@@ -14,9 +14,9 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury"}
 # sprite name -> max size (px)
-SPRITES = {"asteroid": 360, "boss": 520, "tower": 760}
+SPRITES = {"asteroid": 360, "boss": 520, "tower": 760, "mercury_big": 820}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
 _c = lambda col, row: (col / 3, row / 3, (col + 1) / 3, (row + 1) / 3)
 SHEETS: dict = {
@@ -94,11 +94,19 @@ SHEETS_BY_BOOK = {
                         ("chime", 0, 1), ("bin", 1, 1), ("umbrella", 2, 1), ("laundry", 3, 1),
                         ("flashlight", 0, 2), ("water", 1, 2), ("radio", 2, 2), ("cans", 3, 2)]},
     },
+    # Mercury book + Mercury Mission! (the stacks lie sideways and point right)
+    "mercury": {
+        "sheet_cast": {n: ((c / 3, r / 2, (c + 1) / 3, (r + 1) / 2), s) for n, c, r, s in
+                       [("bepi", 0, 0, 360), ("mio", 1, 0, 260), ("stack", 2, 0, 460),
+                        ("stack2", 0, 1, 400), ("mtm", 1, 1, 380), ("cone", 2, 1, 200)]},
+    },
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket", "ambulance", "jetty"}
 # sprites made of several blobs (a cloud and its lightning bolt, a flock of birds): keep every blob in the box
-MULTI = {"storm", "gulls", "sonde", "chime", "water"}
+MULTI = {"storm", "gulls", "sonde", "chime", "water", "stack", "stack2"}
+# round sprites (a whole planet): cut with a circle that fits the shape, so a bright rim is not eaten by the white flood-fill
+CIRCLE = {"mercury_big"}
 # see-through sprites (nets): white holes inside the shape are cleared too
 HOLES = {"net", "bignet", "bike", "chair", "laundry"}
 
@@ -184,8 +192,25 @@ def sheet_sprites(src: Path, out_dir: Path, parts: dict):
         print("sprite", src.stem, name)
 
 
+def circle_cut(im: Image.Image) -> Image.Image:
+    """Crop to the non-white shape and keep only the circle inside that box."""
+    from PIL import ImageDraw
+    g = im.convert("L").point(lambda v: 255 if v < 235 else 0)
+    l, t, r, b = g.getbbox()
+    im = im.crop((l, t, r, b)).convert("RGBA")
+    m = Image.new("L", im.size, 0)
+    ImageDraw.Draw(m).ellipse((1, 1, im.width - 2, im.height - 2), fill=255)
+    im.putalpha(m.filter(ImageFilter.GaussianBlur(1)))
+    return im
+
+
 def sprite(src: Path, dst: Path, size: int, box=None, flip=False):
     im = Image.open(src).convert("RGB")
+    if dst.stem in CIRCLE:
+        out = circle_cut(im)
+        out.thumbnail((size, size), Image.LANCZOS)
+        out.save(dst, "WEBP", quality=88, method=6)
+        return
     if box:
         l, t, r, b = box
         im = im.crop((int(l * im.width), int(t * im.height), int(r * im.width), int(b * im.height)))

@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bepi and Mio's Long Trip to Mercury: BepiColombo for Kids | Picture Book + Mercury Mission! Game</title>
+<meta name="description" content="Why does it take 8 years to reach Mercury, the closest planet to the Sun? Meet Bepi and Mio, the European and Japanese spacecraft of BepiColombo: falling toward the Sun, braking with gentle ion engines, nine planet flybys, and arriving at Mercury in November 2026. Then fly the mission yourself in Mercury Mission! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bepi and Mio's Long Trip to Mercury 🪐 A picture book + a space mission game for kids">
+<meta property="og:description" content="Mercury is the closest planet to the Sun, so why does it take 8 years to get there? Ride along with Bepi and Mio, then swing past planets and map Mercury yourself. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/mercury-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/mercury/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #4b5fd6; --accent-4: #f2a516;
+    --bg: radial-gradient(circle at 12% 8%, #e1e4ff 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #fff1d6 0, transparent 45%), #f4f5ff;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #4b5fd6; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.orange { background: #f2a516; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.gray { background: #6b7a90; } .bigbtn.red { background: #e0535a; }
+  .bigbtn[disabled] { opacity: .45; }
+  .svgstage { background: radial-gradient(circle at 30% 40%, #1d2557 0, #0b0f2e 70%); }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .lbl { font: 800 30px "Baloo 2", sans-serif; fill: #ffffff; paint-order: stroke; stroke: #0b0f2e; stroke-width: 6px; pointer-events: none; }
+  .chips { position: absolute; left: 2%; right: 2%; bottom: 4%; z-index: 4; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; background: rgba(255,255,255,.92); border-radius: 18px; padding: 6px; }
+  .chips button { border: none; border-radius: 12px; font: 800 clamp(11px, 1.5vw, 17px) "Baloo 2", sans-serif; padding: 3px 10px; cursor: pointer; color: #fff; }
+  .chips .e { background: #3f8ee0; } .chips .v { background: #e0a32f; } .chips .m { background: #8b8f9e; }
+  .chips button.on { outline: 4px solid #24305e; }
+  .thermo { position: absolute; right: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 6px 14px; font-weight: 800; font-size: clamp(16px, 2.4vw, 30px); text-align: center; min-width: 22%; }
+  .speed { position: absolute; right: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.95); border-radius: 18px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); text-align: center; }
+  .speed .bar { width: clamp(90px, 18vw, 200px); height: 14px; border-radius: 99px; background: #e3e6f7; overflow: hidden; margin: 4px auto 0; }
+  .speed .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #6fb7ff, #9ff0ff); border-radius: 99px; transition: width .2s; }
+  .flash { position: absolute; inset: 0; z-index: 3; background: radial-gradient(circle at 29% 60%, rgba(255,200,90,.85), transparent 45%); opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .flash.on { opacity: 1; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #f2a516; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #c47f05; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: radial-gradient(circle at 20% 30%, #2a3478 0, #0e1338 75%); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🛰️</span>Bepi and Mio Go to Mercury</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Next to the huge glowing Sun, a little stack of spacecraft flies toward gray Mercury: an engine module with long solar wings and blue engine beams, Bepi the box-shaped spacecraft, and Mio peeking out of a white cone hat on top."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Bepi and Mio's Long Trip to Mercury</h1>
+        <p>Mercury is the planet closest to the Sun. You might think it's an easy trip. But two little spacecraft, <b>Bepi</b> and <b>Mio</b>, have been flying for <span class="big">8</span> years to get there!</p>
+        <p>In <b>November 2026</b>, they plan to finally go around Mercury. Let's find out why the trip is so long.</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 MEET MERCURY: THE ORBIT RACE -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage svgstage" id="race">
+        <svg id="racesvg" viewBox="0 0 1000 560" aria-label="Mercury and Earth going around the Sun"></svg>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn orange" id="raceBtn">▶ Race around the Sun!</button></div>
+        <div class="readout" id="raceOut" style="left:auto;right:3%;max-width:40%">Who goes around faster?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Meet <b>Mercury</b>! It's the <span class="hl">smallest planet</span>, and the closest one to the Sun. If Earth were a coin, Mercury would be about the size of a blueberry.</p>
+        <p>Mercury is also the <b>fastest</b> planet. It zooms around the Sun in just <b>88 days</b>. That's one Mercury year! 👆 Start the race.</p>
+        <span class="fact">⚡ Mercury rushes along at about <b>47 km every second</b>. That's fast enough to go from Taipei to Kaohsiung in about 6 seconds!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 HOT AND COLD -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage" id="hot"><img class="art" src="img/p03.webp" alt="Mercury's surface, half in blazing sunlight under a huge Sun and half in freezing darkness with frost sparkling in a shadowed crater.">
+        <div class="thermo" data-noread id="thermo">🌡️ ?</div>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn orange" data-t="day">☀️ Day side</button><button class="bigbtn purple" data-t="night">🌙 Night side</button></div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Mercury has <b>no air</b> to keep it cozy, like a blanket. So on the day side, the ground bakes in the sunshine. On the night side, it gets <span class="hl">colder than any freezer</span>. 👆 Try both sides!</p>
+        <p>From Mercury, the Sun looks more than <b>3 times bigger</b> than it does from Earth.</p>
+        <span class="fact">🌅 Mercury spins very slowly. From one sunrise to the next takes <b>176 Earth days</b>. That's one long day!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 WHY IS IT SO HARD? THE HILL -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage svgstage" id="hill">
+        <svg id="hillsvg" viewBox="0 0 1000 560" aria-label="A hill that slopes down toward the Sun, with Mercury in a little dip near the bottom"></svg>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn red" data-h="roll">🎢 Just roll!</button><button class="bigbtn on" data-h="brake">🛑 Roll and brake</button></div>
+        <div class="readout" id="hillOut" style="left:auto;right:3%;max-width:42%">How do you stop at Mercury?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Here's the tricky part. Flying toward the Sun is like <b>rolling down a giant hill</b>. The closer you get, the <span class="hl">faster</span> you go!</p>
+        <p>To stop at Mercury, a spacecraft has to <b>brake</b>, a lot. If it's too fast, it zooms right past. 👆 Try rolling without brakes, then with brakes.</p>
+        <span class="fact">🪐 Jupiter is about <b>10 times</b> farther from Earth than Mercury, but NASA's Juno spacecraft reached Jupiter in 5 years. Getting into orbit around Mercury takes longer, because of all that braking!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 MEET BEPI AND MIO -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="Bepi, a box-shaped silver spacecraft with a long solar wing and a dish antenna, and Mio, a small eight-sided drum-shaped spacecraft, float near Earth and wave hello."><div class="layer"></div></div>
+      <div class="text">
+        <p>Meet the team! <b>Bepi</b> was built in <b>Europe</b>. Its cameras will make maps of Mercury's whole surface. <b>Mio</b> was built in <b>Japan</b>. It will study Mercury's magnetic field and the wind of tiny bits that blows from the Sun.</p>
+        <p>Together, their mission is called <span class="hl">BepiColombo</span>. 👆 Say hello to them!</p>
+        <span class="fact">🌊 <b>Mio</b> (澪) is a Japanese word for a waterway: the safe path a ship follows across the water. Mio will sail through the Sun's wind, like a ship on the sea.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 LAUNCH -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage" id="launch"><img class="art" src="img/p02.webp" alt="At night on a tropical coast, a big white rocket with two side boosters lifts off on a column of fire, with clouds of smoke and palm trees all around.">
+        <div class="flash" id="flash"></div>
+        <div class="ctl" data-noread><button class="bigbtn red" id="goBtn">🚀 3, 2, 1... Liftoff!</button></div>
+        <div class="readout" id="launchOut">October 20, 2018</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>On <b>October 20, 2018</b>, a big Ariane 5 rocket blasted off from French Guiana, in South America, near the equator. Inside, Bepi and Mio were stacked up <span class="hl">like a tower</span>.</p>
+        <p>At the bottom was an <b>engine module</b>, then Bepi, then a white cone that kept Mio safe from the Sun. 👆 Launch the rocket!</p>
+        <span class="fact">⚖️ All together, the stack weighed about <b>4,100 kg</b>, about as heavy as three cars.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 THE GENTLE BLUE ENGINE -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage" id="ion"><img class="art" src="img/p01.webp" alt="The spacecraft stack with its engine module glowing with soft blue engine beams.">
+        <div class="speed" data-noread><div id="ionV">Push: 0 days</div><div class="bar"><i id="ionBar"></i></div></div>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn" id="ionBtn">💙 Hold to push gently</button></div>
+        <div class="readout" id="ionOut" style="top:auto;bottom:16%">The engine module has special engines.</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>The engine module had <b>ion engines</b>. They shoot out a soft blue beam of tiny charged bits of gas. Each push is <span class="hl">very, very gentle</span>.</p>
+        <p>But an ion engine can keep pushing for weeks and months without stopping. A little push, again and again, makes a big change! 👆 Hold the button.</p>
+        <span class="fact">📄 At full power, two of the engines together push about as hard as <b>six sheets of paper</b> resting on your hand. Gentle, but very patient!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 FLYBYS -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage" id="flyby"><img class="art" src="img/p05.webp" alt="The spacecraft stack swings past the cloudy yellow planet Venus along a glowing curved path, and Bepi and Mio cheer.">
+        <div class="chips" data-noread id="chips"></div>
+        <div class="readout" id="flyOut">👇 Tap a flyby!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Bepi and Mio also got help from the planets! When a spacecraft swings close past a planet, the planet's gravity <b>tugs</b> on it and changes its path and speed. It's called a <span class="hl">flyby</span>.</p>
+        <p>They made <b>9 flybys</b>: Earth once, Venus twice, and Mercury six times! Each one helped them slow down to match Mercury. 👆 Tap the flybys.</p>
+        <span class="fact">⛽ Flybys are like a free ride. Most of the change Bepi needed came from the planets, not from fuel.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 GIUSEPPE COLOMBO -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="In a sunny old classroom, a smiling professor points at chalk drawings of the Sun, planets and a curving path that swings around one planet toward another."><div class="layer"></div></div>
+      <div class="text">
+        <p>Who thought of using flybys to reach Mercury? An Italian scientist named <b>Giuseppe Colombo</b>. His friends called him <b>Bepi</b>!</p>
+        <p>In 1970, he showed that a spacecraft could swing past <b>Venus</b> to reach Mercury. NASA's <b>Mariner 10</b> did it, and visited Mercury <span class="hl">three times</span>. The mission is named after him. 👆 Tap the chalkboard.</p>
+        <span class="fact">🔁 Colombo also figured out a Mercury puzzle: it spins around exactly <b>3 times</b> for every <b>2 trips</b> around the Sun.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ENGINE TROUBLE: A NEW PLAN -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage svgstage" id="plan">
+        <svg id="plansvg" viewBox="0 0 1000 560" aria-label="A timeline from 2018 to 2027"></svg>
+        <div class="ctl" data-noread style="left:3%;right:auto;justify-content:flex-start"><button class="bigbtn gray" data-p="old">📅 The old plan</button><button class="bigbtn orange" data-p="new">🛠️ The new plan</button></div>
+        <div class="readout" id="planOut" style="left:auto;right:3%;max-width:44%">Uh-oh! In April 2024...</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>In <b>April 2024</b>, there was a problem. The engines could not push at full power anymore. Without enough push, Bepi and Mio might not be able to stop at Mercury!</p>
+        <p>The team didn't give up. They worked out a <span class="hl">new path</span> that needed less pushing. It takes about <b>11 months longer</b>, but it works. 👆 Compare the plans.</p>
+        <span class="fact">🧩 Space engineers solve problems from millions of kilometers away. They can't fix the engine with a screwdriver, so they change the plan instead.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 GOODBYE, ENGINE MODULE -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p07.webp" alt="The engine module with its long solar wings drifts away, and Bepi, with Mio in the cone hat, waves goodbye. Mercury waits ahead."><div class="layer"></div></div>
+      <div class="text">
+        <p>On <b>September 3, 2026</b>, the engine module's job was done. It let go and drifted away. <span class="hl">Thank you, engine module!</span></p>
+        <p>Now Bepi carries Mio by itself. It uses its own small thrusters to aim very carefully at Mercury. 👆 Wave goodbye.</p>
+        <span class="fact">🎯 In late September 2026, Bepi fired its thrusters for a tiny correction of just <b>11.4 meters per second</b>, to aim at exactly the right spot.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 ARRIVAL: MERCURY CATCHES THEM -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage svgstage" id="catch">
+        <svg id="catchsvg" viewBox="0 0 1000 560" aria-label="Bepi and Mio arriving at Mercury and going into a big loopy orbit"></svg>
+        <div class="ctl" data-noread style="top:auto;bottom:5%"><button class="bigbtn orange" id="catchBtn">🤲 Catch them, Mercury!</button></div>
+        <div class="readout" id="catchOut">Counting down...</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Bepi and Mio plan to arrive on <b>November 21, 2026</b>. By then, they'll be moving at almost the same speed as Mercury. So Mercury's gravity can <span class="hl">catch them gently</span>, like catching a ball tossed softly.</p>
+        <p>Their first orbit is a huge, stretched-out loop. Then they'll slowly make it smaller. 👆 Watch Mercury catch them!</p>
+        <span class="fact">🧭 Their orbits go over Mercury's <b>north and south poles</b>, so as Mercury turns underneath, they can see the whole planet.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 SEPARATION -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage" id="sep"><img class="art" src="img/p08.webp" alt="Above Mercury, Mio spins away from Bepi and waves, while the empty cone hat floats off. Two glowing orbit lines circle the planet: a small one and a big stretched one.">
+        <div class="ctl" data-noread><button class="bigbtn" data-o="bepi">🛰️ Bepi's orbit</button><button class="bigbtn purple" data-o="mio">🌀 Mio's orbit</button></div>
+        <div class="readout" id="sepOut" style="top:auto;bottom:16%">Compare their orbits!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>In <b>December 2026</b>, it's time to split up. Mio spins away into its own big orbit, and the white cone floats off. <span class="hl">Bye, little brother!</span></p>
+        <p>Bepi stays close to Mercury to take pictures. Mio flies far out to feel Mercury's magnetic field. 👆 Compare their orbits.</p>
+        <span class="fact">🔬 Their science work is planned to start in <b>2027</b> and last at least one Earth year, maybe longer.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 WHAT WILL THEY FIND? -->
+  <section class="page" data-page="14">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p09.webp" alt="Bepi looks through a camera at Mercury: a gray world of craters with one huge round basin and small dark craters near the north pole holding patches of ice."><div class="layer"></div></div>
+      <div class="text">
+        <p>What will Bepi and Mio discover? Mercury has a giant crater called the <b>Caloris Basin</b>, and it may even have <span class="hl">ice</span> hiding in dark craters at its poles, where sunlight never reaches!</p>
+        <p>Scientists also want to know why tiny Mercury has a <b>magnetic field</b>, and why its iron middle is so big. 👆 Tap around the planet.</p>
+        <span class="fact">🎨 Many of Mercury's craters are named after famous artists, musicians and writers. One is named after <b>Dr. Seuss</b>!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 HOW TO PLAY -->
+  <section class="page" data-page="15">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:30%;top:36%;width:36%" data-say="Fly me to Mercury! Gravity pulls me faster and faster. Tap FLYBY when I'm in a planet's glowing ring, and hold BRAKE to use my blue engines."><img src="img/stack.webp" alt="Bepi and Mio"></button>
+          <button class="actor idle" style="left:72%;top:58%;width:30%;animation-delay:.6s" data-say="Then fly around Mercury and take pictures! Fly high on the hot day side, and low on the cold night side."><img src="img/mercury_big.webp" alt="Mercury"></button>
+          <button class="actor idle" style="left:20%;top:76%;width:11%;animation-delay:1.1s" data-say="When you see the glowing spot, let me go! I'll spin into my own orbit."><img src="img/mio.webp" alt="Mio"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Mercury Mission!</h2>
+        <ol class="steps">
+          <li><b>🚀 Flyby missions:</b> the Sun's gravity speeds you up. Tap <b>FLYBY</b> when you're inside a planet's glowing ring to slow down.</li>
+          <li>Hold <b>BRAKE</b> to use the gentle blue engines. Arrive at Mercury slow enough (green!) and Mercury catches you.</li>
+          <li><b>🛰️ Orbit missions:</b> fly around Mercury. Move <b>up and down</b>, and tap <b>📷</b> over the glowing spots.</li>
+          <li>Watch the <b>heat meter</b>: low over the sunny side gets too hot! Fly higher to cool down.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Mercury Mission!</a>
+        <span class="fact" data-noread>8 missions, from your first flyby to finding ice in the dark, plus <b>Free Orbit</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 QUIZ + SOURCES -->
+  <section class="page" data-page="16">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p08.webp" alt="Bepi and Mio above Mercury."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Mercury!</h2>
+        <p>Mercury is close to the Sun, but hard to reach: falling toward the Sun makes you faster, so you must brake. Bepi and Mio used gentle ion engines and <b>9 flybys</b> to slow down, and Mercury plans to catch them in November 2026.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What happens as you fly closer to the Sun?</div>
+          <div class="choice-row"><button class="choice">🐢 You slow down</button><button class="choice" data-ok>🎢 You speed up</button><button class="choice">🧊 You freeze</button></div>
+          <div class="q">2. How did Bepi and Mio slow down?</div>
+          <div class="choice-row"><button class="choice" data-ok>🪐 Planet flybys and gentle engines</button><button class="choice">🪂 A parachute</button><button class="choice">🧲 A giant magnet</button></div>
+          <div class="q">3. Where might Mercury hide some ice?</div>
+          <div class="choice-row"><button class="choice">☀️ On the sunny side</button><button class="choice" data-ok>🕳️ In dark craters at the poles</button><button class="choice">🌋 In volcanoes</button></div>
+        </div>
+        <span class="fact" data-noread>🔭 Try it with a grown-up: Mercury can sometimes be seen low in the sky just after sunset or just before sunrise. Look it up for your city, and never look at the Sun!</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/Latest_updates_BepiColombo_s_arrival_at_Mercury" target="_blank" rel="noopener">ESA, latest updates on BepiColombo's arrival (engine module separated 3 September 2026, 11.4 m/s correction, orbit insertion planned 21 November 2026, Mio separation 9 to 10 December 2026, science from April 2027)</a> ·
+          <a href="https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/Why_does_it_take_so_long_to_get_to_Mercury" target="_blank" rel="noopener">ESA, why it takes so long to get to Mercury (falling toward the Sun, braking, nine flybys, Mariner 10)</a> ·
+          <a href="https://en.wikipedia.org/wiki/BepiColombo" target="_blank" rel="noopener">BepiColombo (launch 20 October 2018 on Ariane 5 from Kourou, 4,100 kg, ion engines, flyby dates, the 2024 thruster problem and 11-month delay, weak capture, orbits, the meaning of Mio, Giuseppe Colombo)</a> ·
+          <a href="https://science.nasa.gov/mercury/facts/" target="_blank" rel="noopener">NASA, Mercury facts (blueberry and coin, 47 km/s, 88-day year, 176-day solar day, 430°C and −180°C, the Sun 3 times bigger, polar ice, Caloris Basin 1,550 km, magnetic field, Dr. Seuss crater)</a> ·
+          <a href="https://www.nasa.gov/mission/juno/" target="_blank" rel="noopener">NASA Juno (launched 2011, reached Jupiter in 2016)</a><br>
+          Bepi and Mio are the real names of the two spacecraft, but their faces, arms and personalities are pretend. Numbers are rounded for kids: two ion engines push about 290 millinewtons, about the weight of 30 grams, or six sheets of paper; 4,100 kg is about three cars; Taipei to Kaohsiung is about 300 km. Dates after today are plans, and space plans can change. The pictures on pages 2, 4, 10 and 12 are simplified drawings, not to scale.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Mercury Mission!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+  const stars = (svg, n) => { for (let i = 0; i < n; i++) svg.appendChild(el("circle", { cx: Math.random() * 1000, cy: Math.random() * 560, r: 0.8 + Math.random() * 1.8, fill: "#fff", opacity: 0.3 + Math.random() * 0.6 })); };
+  const sun = (svg, x, y, r) => {
+    const g = el("radialGradient", { id: "sung" + r }); g.appendChild(el("stop", { offset: "0", "stop-color": "#fff7d1" })); g.appendChild(el("stop", { offset: "0.55", "stop-color": "#ffcf4a" })); g.appendChild(el("stop", { offset: "1", "stop-color": "#ff9a1f", "stop-opacity": 0 }));
+    const d = el("defs", {}); d.appendChild(g); svg.appendChild(d);
+    svg.appendChild(el("circle", { cx: x, cy: y, r: r * 1.8, fill: "url(#sung" + r + ")" }));
+    svg.appendChild(el("circle", { cx: x, cy: y, r: r, fill: "#ffd45c" }));
+  };
+  let anims = {};
+  const stop = k => { cancelAnimationFrame(anims[k]); anims[k] = 0; };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "stars", .4); build(1, st => {
+    say(st, 55, 48, 12, 22, "Bepi", "<b>Hi, I'm Bepi!</b>I'm from Europe. I carry my little brother Mio all the way to Mercury.", S.chirp, 98, 6, true);
+    say(st, 52, 28, 10, 16, "Mio", "<b>I'm Mio!</b>I'm from Japan. I ride inside this white cone hat, so the Sun doesn't cook me.", S.pop, 98, 50, true);
+    say(st, 50, 72, 14, 14, "Engine module", "<b>The engine module</b> pushes us with gentle blue engines. It has the longest solar wings!", S.whoosh, 98, 6, true);
+    say(st, 85, 50, 12, 22, "Mercury", "<b>Mercury!</b>The smallest planet, and the closest to the Sun.", S.ding, 98, 6, true);
+    say(st, 9, 48, 12, 30, "Sun", "<b>The Sun.</b>Near Mercury, sunlight can be up to about 10 times stronger than on Earth.", S.sparkle, 18, 6);
+  }); });
+
+  /* -------- 2 the orbit race -------- */
+  B.on(2, () => build(2, st => {
+    const svg = $("#racesvg"); stars(svg, 90); sun(svg, 470, 280, 46);
+    svg.appendChild(el("circle", { cx: 470, cy: 280, r: 110, fill: "none", stroke: "#b8bccb", "stroke-width": 3, "stroke-dasharray": "6 8" }));
+    svg.appendChild(el("circle", { cx: 470, cy: 280, r: 250, fill: "none", stroke: "#7fb6ff", "stroke-width": 3, "stroke-dasharray": "6 8" }));
+    const merc = el("g", {}), earth = el("g", {});
+    merc.appendChild(el("circle", { r: 14, fill: "#a3a6b2", stroke: "#fff", "stroke-width": 3 }));
+    merc.appendChild(el("text", { class: "lbl", x: 0, y: -24, "text-anchor": "middle", style: "font-size:26px" }, "Mercury"));
+    earth.appendChild(el("circle", { r: 20, fill: "#3f8ee0", stroke: "#fff", "stroke-width": 3 }));
+    earth.appendChild(el("text", { class: "lbl", x: 0, y: -30, "text-anchor": "middle", style: "font-size:26px" }, "Earth"));
+    svg.appendChild(merc); svg.appendChild(earth);
+    const place = days => {
+      const a1 = -days / 88 * Math.PI * 2, a2 = -days / 365 * Math.PI * 2;
+      merc.setAttribute("transform", "translate(" + (470 + Math.cos(a1) * 110) + " " + (280 + Math.sin(a1) * 110) + ")");
+      earth.setAttribute("transform", "translate(" + (470 + Math.cos(a2) * 250) + " " + (280 + Math.sin(a2) * 250) + ")");
+    };
+    place(0);
+    $("#raceBtn").onclick = e => {
+      e.stopPropagation(); stop("race"); S.whoosh();
+      const t0 = performance.now(); let laps = 0;
+      const step = now => {
+        const days = Math.min(365, (now - t0) / 9000 * 365); place(days);
+        const l = Math.floor(days / 88); if (l > laps) { laps = l; S.ding(); }
+        $("#raceOut").innerHTML = "Day <b>" + Math.round(days) + "</b>: Mercury has gone around <b>" + laps + "</b> time" + (laps === 1 ? "" : "s") + "!";
+        if (days < 365) anims.race = requestAnimationFrame(step);
+        else { S.yay(); $("#raceOut").innerHTML = "🏁 One Earth year (365 days): Earth goes around <b>once</b>, Mercury goes around <b>4 times</b> and a bit more!"; }
+      };
+      anims.race = requestAnimationFrame(step);
+    };
+  }), () => stop("race"));
+
+  /* -------- 3 hot and cold -------- */
+  B.on(3, () => build(3, st => {
+    st.querySelectorAll("[data-t]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const day = b.dataset.t === "day";
+      $("#thermo").innerHTML = day ? "☀️ up to <b>430°C</b><br><span style='font-size:.6em'>hot enough to melt lead!</span>" : "🌙 down to <b>−180°C</b><br><span style='font-size:.6em'>way colder than a freezer!</span>";
+      if (day) { S.sparkle(); const [x, y] = B.px(st, 28, 26); F.sparkles(st, x, y, 30); } else { S.chirp(); F.weather(st, "snow", .3); setTimeout(() => F.weather(st, null), 2500); }
+    });
+    say(st, 28, 23, 18, 26, "Sun", "<b>The Sun</b> looks huge from Mercury, more than 3 times bigger than from Earth.", S.sparkle, 4, 50);
+    say(st, 83, 78, 12, 16, "Frosty crater", "<b>Brrr!</b>In the dark, the ground loses its heat fast, because there's no air to hold it in.", S.chirp, 98, 6, true);
+    say(st, 18, 66, 14, 16, "Hot ground", "<b>Sizzle!</b>The day side is hotter than a pizza oven.", S.whoosh, 4, 6);
+  }));
+
+  /* -------- 4 the hill toward the Sun -------- */
+  B.on(4, () => build(4, st => {
+    const svg = $("#hillsvg"); stars(svg, 60);
+    const Y = x => 70 + 400 * Math.pow((x - 40) / 880, 2.6) - 34 * Math.exp(-Math.pow((x - 700) / 26, 2));
+    const pts = []; for (let x = 40; x <= 920; x += 5) pts.push([x, Y(x)]);
+    svg.appendChild(el("path", { d: "M" + pts.map(p => p.join(",")).join("L") + " L920,560 L40,560 Z", fill: "#2a3478", opacity: 0.9 }));
+    svg.appendChild(el("path", { d: "M" + pts.map(p => p.join(",")).join("L"), fill: "none", stroke: "#8fa0ff", "stroke-width": 6 }));
+    sun(svg, 955, 500, 50);
+    svg.appendChild(el("circle", { cx: 62, cy: Y(62) - 26, r: 22, fill: "#3f8ee0", stroke: "#fff", "stroke-width": 3 }));
+    svg.appendChild(el("text", { class: "lbl", x: 62, y: Y(62) - 60, "text-anchor": "middle" }, "Earth"));
+    svg.appendChild(el("circle", { cx: 700, cy: Y(700) + 6, r: 18, fill: "#a3a6b2", stroke: "#fff", "stroke-width": 3 }));
+    svg.appendChild(el("text", { class: "lbl", x: 700, y: Y(700) + 60, "text-anchor": "middle" }, "Mercury"));
+    svg.appendChild(el("text", { class: "lbl", x: 930, y: 420, "text-anchor": "end" }, "Sun"));
+    const ball = el("image", { href: "img/stack.webp", width: 110, height: 44, x: -55, y: -34, opacity: 0 }); svg.appendChild(ball);
+    st.querySelectorAll("[data-h]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); stop("hill");
+      const brake = b.dataset.h === "brake", out = $("#hillOut");
+      let x = 70, v = 40, done = false, t = performance.now();
+      ball.setAttribute("opacity", 1); S.whoosh();
+      const step = now => {
+        const dt = Math.min(0.05, (now - t) / 1000); t = now;
+        const slope = (Y(x + 2) - Y(x - 2)) / 4;
+        v += slope * 260 * dt;                                   // downhill speeds you up
+        if (brake && x > 380) v = Math.max(18, v - 520 * dt * (x > 600 ? 1.6 : 1));
+        x += v * dt;
+        if (brake && x >= 700) { x = 700; done = true; }
+        if (!brake && x >= 860) { done = true; }
+        const ang = Math.atan(slope) * 180 / Math.PI;
+        ball.setAttribute("transform", "translate(" + x + " " + Y(x) + ") rotate(" + ang + ")");
+        out.innerHTML = (brake && x > 380 ? "🛑 Braking... " : "🎢 Wheee! ") + "Speed: <b>" + Math.round(v) + "</b>";
+        if (!done) anims.hill = requestAnimationFrame(step);
+        else if (brake) { S.yay(); const [px, py] = B.px(st, 70, Y(700) / 5.6); F.sparkles(st, px, py, 30); out.innerHTML = "✅ Slow enough! Mercury <b>catches</b> you. You're in orbit!"; }
+        else { S.oops(); ball.setAttribute("opacity", 0.35); out.innerHTML = "💨 Way too fast! You <b>zoomed past</b> Mercury. You need to brake!"; }
+      };
+      anims.hill = requestAnimationFrame(step);
+    });
+  }), () => stop("hill"));
+
+  /* -------- 5 meet Bepi and Mio -------- */
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "stars", .4); build(5, st => {
+    say(st, 27, 33, 18, 22, "Bepi", "<b>Bepi:</b> I'm from the European Space Agency. My cameras and tools will map Mercury from top to bottom!", S.chirp, 4, 60);
+    say(st, 51, 44, 12, 22, "Mio", "<b>Mio:</b> I'm from JAXA, Japan's space agency. I spin around like a top as I fly!", S.pop, 98, 6, true);
+    say(st, 18, 80, 18, 16, "Earth", "<b>Home!</b>Bepi and Mio said goodbye to Earth, and came back once for a flyby in 2020.", S.ding, 30, 6);
+  }); });
+
+  /* -------- 6 launch -------- */
+  B.on(6, () => build(6, st => {
+    let busy = false;
+    $("#goBtn").onclick = e => {
+      e.stopPropagation(); if (busy) return; busy = true;
+      let n = 3; const out = $("#launchOut");
+      const tick = () => {
+        if (n > 0) { out.innerHTML = "<b>" + n + "...</b>"; S.tick(); n--; setTimeout(tick, 700); return; }
+        out.innerHTML = "🚀 <b>Liftoff!</b> October 20, 2018. Bon voyage, Bepi and Mio!";
+        S.rocket(); $("#flash").classList.add("on"); F.shake(st);
+        const [x, y] = B.px(st, 29, 46); for (let i = 0; i < 8; i++) setTimeout(() => F.fire(st, x, y + i * 6, 10, 18), i * 80);
+        setTimeout(() => { $("#flash").classList.remove("on"); busy = false; }, 1600);
+      };
+      tick();
+    };
+    say(st, 88, 56, 14, 18, "Sea", "<b>The Atlantic Ocean.</b>Rockets launch over the sea, far away from towns.", S.splash, 98, 22, true);
+    say(st, 21, 52, 10, 20, "Launch tower", "<b>The launch tower.</b>Places near the equator are great for launching: the spinning Earth gives rockets a little extra push.", S.ding, 4, 22);
+  }));
+
+  /* -------- 7 the gentle ion engine -------- */
+  let ionHold = false;
+  B.on(7, () => { const st = stageOf(7); F.weather(st, "stars", .3); build(7, st => {
+    const btn = $("#ionBtn"); let days = 0, t = 0, last = 0;
+    const go = on => { ionHold = on; btn.classList.toggle("on", on); if (on) { last = performance.now(); loop(); } };
+    const loop = () => {
+      if (!ionHold) return;
+      const now = performance.now(), dt = (now - last) / 1000; last = now;
+      days += dt * 40; t += dt;
+      $("#ionV").textContent = "Pushing for " + Math.round(days) + " days";
+      $("#ionBar").style.width = Math.min(100, days / 3) + "%";
+      if (t > 0.12) { t = 0; const [x, y] = B.px(st, 46, 72); F.jet(st, x, y, -1, 0.2, 3); }
+      $("#ionOut").innerHTML = days < 30 ? "Hmm, a tiny push. Barely moving..." : days < 150 ? "Push, push, push... speeding up a little!" : "🌟 After months of gentle pushing, Bepi's path has changed a lot!";
+      requestAnimationFrame(loop);
+    };
+    btn.addEventListener("pointerdown", e => { e.stopPropagation(); go(true); });
+    ["pointerup", "pointerleave", "pointercancel"].forEach(k => btn.addEventListener(k, () => go(false)));
+    btn.onclick = e => e.stopPropagation();
+    say(st, 46, 72, 10, 16, "Engines", "<b>Fsssss...</b>The blue glow is xenon gas, pushed out super fast by electricity from the solar wings.", S.hiss, 4, 6);
+  }); }, () => { ionHold = false; });
+
+  /* -------- 8 the nine flybys -------- */
+  const FLY = [
+    ["e", "Earth", "April 10, 2020", "12,700 km above Earth. A last look at home, and a push toward Venus!"],
+    ["v", "Venus", "October 15, 2020", "10,720 km above Venus, the cloudy hot planet."],
+    ["v", "Venus", "August 10, 2021", "Only 552 km above Venus's clouds!"],
+    ["m", "Mercury", "October 1, 2021", "199 km above Mercury. Bepi's cameras saw Mercury up close for the first time!"],
+    ["m", "Mercury", "June 23, 2022", "200 km above Mercury."],
+    ["m", "Mercury", "June 19, 2023", "236 km above Mercury."],
+    ["m", "Mercury", "September 4, 2024", "Just 165 km above Mercury, the closest flyby of all!"],
+    ["m", "Mercury", "December 1, 2024", "A faraway flyby, about 37,600 km away."],
+    ["m", "Mercury", "January 8, 2025", "295 km above Mercury. The last flyby before arriving!"],
+  ];
+  B.on(8, () => { const st = stageOf(8); F.weather(st, "stars", .3); build(8, st => {
+    const box = $("#chips");
+    FLY.forEach((f, i) => {
+      const b = document.createElement("button"); b.className = f[0]; b.textContent = (i + 1) + ". " + f[1];
+      b.onclick = e => { e.stopPropagation(); box.querySelectorAll("button").forEach(x => x.classList.remove("on")); b.classList.add("on"); S.whoosh();
+        $("#flyOut").innerHTML = "🪐 <b>Flyby " + (i + 1) + ": " + f[1] + "</b>, " + f[2] + ". " + f[3]; };
+      box.appendChild(b);
+    });
+    say(st, 55, 40, 14, 26, "Bepi and Mio", "<b>Wheee!</b>Swinging past a planet is like a playground swing. The planet's gravity pulls us around in a curve.", S.yay, 4, 6);
+    say(st, 80, 70, 16, 24, "Venus", "<b>Venus</b> is wrapped in thick clouds. Bepi and Mio flew past it twice.", S.ding, 98, 6, true);
+  }); });
+
+  /* -------- 9 Colombo -------- */
+  B.on(9, () => build(9, st => {
+    say(st, 73, 30, 22, 26, "Chalkboard", "<b>The big idea:</b> swing past one planet to bend your path toward the next. Planets can steer spacecraft for free!", S.ding, 4, 6);
+    say(st, 83, 52, 10, 30, "Professor", "<b>Professor Colombo</b> worked at the University of Padua in Italy. He loved solving space puzzles.", S.chirp, 4, 6);
+    say(st, 60, 70, 8, 14, "Globe", "<b>Mariner 10</b> flew past Venus in 1974, and then past Mercury three times in 1974 and 1975.", S.whoosh, 4, 6);
+  }));
+
+  /* -------- 10 the old and new plan -------- */
+  B.on(10, () => build(10, st => {
+    const svg = $("#plansvg"); stars(svg, 50);
+    const X = y => 80 + (y - 2018) * 95;          // years along the line
+    svg.appendChild(el("line", { x1: 60, y1: 300, x2: 960, y2: 300, stroke: "#8fa0ff", "stroke-width": 6, "stroke-linecap": "round" }));
+    for (let y = 2018; y <= 2027; y++) {
+      svg.appendChild(el("line", { x1: X(y), y1: 288, x2: X(y), y2: 312, stroke: "#8fa0ff", "stroke-width": 4 }));
+      svg.appendChild(el("text", { class: "lbl", x: X(y), y: 350, "text-anchor": "middle", style: "font-size:24px" }, String(y)));
+    }
+    const mark = (yr, txt, col, up) => { const g = el("g", {});
+      g.appendChild(el("circle", { cx: X(yr), cy: 300, r: 12, fill: col, stroke: "#fff", "stroke-width": 3 }));
+      g.appendChild(el("text", { class: "lbl", x: X(yr), y: up ? 262 : 392, "text-anchor": "middle", style: "font-size:22px" }, txt)); svg.appendChild(g); return g; };
+    mark(2018.8, "🚀 Launch", "#f2a516", true);
+    mark(2024.3, "⚠️ Engine problem", "#e0535a", false);
+    mark(2026.67, "👋 Engine module leaves", "#9b6cf2", true);
+    const oldM = mark(2025.92, "🎯 Old arrival", "#6b7a90", false), newM = mark(2026.89, "🎯 New arrival", "#5ccf6a", false);
+    oldM.setAttribute("opacity", 0.25); newM.setAttribute("opacity", 0.25);
+    const ship = el("image", { href: "img/stack2.webp", width: 100, height: 40, x: -50, y: -70 }); svg.appendChild(ship);
+    ship.setAttribute("transform", "translate(" + X(2018.8) + " 300)");
+    st.querySelectorAll("[data-p]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); stop("plan");
+      const nw = b.dataset.p === "new", to = nw ? 2026.89 : 2025.92, t0 = performance.now();
+      oldM.setAttribute("opacity", nw ? 0.25 : 1); newM.setAttribute("opacity", nw ? 1 : 0.25); S.whoosh();
+      const step = now => { const k = Math.min(1, (now - t0) / 2600), yr = 2018.8 + (to - 2018.8) * k;
+        ship.setAttribute("transform", "translate(" + X(yr) + " 300)");
+        if (k < 1) anims.plan = requestAnimationFrame(step);
+        else { S.ding(); $("#planOut").innerHTML = nw ? "🛠️ <b>New plan:</b> arrive in <b>November 2026</b>. A gentler path that the weaker engines can manage." : "📅 <b>Old plan:</b> arrive in <b>December 2025</b>. But it needed the engines at full power."; } };
+      anims.plan = requestAnimationFrame(step);
+    });
+  }), () => stop("plan"));
+
+  /* -------- 11 goodbye engine module -------- */
+  B.on(11, () => { const st = stageOf(11); F.weather(st, "stars", .3); build(11, st => {
+    say(st, 29, 75, 22, 18, "Engine module", "<b>Goodbye, engine module!</b>You pushed for years. Thank you!", S.chirp, 4, 6);
+    say(st, 55, 46, 12, 24, "Bepi and Mio", "<b>Bepi:</b> Now it's just us. Next stop: Mercury!", S.yay, 98, 6, true);
+    say(st, 85, 26, 12, 18, "Mercury", "<b>Mercury</b> is getting bigger and bigger!", S.ding, 98, 50, true);
+  }); });
+
+  /* -------- 12 arrival: countdown + capture -------- */
+  B.on(12, () => build(12, st => {
+    const svg = $("#catchsvg"); stars(svg, 90);
+    const C = [560, 290];
+    svg.appendChild(el("image", { href: "img/mercury_big.webp", x: C[0] - 70, y: C[1] - 70, width: 140, height: 140 }));
+    const path = el("path", { fill: "none", stroke: "#ffd23d", "stroke-width": 5, "stroke-dasharray": "4 12", "stroke-linecap": "round" }); svg.appendChild(path);
+    const ship = el("image", { href: "img/stack2.webp", width: 110, height: 44, x: -55, y: -22 }); svg.appendChild(ship);
+    // count the days to the planned arrival
+    const arrive = new Date("2026-11-21T00:00:00Z"), days = Math.ceil((arrive - new Date()) / 864e5);
+    $("#catchOut").innerHTML = days > 0 ? "📅 Planned arrival: <b>November 21, 2026</b>. Only <b>" + days + "</b> more day" + (days === 1 ? "" : "s") + "!" : days === 0 ? "📅 Today is the planned arrival day!" : "📅 The planned arrival day was <b>November 21, 2026</b>. Check ESA's news to see how it went!";
+    // a long, stretched first orbit: Mercury sits near one end
+    const orbit = []; for (let i = 0; i <= 120; i++) { const a = i / 120 * Math.PI * 2; orbit.push([C[0] + 120 - Math.cos(a) * 340 * 0.55 - 70, C[1] + Math.sin(a) * 120]); }
+    const approach = []; for (let i = 0; i <= 40; i++) { const k = i / 40; approach.push([90 + (orbit[0][0] - 90) * k, 470 + (orbit[0][1] - 470) * k - Math.sin(k * Math.PI) * 40]); }
+    ship.setAttribute("transform", "translate(90 470)");
+    $("#catchBtn").onclick = e => {
+      e.stopPropagation(); stop("catch"); S.whoosh();
+      const all = approach.concat(orbit, orbit.slice(1)), t0 = performance.now();
+      path.setAttribute("d", "M" + orbit.map(p => p.join(",")).join("L"));
+      const step = now => { const i = Math.min(all.length - 1, Math.floor((now - t0) / 30));
+        ship.setAttribute("transform", "translate(" + all[i][0] + " " + all[i][1] + ")");
+        if (i === approach.length) { S.ding(); $("#catchOut").innerHTML = "🤲 <b>Caught!</b> Mercury's gravity holds them in a big loopy orbit."; }
+        if (i < all.length - 1) anims.catch = requestAnimationFrame(step); };
+      anims.catch = requestAnimationFrame(step);
+    };
+  }), () => stop("catch"));
+
+  /* -------- 13 separation -------- */
+  B.on(13, () => { const st = stageOf(13); F.weather(st, "stars", .3); build(13, st => {
+    const SAY = { bepi: "🛰️ <b>Bepi:</b> about <b>480 to 1,500 km</b> above Mercury. Once around takes about <b>2 hours and 20 minutes</b>.",
+      mio: "🌀 <b>Mio:</b> from about <b>590 km</b> out to <b>11,640 km</b>, a long stretched loop. Once around takes about <b>9 hours</b>." };
+    st.querySelectorAll("[data-o]").forEach(b => b.onclick = e => { e.stopPropagation(); S.whoosh(); $("#sepOut").innerHTML = SAY[b.dataset.o]; });
+    say(st, 69, 35, 14, 24, "Mio", "<b>Mio:</b> Wheee! I spin about 15 times a minute, like a top. Bye, Bepi, see you around Mercury!", S.pop, 98, 50, true);
+    say(st, 25, 35, 16, 24, "Bepi", "<b>Bepi:</b> Take care, Mio! Let's find out Mercury's secrets together.", S.chirp, 4, 60);
+    say(st, 55, 17, 10, 14, "Cone hat", "<b>The white cone</b> kept Mio cool for 8 years. Now it's not needed anymore.", S.ding, 4, 6);
+  }); });
+
+  /* -------- 14 discoveries -------- */
+  B.on(14, () => { const st = stageOf(14); F.weather(st, "stars", .3); build(14, st => {
+    say(st, 41, 44, 16, 22, "Caloris Basin", "<b>The Caloris Basin</b> is about 1,550 km wide, as long as about four Taiwans in a row! A giant space rock made it long ago.", S.rumble, 4, 6);
+    say(st, 66, 21, 14, 14, "Ice", "<b>Ice!</b>Deep inside these polar craters, it's always dark and super cold, so ice can last for a very long time.", S.sparkle, 98, 50, true);
+    say(st, 66, 45, 10, 14, "Bright crater", "<b>Bright rays</b> splash out from young craters, like a splat of paint.", S.pop, 98, 6, true);
+    say(st, 21, 28, 14, 20, "Bepi", "<b>Bepi:</b> Say cheese, Mercury! I'll take pictures of the whole planet.", S.chirp, 4, 60);
+  }); });
+
+  /* -------- 15 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(15), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), y > 55 ? 6 : Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(15, () => F.weather(stageOf(15), "stars", .5));
+
+  /* -------- 16 -------- */
+  B.on(16, () => { const st = stageOf(16); F.weather(st, "stars", .4); build(16, st => {
+    say(st, 69, 35, 14, 24, "Mio", "<b>Mio:</b> Thanks for coming along! Want to fly the mission yourself?", S.yay, 98, 50, true);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

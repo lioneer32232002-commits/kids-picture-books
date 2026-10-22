@@ -48,6 +48,10 @@ JOBS = [
     ("typhoon", "square", "typhoon-square", (1080, 1080)),
     ("typhoonchasers", "wide", "typhoonchasers-fb", (1200, 630)),
     ("typhoonchasers", "square", "typhoonchasers-square", (1080, 1080)),
+    ("mercury", "wide", "mercury-fb", (1200, 630)),
+    ("mercury", "square", "mercury-square", (1080, 1080)),
+    ("mercurymission", "wide", "mercurymission-fb", (1200, 630)),
+    ("mercurymission", "square", "mercurymission-square", (1080, 1080)),
 ]
 
 
