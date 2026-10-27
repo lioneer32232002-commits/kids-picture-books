@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Steady Tower! | A Kids' Game from "Bao, the Big Gold Ball of Taipei 101"</title>
+<meta name="description" content="A free game for kids 5-7: help Bao, Taipei 101's giant golden damper ball, swing the other way when typhoons and earthquakes shake the tower, stack the tower's 8 bamboo-like pieces with a swinging crane, and stop the super-fast elevator right at the 89th floor.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Steady Tower! 🏙️ A Taipei 101 game for kids">
+<meta property="og:description" content="Keep Taipei 101 steady in a typhoon, build it piece by piece, and ride the 60 km/h elevator. 8 missions + Endless Storm.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/steadytower-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #2fa39a; --bg: radial-gradient(circle at 15% 10%, #fff3cf 0, transparent 40%), radial-gradient(circle at 90% 90%, #d8f2ee 0, transparent 45%), #f6f8f7; }
+  .gamebox { width: min(100% - 24px, calc((100vh - 84px) * 16 / 9), 1280px); margin: 0 auto 16px; }
+  #game { width: 100%; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #1e2340; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #game canvas { display: block; }
+  .side { max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.45; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .side ul { margin: 4px 0; padding-left: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .gamebox { width: min(100% - 12px, calc((100vh - 64px) * 16 / 9)); } }
+  @media (orientation: portrait) and (max-width: 860px) { .turn { display: block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🏙️</span>Steady Tower!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<p class="turn" style="display:none;text-align:center;margin:0 12px 8px;font-weight:800">📱 Turn your phone sideways for a bigger view!</p>
+<div class="gamebox"><div id="game"></div></div>
+<div class="side">
+  <div class="box">
+    <h3>🕹️ How to play</h3>
+    <ul>
+      <li><b>🌀 Steady:</b> watch the arrow on top of the tower. When the tower moves <b>▶</b>, hold <b>◀</b>; when it moves <b>◀</b>, hold <b>▶</b>. That swings Bao the other way and calms the tower. Keep the bubble tea from spilling!</li>
+      <li><b>🏗️ Build:</b> the crane swings each piece. Tap <b>DROP</b> when it's right above the tower (the little arrow turns green).</li>
+      <li><b>⬆️ Elevator:</b> hold <b>▲</b> or <b>▼</b> to go, let go to slow down. Let go before the <b>🛑</b> marker passes the glowing floor.</li>
+    </ul>
+    <p class="note">Keyboard: arrow keys, and Space to drop.</p>
+  </div>
+  <div class="box">
+    <h3>🔬 Is it real?</h3>
+    Taipei 101 really has a 660-tonne golden ball near its top. When wind or an earthquake makes the tower sway, the ball swings the other way and its shock absorbers soak up the motion, so the tower wobbles less. The tower really is made of 8 pieces of 8 floors, and its elevators really go from the 5th to the 89th floor in 37 seconds.
+    <p class="note">Game note: the real Bao swings all by itself, nobody pushes it. In the game you help it, and the swaying is much bigger and faster than in real life so you can see it. Bao's face is pretend.</p>
+  </div>
+  <div class="box">
+    <h3>📖 Read the story</h3>
+    Why doesn't Taipei 101 fall over in a typhoon? Read <a href="./">Bao, the Big Gold Ball of Taipei 101</a> first.
+  </div>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Built with Phaser · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="sim.js"></script>
+<script src="game.js"></script>
+<script>
+  window.__stGame = SteadyTower.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__stGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bao, the Big Gold Ball of Taipei 101 | Picture Book + Steady Tower! Game</title>
+<meta name="description" content="Why doesn't Taipei 101 fall over in a typhoon? Meet Bao, the 660-tonne golden ball hanging near the top of the tower, which swings the other way when wind and earthquakes push. Bamboo-shaped floors, deep roots, a super-fast elevator and New Year's fireworks, then keep the tower steady in the Steady Tower! game. For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bao, the Big Gold Ball of Taipei 101 🟡 A picture book + a game for kids">
+<meta property="og:description" content="A 660-tonne golden ball hangs near the top of Taipei 101. When a typhoon pushes the tower, it swings the other way! Read, tap, and keep the tower steady. For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/taipei101-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/taipei101/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #2fa39a; --accent-4: #e2a12b;
+    --bg: radial-gradient(circle at 12% 8%, #fff3cf 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #d8f2ee 0, transparent 45%), #f6f8f7;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #e2a12b; }
+  .ctl.col { flex-direction: column; align-items: flex-end; bottom: auto; top: 5%; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.blue { background: #5a8de0; } .bigbtn.red { background: #e8662e; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.gray { background: #6b7a90; } .bigbtn.teal { background: #2fa39a; }
+  .svgstage { background: linear-gradient(#bfe6f5, #e9f6fb 70%); }
+  .svgstage.night { background: linear-gradient(#18224a, #34407a); }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .lbl { font: 800 34px "Baloo 2", sans-serif; fill: #1e2340; paint-order: stroke; stroke: #fff; stroke-width: 7px; pointer-events: none; }
+  .lbl.w { fill: #fff; stroke: #1e2340; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #2fa39a; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #1d7068; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#bfe6f5 0, #e9f6fb 62%, #9fd18c 62%, #7cbf6a); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🏙️</span>The Big Gold Ball</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="A girl named Yuyu with a yellow bow waves at the tall blue-green Taipei 101 tower. Through a round window near the top you can see a big golden ball with a friendly face."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Bao, the Big Gold Ball of Taipei 101</h1>
+        <p>This is <b>Yuyu</b>. She lives in Taipei, and she loves the tallest building in town: <span class="hl">Taipei 101</span>.</p>
+        <p>Yuyu has a secret to tell you. Near the very top of the tower, a <b>giant golden ball</b> is hanging. Let's call it <b>Bao</b>. What is it doing up there?</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 SO TALL -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage svgstage" id="tall">
+        <svg id="tallsvg" viewBox="0 0 1000 560" aria-label="A house, the Eiffel Tower and Taipei 101 side by side, drawn to the same scale"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn gray" data-grow="house">🏠 House</button><button class="bigbtn purple" data-grow="eiffel">🗼 Eiffel Tower</button><button class="bigbtn teal" data-grow="t101">🏙️ Taipei 101</button></div>
+        <div class="readout" id="tallOut">How tall is it? 👇</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Taipei 101 is <span class="big">508 meters</span> tall. It has <b>101 floors</b> above the ground, that's where its name comes from!</p>
+        <p>When it opened at the end of 2004, it was the <b>tallest building in the world</b>. 👆 Grow the buildings and compare.</p>
+        <span class="fact">📏 A house is about 10 m tall. You would need about <b>50 houses</b> stacked up to reach the top of Taipei 101!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 BAMBOO -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage svgstage" id="bamboo">
+        <svg id="bamboosvg" viewBox="0 0 1000 560" aria-label="Taipei 101 being built piece by piece: a wide base, then 8 big pieces, then the top and the spire, next to a stalk of bamboo"></svg>
+        <div class="ctl" data-noread><button class="bigbtn teal" id="growBtn">🧱 Add a piece</button></div>
+        <div class="readout" id="bambooOut">Let's build the tower!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Look at the shape. The middle of Taipei 101 is made of <b>8 big pieces</b>, and each piece is <b>8 floors</b> tall. It looks like a stalk of <span class="hl">bamboo</span>!</p>
+        <p>Bamboo grows tall, section by section, and bends in the wind without breaking. 👆 Build the tower piece by piece.</p>
+        <span class="fact">🍀 In Chinese, the number <b>8</b> sounds like getting rich and lucky. That's why the builders used 8 pieces of 8 floors.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 ROOTS -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage svgstage" id="roots">
+        <svg id="rootssvg" viewBox="0 0 1000 560" aria-label="A cut-away view under Taipei 101: long piles go deep down through soft ground into hard rock"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" id="digBtn">⛏️ Look underground</button></div>
+        <div class="readout" id="rootsOut">What holds the tower up?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>A tree has <span class="hl">roots</span> to hold it up. Taipei 101 has roots too! Under the tower are <b>380</b> long concrete posts called <b>piles</b>.</p>
+        <p>The ground in Taipei is soft, like mud. So the piles go down about <b>80 meters</b>, all the way into hard rock. 👆 Look underground.</p>
+        <span class="fact">⬇️ 80 meters is about as tall as a <b>25-floor</b> building, but pointing down into the ground!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 WIND PUSHES -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage svgstage" id="sway">
+        <svg id="swaysvg" viewBox="0 0 1000 560" aria-label="A tall tower that bends and wobbles when the wind blows, with a cup of bubble tea at the top"></svg>
+        <div class="ctl" data-noread><button class="bigbtn blue" data-wind="1">🍃 Breeze</button><button class="bigbtn red" data-wind="3">🌀 Strong wind</button></div>
+        <div class="readout" id="swayOut">Blow some wind!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Wind pushes on tall buildings. A tall building is made to <span class="hl">bend</span> a tiny bit, like a tree, instead of cracking.</p>
+        <p>But when the top wobbles back and forth, people up there can feel dizzy, and drinks slosh around. 👆 Blow some wind and watch the bubble tea!</p>
+        <span class="fact">🌳 Bending a little is normal and safe. It's the <b>wobbling</b> that we want to stop. Who can help?</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 MEET BAO -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Inside the top of Taipei 101, a huge golden ball with a friendly face hangs from thick steel cables, with silver shock absorbers under it. Yuyu and her dad look at it from a balcony."><div class="layer"></div></div>
+      <div class="text">
+        <p>Here it is: <b>Bao</b>, the big gold ball! It hangs from the <b>92nd floor</b> on 8 thick steel cables, and you can visit it on the observation floors.</p>
+        <p>Bao is a <span class="hl">wind damper</span>. "Damper" means something that makes shaking smaller. 👆 Tap around the room.</p>
+        <span class="fact">🐘 Bao weighs <b>660 tonnes</b>, more than 100 elephants! It is about <b>5.5 m</b> wide and made of <b>41</b> thick steel plates stacked up like pancakes.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 HOW BAO HELPS -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage svgstage" id="damp">
+        <svg id="dampsvg" viewBox="0 0 1000 560" aria-label="Two towers in the same wind, one with the golden ball swinging inside and one without; the one with the ball wobbles much less"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn red" id="dampBtn">💨 Blow the wind!</button></div>
+        <div class="readout" id="dampOut" style="max-width:55%">Same wind, two towers</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Here's Bao's trick. When the wind pushes the tower one way, Bao <span class="hl">swings the other way</span>, and pulls the tower back!</p>
+        <p>Tower goes right, Bao goes left. Tower goes left, Bao goes right. Together they make the wobble much smaller. 👆 Watch two towers in the same wind.</p>
+        <span class="fact">📉 Bao can make the tower's wobble up to about <b>40% smaller</b>. It's like a friend holding the other end of a swing.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 SQUISHY BRAKES -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage svgstage" id="brake">
+        <svg id="brakesvg" viewBox="0 0 1000 560" aria-label="The golden ball swinging on its cables, with shock absorbers under it and a steel ring around it"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn gray" id="pistonBtn">🔧 Shock absorbers: ON</button><button class="bigbtn" data-push="1">👋 Push</button><button class="bigbtn red" data-push="2.4">💪 Big push</button></div>
+        <div class="readout" id="brakeOut" style="max-width:46%">Give Bao a push!</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Under Bao are 8 big <span class="hl">shock absorbers</span>, like giant squishy brakes. They are full of thick oil.</p>
+        <p>When Bao swings, they squeeze and slow it down, so the swinging turns into a little bit of warmth. 👆 Push Bao with the shock absorbers on and off.</p>
+        <span class="fact">⭕ A steel ring around Bao is a <b>bumper</b>. If Bao swings too far, about <b>1.5 m</b>, the ring stops it.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 TYPHOON -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="ty"><img class="art" src="img/p03.webp" alt="A stormy typhoon evening: wind and rain blow from the left past Taipei 101, and inside the round window Bao swings the other way, looking brave."><div class="layer"></div></div>
+      <div class="text">
+        <p>Taiwan gets <a href="../typhoon/">typhoons</a>, giant spinning storms with strong wind. That's when Bao works the hardest!</p>
+        <p>On <b>August 8, 2015</b>, Typhoon Soudelor blew hard on Taipei. Bao swung about <span class="big">1 meter</span>, its biggest swing ever recorded. 👆 Tap around the storm.</p>
+        <span class="fact">🎥 During big storms and earthquakes, people love to watch videos of Bao swinging. Its job is to swing, so the tower doesn't have to!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 EARTHQUAKES -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage svgstage" id="quake">
+        <svg id="quakesvg" viewBox="0 0 1000 560" aria-label="A cut-away of the Earth under Taiwan: two giant plates push together, lifting mountains and shaking the ground"></svg>
+        <div class="ctl" data-noread><button class="bigbtn red" id="quakeBtn">🤜🤛 Push the plates</button></div>
+        <div class="readout" id="quakeOut">Why does Taiwan shake?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Taiwan also has many <span class="hl">earthquakes</span>. The ground is made of giant pieces called <b>plates</b>, and under Taiwan two plates push together.</p>
+        <p>The pushing lifts up Taiwan's tall mountains, and sometimes the ground jumps and shakes. 👆 Push the plates.</p>
+        <span class="fact">💪 On <b>April 3, 2024</b>, Taiwan had its strongest earthquake in 25 years. Taipei 101 was fine! It was built to bend and to stay standing.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 FAST ELEVATOR -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage svgstage" id="lift">
+        <svg id="liftsvg" viewBox="0 0 1000 560" aria-label="An elevator going up a very tall shaft, with a floor counter and a speed counter"></svg>
+        <div class="ctl" data-noread><button class="bigbtn teal" id="liftBtn">⬆️ Ride up!</button></div>
+        <div class="readout" id="liftOut">5th floor → 89th floor</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>To visit Bao, you ride one of the <span class="hl">fastest elevators</span> in the world. It zooms from the 5th floor to the <b>89th floor</b> in just <b>37 seconds</b>!</p>
+        <p>At top speed it goes about <b>60 km/h</b>, as fast as a car. 👆 Ride up and count along.</p>
+        <span class="fact">👂 Going up fast can make your ears feel funny, so the elevator gently changes the air inside to help your ears.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 FIREWORKS -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage" id="fw"><img class="art" src="img/p04.webp" alt="New Year's Eve: colorful fireworks burst from the sides of Taipei 101 while Yuyu cheers on her dad's shoulders on a hillside.">
+        <div class="ctl" data-noread><button class="bigbtn red" id="fwBtn">🎆 Count down!</button></div>
+        <div class="readout" id="fwOut" style="left:auto;right:3%;max-width:40%">December 31</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Every <b>New Year's Eve</b>, Yuyu and her dad climb a little hill to watch. At midnight, <span class="hl">fireworks</span> shoot out from the sides of Taipei 101!</p>
+        <p>And way up inside, Bao is hanging quietly, ready for the next windy day. 👆 Count down to the new year!</p>
+        <span class="fact">🎆 People all over Taiwan watch the Taipei 101 fireworks on TV. The show lasts for a few minutes, floor by floor.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 HOW TO PLAY -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:22%;top:52%;width:18%" data-say="Hold ◀ and ▶ to help me swing the OTHER way from the tower. Keep the bubble tea from spilling!"><img src="img/bao_brave.webp" alt="Bao"></button>
+          <button class="actor idle" style="left:52%;top:50%;width:13%;animation-delay:.5s" data-say="The crane swings each piece of the tower. Tap DROP when it's right above the tower!"><img src="img/worker.webp" alt="The builder"></button>
+          <button class="actor idle" style="left:80%;top:50%;width:13%;animation-delay:1s" data-say="Hold UP to make the elevator go, and let go to slow down. Stop right at the glowing floor!"><img src="img/yuyu_cheer.webp" alt="Yuyu"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Steady Tower!</h2>
+        <ol class="steps">
+          <li><b>🌀 Steady:</b> wind or an earthquake shakes the tower. Hold <b>◀ ▶</b> to swing Bao the <b>other way</b> from the tower. Keep the bubble tea from spilling!</li>
+          <li><b>🏗️ Build:</b> the crane swings a piece of the tower. Tap <b>DROP</b> when it is right above the tower.</li>
+          <li><b>⬆️ Elevator:</b> hold <b>UP</b> to speed up and let go to slow down. Stop gently at the glowing floor.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Steady Tower!</a>
+        <span class="fact" data-noread>8 missions, from a windy day to a New Year's Eve storm, plus <b>Free Play</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 QUIZ + SOURCES -->
+  <section class="page" data-page="14">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Bao the golden ball hanging in its room, with Yuyu and her dad watching."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Taipei 101!</h2>
+        <p>Taipei 101 is 508 m tall, shaped like bamboo, with deep roots in the rock. Near its top hangs Bao, a 660-tonne golden ball that swings the other way when wind or earthquakes push the tower, making the wobble smaller.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Where is the big gold ball?</div>
+          <div class="choice-row"><button class="choice">🏠 In the basement</button><button class="choice" data-ok>🏙️ Near the top of the tower</button><button class="choice">🌳 In the park</button></div>
+          <div class="q">2. The wind pushes the tower to the right. Which way does Bao swing?</div>
+          <div class="choice-row"><button class="choice" data-ok>⬅️ To the left</button><button class="choice">➡️ Also to the right</button><button class="choice">⬆️ Up into the sky</button></div>
+          <div class="q">3. What do the piles under the tower do?</div>
+          <div class="choice-row"><button class="choice">💡 Make light</button><button class="choice">🎆 Shoot fireworks</button><button class="choice" data-ok>🌳 Hold it up, like roots</button></div>
+        </div>
+        <span class="fact" data-noread>🏙️ Try it with a grown-up: hang a small toy from a string and walk with it. Stop suddenly, and watch the toy swing! That's how Bao keeps moving after the tower moves.</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://en.wikipedia.org/wiki/Taipei_101" target="_blank" rel="noopener">Taipei 101 (508 m, 101 floors, opened at the end of 2004, the world's tallest until the Burj Khalifa in 2010, 8 segments of 8 floors and the bamboo and pagoda ideas, 380 piles 80 m deep, elevators at 60.6 km/h from the 5th to the 89th floor in 37 seconds, a 660-tonne damper ball 5.5 m wide made of 41 steel plates, up to 40% less movement, two 6-tonne dampers in the spire, the 1 m swing in Typhoon Soudelor on 8 August 2015, New Year's Eve fireworks)</a> ·
+          <a href="https://www.guinnessworldrecords.com/world-records/774616-largest-tuned-mass-damper" target="_blank" rel="noopener">Guinness World Records, largest tuned mass damper</a> ·
+          <a href="https://www.taiwannews.com.tw/en/news/3683775" target="_blank" rel="noopener">Taiwan News, Taipei 101's damper (41 plates 125 mm thick, the 100 cm swing during Soudelor)</a> ·
+          <a href="https://businessinsider.nl/this-660-ton-pendulum-protects-taiwans-tallest-skyscraper-from-earthquakes/" target="_blank" rel="noopener">Business Insider, the 660-ton pendulum during the April 2024 earthquake (8 cables, 8 dampers, a bumper ring that limits the swing to about 1.5 m)</a> ·
+          <a href="https://en.wikipedia.org/wiki/2024_Hualien_earthquake" target="_blank" rel="noopener">2024 Hualien earthquake (3 April 2024, the strongest in Taiwan in 25 years)</a><br>
+          Bao, its name and its face are pretend; the real damper has no face. The pictures on pages 2 to 5, 7, 8, 10 and 11 are simplified: the swaying is made much bigger and faster so you can see it, and on page 7 the ball is made much heavier than the real one (the real ball is less than 1% of the tower's weight). Sources give the damper's floors as 87th or 88th to 92nd. The elevator ride on page 11 uses a smooth speed-up and slow-down that matches 37 seconds and 60.6 km/h.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Steady Tower!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+  let anims = {};
+  const stop = k => { cancelAnimationFrame(anims[k]); anims[k] = 0; };
+  const loop = (k, fn) => { stop(k); let last = performance.now(); const f = now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; if (fn(dt, now) !== false) anims[k] = requestAnimationFrame(f); }; anims[k] = requestAnimationFrame(f); };
+
+  // Taipei 101 drawn as polygons: base, 8 flaring pieces, top, spire. lean(h) = sideways shift at height fraction h (0 bottom, 1 top)
+  const TEAL = "#5fb8b0", TEAL_D = "#3c8f88", TEAL_L = "#8fd6cc";
+  function tower(g, cx, ground, H, opt) {
+    opt = opt || {};
+    const W = H * 0.17, parts = [];
+    const base = el("polygon", { fill: TEAL_D, stroke: "#2b6b66", "stroke-width": 2 }); g.appendChild(base); parts.push(["base", base]);
+    const segs = [];
+    for (let i = 0; i < 8; i++) { const p = el("polygon", { fill: i % 2 ? TEAL : TEAL_L, stroke: "#2b6b66", "stroke-width": 2 }); g.appendChild(p); segs.push(p); }
+    const top = el("polygon", { fill: TEAL_D, stroke: "#2b6b66", "stroke-width": 2 }); g.appendChild(top);
+    const spire = el("line", { stroke: "#2b6b66", "stroke-width": Math.max(2, H * 0.008), "stroke-linecap": "round" }); g.appendChild(spire);
+    const draw = lean => {
+      const n = opt.pieces == null ? 8 : opt.pieces;
+      lean = lean || (() => 0);
+      const X = (h, dx) => (cx + dx + lean(h)).toFixed(1), Y = h => (ground - h * H).toFixed(1);
+      const hb = 0.25;
+      base.setAttribute("points", [X(0, -W * 0.62) + "," + Y(0), X(0, W * 0.62) + "," + Y(0), X(hb, W * 0.36) + "," + Y(hb), X(hb, -W * 0.36) + "," + Y(hb)].join(" "));
+      const sh = 0.07;
+      segs.forEach((p, i) => {
+        const h0 = hb + i * sh, h1 = h0 + sh;
+        p.setAttribute("visibility", i < n ? "visible" : "hidden");
+        p.setAttribute("points", [X(h0, -W * 0.33) + "," + Y(h0), X(h0, W * 0.33) + "," + Y(h0), X(h1, W * 0.45) + "," + Y(h1), X(h1, -W * 0.45) + "," + Y(h1)].join(" "));
+      });
+      const ht = hb + 8 * sh, show = n >= 8 && !opt.noTop;
+      top.setAttribute("visibility", show ? "visible" : "hidden"); spire.setAttribute("visibility", show ? "visible" : "hidden");
+      top.setAttribute("points", [X(ht, -W * 0.22) + "," + Y(ht), X(ht, W * 0.22) + "," + Y(ht), X(ht + 0.07, W * 0.12) + "," + Y(ht + 0.07), X(ht + 0.07, -W * 0.12) + "," + Y(ht + 0.07)].join(" "));
+      spire.setAttribute("x1", X(ht + 0.07, 0)); spire.setAttribute("y1", Y(ht + 0.07)); spire.setAttribute("x2", X(1, 0)); spire.setAttribute("y2", Y(1));
+    };
+    draw();
+    return { draw, W, H, segs, set n(v) { opt.pieces = v; } };
+  }
+  const bend = s => h => s * h * h;   // a tall tower bends most at the top
+  const ground = (svg, y, col) => svg.appendChild(el("rect", { x: 0, y, width: 1000, height: 560 - y, fill: col || "#8cc97a" }));
+  const cloud = (svg, x, y, s) => { const g = el("g", { opacity: .9 }); [[0, 0, 30], [28, -12, 34], [60, 0, 28], [30, 8, 30]].forEach(([dx, dy, r]) => g.appendChild(el("circle", { cx: x + dx * s, cy: y + dy * s, r: r * s, fill: "#fff" }))); svg.appendChild(g); return g; };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => build(1, st => {
+    say(st, 33, 70, 14, 40, "Yuyu", "<b>Yuyu:</b> Hi! I'm Yuyu. Do you see the golden ball way up there? It's my favorite!", S.yay, 4, 6);
+    say(st, 68, 37, 11, 18, "Bao", "<b>Bao:</b> Hello down there! I'm Bao. I hang near the top and help the tower stay steady.", S.ding, 98, 6, true);
+    say(st, 69, 6, 6, 10, "Spire", "<b>The spire</b> is the thin tip at the very top, 508 m above the ground.", S.sparkle, 98, 40, true);
+    say(st, 69, 85, 12, 14, "Taipei 101", "<b>Taipei 101</b> stands in the Xinyi district of Taipei, Taiwan's capital city.", S.pop, 4, 6);
+    say(st, 12, 70, 14, 18, "Mountains", "<b>Mountains</b> are all around Taipei. The city sits in a big bowl between them.", S.chirp, 4, 6);
+  }));
+
+  /* -------- 2 so tall -------- */
+  B.on(2, () => build(2, st => {
+    const svg = $("#tallsvg"), G = 500, PX = 430 / 508;   // pixels per meter
+    cloud(svg, 120, 90, 1); cloud(svg, 820, 70, .8);
+    ground(svg, G);
+    const items = {
+      house: { x: 140, h: 10, col: "#e6a26a", name: "House", m: "10 m" },
+      eiffel: { x: 360, h: 330, col: "#9b6cf2", name: "Eiffel Tower", m: "330 m" },
+      t101: { x: 640, h: 508, col: TEAL, name: "Taipei 101", m: "508 m" },
+    };
+    for (const k in items) {
+      const it = items[k], g = el("g", {}); svg.appendChild(g); it.g = g;
+      if (k === "t101") { it.tw = tower(g, it.x, G, 0); }
+      else if (k === "eiffel") { it.shape = el("polygon", { fill: it.col, stroke: "#6a43b8", "stroke-width": 2 }); g.appendChild(it.shape); }
+      else { it.shape = el("rect", { fill: it.col, stroke: "#a86a38", "stroke-width": 2 }); g.appendChild(it.shape); }
+      it.lab = el("text", { class: "lbl", x: it.x, y: G - 12, "text-anchor": "middle", style: "font-size:28px", opacity: 0 }, it.name + " · " + it.m); svg.appendChild(it.lab);
+    }
+    svg.appendChild(el("text", { class: "lbl", x: 160, y: G + 40, style: "font-size:22px" }, "← Yuyu is too small to see!"));
+    const put = (k, f) => {
+      const it = items[k], H = it.h * PX * f;
+      if (k === "t101") { it.g.innerHTML = ""; it.tw = tower(it.g, it.x, G, H); }
+      else if (k === "eiffel") it.shape.setAttribute("points", [it.x - H * .33, G, it.x + H * .33, G, it.x + 4, G - H, it.x - 4, G - H].join(" "));
+      else { const w = 14; it.shape.setAttribute("x", it.x - w / 2); it.shape.setAttribute("y", G - H); it.shape.setAttribute("width", w); it.shape.setAttribute("height", H); }
+      it.lab.setAttribute("y", G - H - 14); it.lab.setAttribute("opacity", f > .95 ? 1 : 0);
+    };
+    const SAY = { house: "🏠 A house: about <b>10 m</b>. Tiny!", eiffel: "🗼 The Eiffel Tower in Paris: <b>330 m</b>.", t101: "🏙️ Taipei 101: <b>508 m</b>, about 50 houses tall!" };
+    st.querySelectorAll("[data-grow]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const k = b.dataset.grow; S.whoosh(); let t = 0;
+      loop("tall" + k, dt => { t = Math.min(1, t + dt / 1.6); put(k, 1 - Math.pow(1 - t, 3)); if (t >= 1) { S.ding(); $("#tallOut").innerHTML = SAY[k]; return false; } });
+    });
+  }), () => ["house", "eiffel", "t101"].forEach(k => stop("tall" + k)));
+
+  /* -------- 3 bamboo -------- */
+  B.on(3, () => build(3, st => {
+    const svg = $("#bamboosvg"), G = 520;
+    cloud(svg, 640, 80, .8); ground(svg, G);
+    // a bamboo stalk on the left
+    for (let i = 0; i < 7; i++) {
+      svg.appendChild(el("rect", { x: 140, y: G - 60 * (i + 1), width: 26, height: 56, rx: 8, fill: i % 2 ? "#7cc66a" : "#6ab35a", stroke: "#4b8a3e", "stroke-width": 2 }));
+      if (i % 2) svg.appendChild(el("path", { d: "M166," + (G - 60 * i - 40) + " q40,-20 70,-6", stroke: "#4b8a3e", "stroke-width": 3, fill: "#9be08a" }));
+    }
+    svg.appendChild(el("text", { class: "lbl", x: 153, y: G + 30, "text-anchor": "middle", style: "font-size:24px" }, "🎋 bamboo"));
+    const g = el("g", {}); svg.appendChild(g);
+    let n = 0;
+    const tw = tower(g, 560, G, 470, { pieces: 0 });
+    const cnt = el("text", { class: "lbl", x: 820, y: 300, "text-anchor": "middle", style: "font-size:30px" }, ""); svg.appendChild(cnt);
+    $("#growBtn").onclick = e => {
+      e.stopPropagation();
+      if (n >= 8) { n = 0; tw.n = 0; tw.draw(); cnt.textContent = ""; $("#growBtn").textContent = "🧱 Add a piece"; $("#bambooOut").innerHTML = "Let's build it again!"; S.pop(); return; }
+      n++; tw.n = n; tw.draw(); S.dig();
+      const [x, y] = B.px(st, 56, 100 * (G - (0.25 + n * 0.07) * 470) / 560); F.dust(st, x, y, 10);
+      cnt.textContent = n + " × 8 = " + n * 8 + " floors";
+      $("#bambooOut").innerHTML = "Piece <b>" + n + "</b> of 8";
+      if (n === 8) { S.yay(); B.confetti(60); $("#bambooOut").innerHTML = "🎉 8 pieces! Then the top and the spire: <b>101 floors</b>."; $("#growBtn").textContent = "🔁 Again"; }
+    };
+  }));
+
+  /* -------- 4 roots -------- */
+  B.on(4, () => build(4, st => {
+    const svg = $("#rootssvg"), G = 210;
+    svg.appendChild(el("rect", { x: 0, y: G, width: 1000, height: 220, fill: "#a7845e" }));
+    svg.appendChild(el("rect", { x: 0, y: G + 220, width: 1000, height: 140, fill: "#6b6b74" }));
+    for (let i = 0; i < 40; i++) svg.appendChild(el("circle", { cx: (i * 137) % 1000, cy: G + 20 + (i * 53) % 190, r: 4 + i % 5, fill: "#8f6f4c", opacity: .6 }));
+    svg.appendChild(el("text", { class: "lbl w", x: 30, y: G + 60, style: "font-size:26px" }, "soft ground (mud and sand)"));
+    svg.appendChild(el("text", { class: "lbl w", x: 30, y: G + 270, style: "font-size:26px" }, "hard rock"));
+    svg.appendChild(el("rect", { x: 0, y: G - 8, width: 1000, height: 10, fill: "#7cbf6a" }));
+    const g = el("g", {}); svg.appendChild(g); tower(g, 620, G, 760, { noTop: true });
+    const piles = el("g", { opacity: 0 }); svg.appendChild(piles);
+    const PL = [];
+    for (let i = 0; i < 9; i++) { const r = el("rect", { x: 620 - 120 + i * 30 - 7, y: G, width: 14, height: 0, rx: 3, fill: "#d9d9df", stroke: "#888", "stroke-width": 1.5 }); piles.appendChild(r); PL.push(r); }
+    const dep = el("text", { class: "lbl w", x: 800, y: G + 150, style: "font-size:28px" }, ""); svg.appendChild(dep);
+    $("#digBtn").onclick = e => {
+      e.stopPropagation(); S.rumble(); piles.setAttribute("opacity", 1); let t = 0;
+      loop("roots", dt => {
+        t = Math.min(1, t + dt / 2.5); const h = 300 * t;
+        PL.forEach(r => r.setAttribute("height", h)); dep.textContent = "⬇️ " + Math.round(80 * t) + " m";
+        if (t >= 1) { S.ding(); $("#rootsOut").innerHTML = "🌳 380 piles, about <b>80 m</b> deep, into the hard rock!"; return false; }
+      });
+    };
+    say(st, 62, 12, 20, 20, "Tower", "<b>Taipei 101</b> is very heavy. The piles carry its weight down to the rock.", S.pop, 4, 6);
+  }), () => stop("roots"));
+
+  /* -------- 5 wind pushes -------- */
+  B.on(5, () => build(5, st => {
+    const svg = $("#swaysvg"), G = 520;
+    cloud(svg, 140, 100, .9); ground(svg, G);
+    const streaks = el("g", { stroke: "#fff", "stroke-width": 5, "stroke-linecap": "round", opacity: 0 }); svg.appendChild(streaks);
+    for (let i = 0; i < 8; i++) streaks.appendChild(el("line", { x1: 40 + (i * 97) % 300, y1: 80 + i * 45, x2: 140 + (i * 97) % 300, y2: 80 + i * 45 }));
+    const g = el("g", {}); svg.appendChild(g); const tw = tower(g, 620, G, 470);
+    const tea = el("image", { href: "img/tea.webp", width: 76, height: 98 }); svg.appendChild(tea);
+    const drops = el("g", {}); svg.appendChild(drops);
+    let x = 0, v = 0, force = 0, ft = 0, spill = 0;
+    const W = 2 * Math.PI / 1.6;
+    loop("sway", dt => {
+      ft = Math.max(0, ft - dt); const f = ft > 0 ? force * Math.sin(W * (3 - ft)) : 0;
+      v += (-W * W * x - 0.25 * v + f * 80) * dt; x += v * dt;
+      tw.draw(bend(x));
+      const tx = 620 + x * Math.pow(.78, 2) - 38, ty = G - .78 * 470 - 98;
+      tea.setAttribute("x", tx); tea.setAttribute("y", ty); tea.setAttribute("transform", "rotate(" + (x * .25) + " " + (tx + 38) + " " + (ty + 98) + ")");
+      streaks.setAttribute("opacity", ft > 0 ? .8 : 0); streaks.setAttribute("transform", "translate(" + ((performance.now() / 4) % 200) + " 0)");
+      if (Math.abs(x) > 26 && Math.abs(v) < 40 && spill <= 0) { spill = .6; S.splash(); const [px, py] = B.px(st, (tx + 38) / 10, 100 * ty / 560); F.dust(st, px, py, 8); $("#swayOut").innerHTML = "😵 Whoa! The bubble tea is <b>spilling</b>!"; }
+      spill -= dt;
+    });
+    st.querySelectorAll("[data-wind]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); force = +b.dataset.wind; ft = 3; S.wind();
+      $("#swayOut").innerHTML = force > 1 ? "🌀 Strong wind! Watch the top..." : "🍃 A breeze: the top sways a little.";
+    });
+  }), () => stop("sway"));
+
+  /* -------- 6 meet Bao -------- */
+  B.on(6, () => build(6, st => {
+    say(st, 70, 40, 24, 40, "Bao", "<b>Bao:</b> I'm 660 tonnes of steel! When the tower sways, I swing.", S.ding, 4, 6);
+    say(st, 70, 6, 24, 10, "Cables", "<b>8 steel cables</b>, each about as thick as your arm, hold me up like a giant swing.", S.tick, 4, 40);
+    say(st, 86, 80, 10, 20, "Shock absorbers", "<b>Shock absorbers</b> under Bao slow its swinging down. More on the next pages!", S.puff, 4, 6);
+    say(st, 37, 78, 9, 26, "Yuyu", "<b>Yuyu:</b> It's SO big! Bigger than our whole living room!", S.yay, 98, 6, true);
+    say(st, 27, 58, 9, 30, "Dad", "<b>Dad:</b> On a windy day, you can see Bao moving. Today it's calm, so it's resting.", S.chirp, 98, 6, true);
+    say(st, 42, 28, 14, 20, "Windows", "<b>The view!</b> From up here, cars look like ants.", S.whoosh, 98, 50, true);
+  }));
+
+  /* -------- 7 two towers, same wind -------- */
+  // Two-mass model: tower sway x and Bao's swing u (relative to the tower). Exaggerated mass ratio so kids can see it.
+  B.on(7, () => build(7, st => {
+    const svg = $("#dampsvg"), G = 500, H = 400;
+    cloud(svg, 480, 70, .7); ground(svg, G);
+    const T = [{ cx: 260, bao: false, name: "Without Bao" }, { cx: 640, bao: true, name: "With Bao" }];
+    const mu = 0.03, wb = 2 * Math.PI / 1.7, wd = wb / (1 + mu), zd = 0.1;
+    T.forEach(t => {
+      t.g = el("g", {}); svg.appendChild(t.g); t.tw = tower(t.g, t.cx, G, H);
+      t.x = 0; t.v = 0; t.u = 0; t.w = 0; t.max = 0;
+      svg.appendChild(el("text", { class: "lbl", x: t.cx, y: G + 40, "text-anchor": "middle", style: "font-size:28px" }, t.name));
+      // a "wobble meter" standing next to each tower
+      t.bar = el("rect", { x: t.cx + 130, y: G - 20, height: 0, width: 22, rx: 8, fill: t.bao ? "#5ccf6a" : "#e8662e" }); svg.appendChild(t.bar);
+      svg.appendChild(el("rect", { x: t.cx + 130, y: G - 240, height: 220, width: 22, rx: 8, fill: "none", stroke: "#1e2340", "stroke-width": 2 }));
+      svg.appendChild(el("text", { class: "lbl", x: t.cx + 141, y: G - 252, "text-anchor": "middle", style: "font-size:20px" }, "wobble"));
+      if (t.bao) {
+        t.cab = el("line", { stroke: "#555", "stroke-width": 3 }); svg.appendChild(t.cab);
+        t.ball = el("image", { href: "img/bao.webp", width: 40, height: 40 }); svg.appendChild(t.ball);
+      }
+    });
+    let wind = 0;
+    const draw = () => T.forEach(t => {
+      t.tw.draw(bend(t.x));
+      if (t.bao) {
+        const hy = G - 0.72 * H, px = t.cx + t.x * .72 * .72, bx = px + Math.max(-22, Math.min(22, t.u * .12));
+        t.cab.setAttribute("x1", px); t.cab.setAttribute("y1", hy - 30); t.cab.setAttribute("x2", bx); t.cab.setAttribute("y2", hy);
+        t.ball.setAttribute("x", bx - 20); t.ball.setAttribute("y", hy - 20);
+      }
+      const bh = Math.min(220, t.max * 2.6); t.bar.setAttribute("height", bh); t.bar.setAttribute("y", G - 20 - bh);
+    });
+    draw();
+    $("#dampBtn").onclick = e => {
+      e.stopPropagation(); S.wind(); wind = 7; T.forEach(t => { t.x = t.v = t.u = t.w = t.max = 0; });
+      $("#dampOut").innerHTML = "💨 The wind pushes both towers the same way...";
+      let time = 0;
+      loop("damp", dt => {
+        time += dt; wind = Math.max(0, wind - dt);
+        const f = wind > 0 ? 9 * Math.sin(wb * time) : 0;
+        for (let k = 0; k < 4; k++) {
+          const h = dt / 4;
+          T.forEach(t => {
+            const pull = t.bao ? mu * (wd * wd * t.u + 2 * zd * wd * t.w) : 0;
+            const a = -wb * wb * t.x - 0.03 * t.v + f * 10 + pull;
+            t.v += a * h; t.x += t.v * h;
+            if (t.bao) { const b = -a - wd * wd * t.u - 2 * zd * wd * t.w; t.w += b * h; t.u += t.w * h; }
+            t.max = Math.max(t.max, Math.abs(t.x));
+          });
+        }
+        draw();
+        if (time > 2.5 && time < 2.6) $("#dampOut").innerHTML = "👀 See Bao swing the <b>other way</b> from the tower?";
+        if (time > 11) {
+          S.ding();
+          $("#dampOut").innerHTML = "📉 With Bao, the wobble was much <b>smaller</b>!"; return false;
+        }
+      });
+    };
+  }), () => stop("damp"));
+
+  /* -------- 8 shock absorbers -------- */
+  B.on(8, () => build(8, st => {
+    const svg = $("#brakesvg"), C = 440, top = 40, L = 230, FL = 470;
+    svg.appendChild(el("rect", { x: 0, y: FL, width: 1000, height: 90, fill: "#c9c3b5" }));
+    svg.appendChild(el("rect", { x: 0, y: 0, width: 1000, height: 40, fill: "#9a9488" }));
+    const ring = el("ellipse", { cx: C, cy: 340, rx: 190, ry: 22, fill: "none", stroke: "#8a8f99", "stroke-width": 14 }); svg.appendChild(ring);
+    const cab = [el("line", { stroke: "#666", "stroke-width": 6 }), el("line", { stroke: "#666", "stroke-width": 6 })]; cab.forEach(c => svg.appendChild(c));
+    const pist = [0, 1].map(() => { const g = el("g", {}); const a = el("line", { stroke: "#b8bec8", "stroke-width": 22, "stroke-linecap": "round" }), b = el("line", { stroke: "#e2e6ec", "stroke-width": 10, "stroke-linecap": "round" }); g.appendChild(a); g.appendChild(b); svg.appendChild(g); return { a, b }; });
+    const glow = el("circle", { cx: C, cy: 340, r: 0, fill: "#ffb347", opacity: .0 }); svg.appendChild(glow);
+    const ball = el("image", { href: "img/bao.webp", width: 180, height: 180 }); svg.appendChild(ball);
+    const bump = el("text", { class: "lbl", x: C, y: 530, "text-anchor": "middle", style: "font-size:30px", opacity: 0 }, "BONK! The ring stops it."); svg.appendChild(bump);
+    let th = 0, om = 0, on = true, bt = 0;
+    const MAX = 0.215;   // the ring: about 1.5 m for a 5.5 m ball
+    loop("brake", dt => {
+      const g = 9.8 / (L / 100);
+      om += (-g * Math.sin(th) - (on ? 1.4 : 0.05) * om) * dt; th += om * dt;
+      if (Math.abs(th) > MAX) { th = Math.sign(th) * MAX; om = -om * 0.3; if (bt <= 0) { S.rumble(); bt = 1.2; } }
+      bt -= dt; bump.setAttribute("opacity", bt > 0 ? 1 : 0);
+      const bx = C + L * Math.sin(th), by = top + L * Math.cos(th);
+      cab[0].setAttribute("x1", C - 50); cab[0].setAttribute("y1", top); cab[0].setAttribute("x2", bx - 45); cab[0].setAttribute("y2", by - 60);
+      cab[1].setAttribute("x1", C + 50); cab[1].setAttribute("y1", top); cab[1].setAttribute("x2", bx + 45); cab[1].setAttribute("y2", by - 60);
+      [[-1, C - 170], [1, C + 170]].forEach(([s, ax], i) => { const ex = bx + s * 55, ey = by + 60, mx = (ax + ex) / 2, my = (FL + ey) / 2;
+        pist[i].a.setAttribute("x1", ax); pist[i].a.setAttribute("y1", FL); pist[i].a.setAttribute("x2", mx); pist[i].a.setAttribute("y2", my);
+        pist[i].b.setAttribute("x1", mx); pist[i].b.setAttribute("y1", my); pist[i].b.setAttribute("x2", ex); pist[i].b.setAttribute("y2", ey); });
+      glow.setAttribute("opacity", on ? Math.min(.5, Math.abs(om) * .5) : 0); glow.setAttribute("r", 60 + Math.abs(om) * 60); glow.setAttribute("cx", bx); glow.setAttribute("cy", by + 40);
+      ball.setAttribute("x", bx - 90); ball.setAttribute("y", by - 90);
+    });
+    $("#pistonBtn").onclick = e => {
+      e.stopPropagation(); on = !on; S.tick();
+      e.target.textContent = "🔧 Shock absorbers: " + (on ? "ON" : "OFF"); e.target.classList.toggle("gray", on); e.target.classList.toggle("red", !on);
+      $("#brakeOut").innerHTML = on ? "🔧 ON: Bao calms down quickly." : "🔧 OFF: Bao keeps swinging and swinging...";
+    };
+    st.querySelectorAll("[data-push]").forEach(b => b.onclick = e => { e.stopPropagation(); om += 0.3 * +b.dataset.push; S.whoosh(); $("#brakeOut").innerHTML = on ? "👋 Swing... the shock absorbers squeeze and slow Bao down." : "👋 Swing... and swing... and swing!"; });
+  }), () => stop("brake"));
+
+  /* -------- 9 typhoon -------- */
+  B.on(9, () => { const st = stageOf(9); F.weather(st, "rain", .6); build(9, st => {
+    say(st, 68, 37, 11, 18, "Bao", "<b>Bao:</b> Here comes the wind! Tower goes right, so I go LEFT. Hold on!", S.ding, 4, 6);
+    say(st, 25, 32, 26, 22, "Wind", "<b>The typhoon wind</b> pushes on the whole side of the tower, again and again.", S.wind, 4, 60);
+    say(st, 40, 86, 18, 12, "City lights", "<b>Everyone stays home</b> during a typhoon. Lights on, windows closed!", S.pop, 4, 6);
+    say(st, 69, 78, 9, 22, "Tower", "<b>Taipei 101</b> bends a tiny bit in the wind. Bao makes the wobble smaller.", S.rumble, 98, 6, true);
+  }); });
+
+  /* -------- 10 earthquakes -------- */
+  B.on(10, () => build(10, st => {
+    const svg = $("#quakesvg"), G = 300;
+    const left = el("g", {}), right = el("g", {}); svg.appendChild(left); svg.appendChild(right);
+    left.appendChild(el("rect", { x: -200, y: G, width: 700, height: 260, fill: "#c79a6b" }));
+    right.appendChild(el("rect", { x: 500, y: G, width: 700, height: 260, fill: "#a7845e" }));
+    left.appendChild(el("text", { class: "lbl w", x: 60, y: G + 120, style: "font-size:26px" }, "➡️ plate"));
+    right.appendChild(el("text", { class: "lbl w", x: 820, y: G + 120, style: "font-size:26px" }, "plate ⬅️"));
+    svg.appendChild(el("rect", { x: 0, y: G - 4, width: 1000, height: 8, fill: "#5ea0d8" }));
+    const isle = el("g", {}); svg.appendChild(isle);
+    const mt = el("path", { fill: "#7cbf6a", stroke: "#4b8a3e", "stroke-width": 3 }); isle.appendChild(mt);
+    const snow = el("text", { class: "lbl", x: 500, y: 0, "text-anchor": "middle", style: "font-size:22px" }, "⛰️ Yushan"); isle.appendChild(snow);
+    const tg = el("g", {}); svg.appendChild(tg); const tw = tower(tg, 400, 0, 120);
+    let lift = 40, push = 0, shake = 0, sway = 0, sv = 0;
+    const draw = () => {
+      mt.setAttribute("d", "M380," + G + " Q440," + (G - lift * .6) + " 470," + (G - lift * .8) + " L500," + (G - lift * 1.3) + " L530," + (G - lift * .9) + " Q580," + (G - lift * .5) + " 640," + G + " Z");
+      snow.setAttribute("y", G - lift * 1.3 - 10);
+      const sx = shake > 0 ? (Math.random() - .5) * 14 * shake : 0;
+      left.setAttribute("transform", "translate(" + (push * 10 + sx) + " 0)"); right.setAttribute("transform", "translate(" + (-push * 10 + sx) + " 0)");
+      isle.setAttribute("transform", "translate(" + sx + " 0)");
+      tg.innerHTML = ""; const t = tower(tg, 452 + sx, G - lift * .64 + 4, 120); t.draw(bend(sway));
+    };
+    draw();
+    loop("quake", dt => {
+      shake = Math.max(0, shake - dt * .5);
+      const w = 2 * Math.PI / 1.2; sv += (-w * w * sway - 1.2 * sv + (shake > 0 ? (Math.random() - .5) * 1600 * shake : 0)) * dt; sway += sv * dt;
+      draw();
+    });
+    $("#quakeBtn").onclick = e => {
+      e.stopPropagation(); S.rumble(); st.classList.add("shake"); setTimeout(() => st.classList.remove("shake"), 600);
+      push = Math.min(3, push + 1); lift = Math.min(110, lift + 22); shake = 1.6;
+      $("#quakeOut").innerHTML = push < 3 ? "🤜🤛 Push! The mountains go up, and the ground <b>shakes</b>!" : "⛰️ The plates are still pushing today, very slowly. Taiwan's mountains are still growing!";
+      if (push >= 3) setTimeout(() => { push = 0; lift = 40; }, 4000);
+    };
+  }), () => stop("quake"));
+
+  /* -------- 11 elevator -------- */
+  B.on(11, () => build(11, st => {
+    const svg = $("#liftsvg");
+    svg.appendChild(el("rect", { x: 380, y: 0, width: 240, height: 560, fill: "#dfe6ea", stroke: "#9aa7b0", "stroke-width": 4 }));
+    const floors = el("g", {}); svg.appendChild(floors);
+    for (let i = 0; i < 12; i++) floors.appendChild(el("line", { x1: 380, x2: 620, y1: i * 50, y2: i * 50, stroke: "#b4c0c8", "stroke-width": 3 }));
+    const car = el("g", {}); svg.appendChild(car);
+    car.appendChild(el("rect", { x: 420, y: 230, width: 160, height: 150, rx: 14, fill: "#f2c94c", stroke: "#b08a1e", "stroke-width": 4 }));
+    car.appendChild(el("image", { href: "img/yuyu_cheer.webp", x: 455, y: 245, width: 90, height: 130 }));
+    car.appendChild(el("line", { x1: 500, y1: 0, x2: 500, y2: 230, stroke: "#666", "stroke-width": 4 }));
+    const fl = el("text", { class: "lbl", x: 200, y: 200, "text-anchor": "middle", style: "font-size:64px" }, "5F"), sp = el("text", { class: "lbl", x: 200, y: 270, "text-anchor": "middle", style: "font-size:30px" }, "0 km/h"), tm = el("text", { class: "lbl", x: 800, y: 230, "text-anchor": "middle", style: "font-size:56px" }, "0 s");
+    [fl, sp, tm].forEach(x => svg.appendChild(x));
+    svg.appendChild(el("text", { class: "lbl", x: 800, y: 280, "text-anchor": "middle", style: "font-size:24px" }, "⏱️ seconds"));
+    // a trapezoid speed profile: 37 s, top speed 16.8 m/s (60.6 km/h), about 362 m from the 5th to the 89th floor
+    const TT = 37, V = 16.8, D = 362, TA = TT - D / V;
+    const pos = t => t < TA ? V * t * t / (2 * TA) : t < TT - TA ? V * TA / 2 + V * (t - TA) : D - V * (TT - t) * (TT - t) / (2 * TA);
+    let busy = false, lastF = 5;
+    $("#liftBtn").onclick = e => {
+      e.stopPropagation(); if (busy) return; busy = true; S.hum(); let t = 0; lastF = 5;
+      loop("lift", dt => {
+        t = Math.min(TT, t + dt);
+        const d = pos(Math.min(TT, t)), v = t < TA ? V * t / TA : t < TT - TA ? V : V * (TT - t) / TA;
+        const f = Math.round(5 + 84 * d / D);
+        fl.textContent = f + "F"; sp.textContent = Math.round(v * 3.6) + " km/h"; tm.textContent = Math.floor(t) + " s";
+        floors.setAttribute("transform", "translate(0 " + ((d * 6) % 50) + ")");
+        if (f >= lastF + 10) { lastF = f; S.tick(); }
+        if (t >= TT) { busy = false; S.ding(); B.confetti(50); $("#liftOut").innerHTML = "🎉 <b>89th floor</b> in 37 seconds! Bao is just a few floors up."; return false; }
+      });
+    };
+  }), () => stop("lift"));
+
+  /* -------- 12 fireworks -------- */
+  B.on(12, () => build(12, st => {
+    let busy = false;
+    $("#fwBtn").onclick = e => {
+      e.stopPropagation(); if (busy) return; busy = true;
+      let n = 5; const out = $("#fwOut");
+      const tick = () => {
+        if (n > 0) { S.tick(); out.innerHTML = "<span style='font-size:1.6em'>" + n + "</span>"; n--; setTimeout(tick, 650); return; }
+        out.innerHTML = "🎆 <b>Happy New Year!</b>";
+        for (let i = 0; i < 12; i++) setTimeout(() => { S.pop(); const [x, y] = B.px(st, 50 + Math.random() * 40, 10 + Math.random() * 50); F.explode(st, x, y, .5); F.sparkles(st, x, y, 20); }, i * 260);
+        setTimeout(() => { S.yay(); B.confetti(90); busy = false; }, 3200);
+      };
+      tick();
+    };
+    say(st, 20, 48, 10, 26, "Yuyu", "<b>Yuyu:</b> Happy New Year, Bao! Thank you for keeping our tower steady!", S.yay, 98, 6, true);
+    say(st, 25, 82, 12, 22, "Dad", "<b>Dad:</b> We come here every year. Best seat in town!", S.chirp, 98, 6, true);
+    say(st, 70, 55, 8, 30, "Taipei 101", "<b>Fireworks</b> shoot out of the sides of the tower, floor by floor.", S.sparkle, 4, 6);
+  }));
+
+  /* -------- 13 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(13), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), 6, "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+
+  /* -------- 14 -------- */
+  B.on(14, () => build(14, st => {
+    say(st, 70, 40, 24, 40, "Bao", "<b>Bao:</b> Thanks for visiting! Want to help me keep the tower steady in a storm?", S.yay, 4, 6);
+  }));
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

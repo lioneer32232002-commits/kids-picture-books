@@ -69,6 +69,9 @@
 | 火衛一 | Emmy | cute chubby box-shaped spacecraft wrapped in shiny crinkled GOLD foil, a cream-white face panel on the front (big shiny eyes, rosy cheeks, smile), two dark-blue solar panel wings, a round white antenna dish on top, four short landing legs with round feet, one thin robot arm with a small scoop（MMX；暱稱是書裡取的） |
 | 火衛一 | Idefix | small four-wheeled silver-gray rover, a little dark-blue solar panel on its back, a head on a neck with two round camera eyes, a small smile（法德合作的真實探測車，書裡有表情） |
 | 火衛一 | Riku | cheerful 5-year-old Japanese boy, spiky black hair, red T-shirt with a yellow star, navy shorts, green sneakers |
+| 台北 101 | Bao | GIANT shiny golden ball with a friendly face (big shiny eyes, rosy cheeks, little smile) and thin horizontal lines of stacked steel plates, hanging from thick steel cables（真的阻尼器沒有臉；台北 101 自己的吉祥物「阻尼器寶寶」是三麗鷗設計的，不要照抄它的樣子） |
+| 台北 101 | Yuyu | cheerful 6-year-old Taiwanese girl, black hair in one high ponytail with a yellow bow, light-purple T-shirt with a little white star, denim shorts, orange sneakers, small blue backpack（跨年夜穿紅外套） |
+| 台北 101 | Dad | kind Taiwanese dad, short black hair, glasses, green polo shirt, khaki pants |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -162,6 +165,9 @@ Chrome 會擋 Gemini 連續自動下載：
 - Windows 10 的 canvas 字型畫不出 🪂（emoji 12），遊戲裡改用 📡；HTML 文字可以用。🪶 也一樣畫不出來。
 - **降落遊戲**（火衛一書）：側面看火衛一，重力很弱，按住 UP 推、◀ ▶ 平移；落地太快或碰到大石頭會「慢慢彈很高」，不會壞；停在發光點上放開推進器就自動進入挖土。燃料用完給一次小備用油箱，再用完又沒停在發光點才算失敗（結果頁教「小小點一下」）。最後一次挖完 Emmy 自己起飛，不用孩子再操作。按鈕是「按住」型，觸控可同時按多顆（`input.addPointer`）。
 - **探測車遊戲**：地面下降得比重力能拉下來的還快，車就會飛起來（跳躍判定），落地後要花 1.5 秒翻正，所以開快反而比較慢；速度表綠區安全、紅區會跳。停在發亮的石頭旁邊才出現 SCAN 鍵。
+- **穩住大樓遊戲**（台北 101 書）：塔的擺動是「彈簧＋阻尼」，陣風用同樣的節奏推（共振才看得出晃），地震是幾個頻率混在一起的短暫搖晃。孩子按 ◀ ▶ 的規則是「往塔『正在移動』的反方向擺 Bao」才會減少晃動（看位置不看速度在物理上沒用，所以畫面上用塔頂的移動箭頭，第一關讓該按的鍵發光）。真的阻尼器不用人推，play 頁面要明寫。會輸的只有 89 樓咖啡廳的珍奶（灑掉 3 杯也會打完，只是 1 星）。
+- **電梯遊戲**：快的電梯要很早放開才停得住，畫面上的 🛑 標記和面板文字「現在放開會停在幾樓」是這關的核心；靠近樓層又夠慢時電梯自己平層（真的電梯也會）。數字照真的：最快 60.6 km/h，5 樓到 89 樓機器人剛好 37 秒。
+- Windows 10 也畫不出 🧋 🛗 🫸 🫨（emoji 13 以後），HTML 也一樣：珍奶用 🥤、電梯用 ⬆️、推用 🤜🤛。
 - 素材表 Gemini 會自己在每格下方加名字標籤：`SHEETS_BY_BOOK` 的框高設到標籤上方就好，不必重畫。
 - **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。

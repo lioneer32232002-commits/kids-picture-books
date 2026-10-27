@@ -60,6 +60,10 @@ JOBS = [
     ("phobos", "square", "phobos-square", (1080, 1080)),
     ("moonscoop", "wide", "moonscoop-fb", (1200, 630)),
     ("moonscoop", "square", "moonscoop-square", (1080, 1080)),
+    ("taipei101", "wide", "taipei101-fb", (1200, 630)),
+    ("taipei101", "square", "taipei101-square", (1080, 1080)),
+    ("steadytower", "wide", "steadytower-fb", (1200, 630)),
+    ("steadytower", "square", "steadytower-square", (1080, 1080)),
 ]
 
 

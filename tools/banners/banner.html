@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney|phobos|moonscoop&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney|phobos|moonscoop|taipei101|steadytower&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -360,6 +360,22 @@
   .moonscoop h1 span { color: #7dff8a; }
   .moonscoop .cta { background: #5a8de0; box-shadow: 0 6px 0 #3a63ad; }
 
+  /* ---------- Taipei 101 (v2) ---------- */
+  .taipei101 .art { background-image: url(../../_raw/taipei101/p01.jpg); }
+  .taipei101.wide .art { background-size: 120%; background-position: 0% 80%; }
+  .taipei101.square .art { background-position: 52% 50%; }
+  .taipei101 .kicker { background: #ffd23d; color: #1e2340; }
+  .taipei101 h1 span { color: #ffd23d; }
+  .taipei101 .cta { background: #2fa39a; box-shadow: 0 6px 0 #1d7068; }
+
+  /* ---------- Steady Tower! (v2, the typhoon picture) ---------- */
+  .steadytower .art { background-image: url(../../_raw/taipei101/p03.jpg); }
+  .steadytower.wide .art { background-size: 120%; background-position: 0% 80%; }
+  .steadytower.square .art { background-position: 60% 50%; }
+  .steadytower .kicker { background: #7dff8a; color: #1e2340; }
+  .steadytower h1 span { color: #ffd23d; }
+  .steadytower .cta { background: #e8662e; box-shadow: 0 6px 0 #b0441a; }
+
 </style>
 </head>
 <body>
@@ -516,6 +532,22 @@
       title: "Moon <span>Scoop!</span>",
       sub: "Land softly on Phobos, drive Idefix over the bumps, and parachute the soil home!",
       chips: ["🛬 Gentle landings", "🤖 Rover hops", "🪂 Home to Australia"],
+      cta: "Play free ▶",
+    },
+    taipei101: {
+      layout: "v2",
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "The Big Gold Ball of <span>Taipei 101</span>",
+      sub: "A 660-tonne ball hangs near the top. When typhoons push the tower, it swings the other way!",
+      chips: ["🟡 A giant damper", "🌀 Typhoons & quakes", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    steadytower: {
+      layout: "v2",
+      kicker: "FREE TAIPEI 101 GAME FOR KIDS",
+      title: "Steady <span>Tower!</span>",
+      sub: "Swing Bao against the typhoon, stack the bamboo tower, and stop the 60 km/h elevator!",
+      chips: ["🌀 Calm the sway", "🏗️ Build it", "⬆️ Super-fast lift"],
       cta: "Play free ▶",
     },
     planet: {
