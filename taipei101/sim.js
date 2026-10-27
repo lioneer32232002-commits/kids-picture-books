@@ -81,7 +81,7 @@
       order.push("bao", "top");
       Object.assign(s, { order, n: 0, hook: 0, drop: null, misses: 0, perfect: 0, offs: [], stackX: 0, pile: 0, wind: 0 });
     } else if (L.kind === "lift") {
-      Object.assign(s, { y: L.start, v: 0, stop: 0, over: 0, doors: 0, leveling: false, passed: false, stopsT: [] });
+      Object.assign(s, { y: L.start, v: 0, held: 0, braking: false, stop: 0, over: 0, doors: 0, leveling: false, passed: false, stopsT: [] });
       s.par = L.stops.reduce((a, f, i) => a + idealTime(Math.abs(f - (i ? L.stops[i - 1] : L.start))) + 3, 0);
     }
     return s;
@@ -181,10 +181,17 @@
     const target = L.stops[s.stop], dir = sgn(target - s.y) || 1;
     const up = !!inp.up, down = !!inp.down;
     const want = up && !down ? 1 : down && !up ? -1 : 0;
+    if (!want) s.held = 0;
     if (want) {
       s.leveling = false;
-      if (s.v * want < 0) s.v += want * LIFT.reverse * dt;          // pushing against the motion brakes hard
-      else s.v += want * LIFT.acc * dt;
+      if (s.v * want < 0) {
+        // pushing against the motion brakes hard, and stops at zero (let go and press again to go the other way)
+        s.braking = true; s.held = want;
+        const nv = s.v + want * LIFT.reverse * dt;
+        s.v = nv * s.v <= 0 ? 0 : nv;
+      } else if (s.held === want && s.v === 0) {
+        // still holding the brake after stopping: stay put
+      } else { s.braking = false; s.held = 0; s.v += want * LIFT.acc * dt; }
     } else if (s.leveling || (Math.abs(target - s.y) < LIFT.level && Math.abs(s.v) < LIFT.levelV)) {
       // close to the floor and slow: the elevator levels itself, gently
       s.leveling = true;
@@ -252,6 +259,7 @@
     const target = s.L.stops[s.stop]; if (target == null || s.doors > 0) return {};
     const d = target - s.y, dir = sgn(d), margin = style === "late" ? -2.5 : style === "lazy" ? -6 : 0.3;
     const stopDist = s.v * s.v / (2 * LIFT.brake);
+    if (s.held && s.v === 0) return {};          // braked to a stop: let go first, like the screen says
     if (s.v * dir < 0) return dir > 0 ? { up: true } : { down: true };
     if (Math.abs(d) > stopDist + margin && !(Math.abs(d) < LIFT.level && Math.abs(s.v) < LIFT.levelV)) return dir > 0 ? { up: true } : { down: true };
     return {};

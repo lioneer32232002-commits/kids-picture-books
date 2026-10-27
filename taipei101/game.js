@@ -209,7 +209,9 @@
       const bg = this.add.image(W / 2, H / 2, "bg_city").setDisplaySize(W, H).setDepth(0);
       if (L.night) bg.setTint(0x5a64a8);
       else if (L.rain) bg.setTint(0x9aa6bf);
-      this.clouds = [0, 1, 2].map(i => fit(this.add.image(200 + i * 420, 90 + i * 30, "cloud"), 200).setDepth(1).setAlpha(L.rain || L.night ? 0.9 : 0.6));
+      this.clouds = [0, 1, 2].map(i => { const c = fit(this.add.image(200 + i * 420, 90 + i * 30, "cloud"), 200).setDepth(1).setAlpha(L.rain || L.night ? 0.9 : 0.6);
+        if (!L.rain && !L.night) c.setCrop(0, 0, c.width, c.height * 0.62);   // a sunny day: no raindrops
+        return c; });
       this.towerG = this.add.graphics().setDepth(3);
       this.baoMask = this.make.graphics({ add: false });
       this.bao = fit(this.add.image(0, 0, "bao_brave"), 74).setDepth(5);
@@ -241,6 +243,10 @@
       const l = this.bLeft.down || k.left.isDown, r = this.bRight.down || k.right.isDown;
       let inp = { dir: l && !r ? -1 : r && !l ? 1 : 0 };
       if (window.__stBot) inp = R.bot(s, dt, this.mem);
+      // holding the button that pushes the same way the tower is going: say so, gently
+      this.wrongT = inp.dir && Math.abs(s.v) > 6 && inp.dir === Math.sign(s.v) ? (this.wrongT || 0) + dt : 0;
+      if (this.wrongT > 0.6 && !(this.saidWrong > 0)) { this.toast("🙃 Other way! The tower is going " + (s.v > 0 ? "▶, so hold ◀" : "◀, so hold ▶")); this.saidWrong = 4; }
+      this.saidWrong = (this.saidWrong || 0) - dt;
       const n = Math.max(1, Math.ceil(dt / (1 / 30)));
       for (let i = 0; i < n; i++) { R.step(s, dt / n, inp); this.handle(s.events); if (s.done) break; }
       this.draw(dt, inp);
@@ -410,7 +416,7 @@
       if (s.n >= 9 && s.n < 10) { g.fillStyle(0x1e2340, 0.6).fillCircle(BX + off(1), GROUND - BASE_H - 8 * PIECE_H + 34, 34); this.baoIn.setDepth(4); }
       // a guide line from the stack up
       const gg = this.guideG.clear(), top = this.topY(), tx = R.stackTopX(s);
-      for (let y = top - 20; y > top - 240; y -= 22) gg.fillStyle(0xffffff, 0.5).fillCircle(tx, y, 3);
+      if (!s.done) for (let y = top - 20; y > top - 240; y -= 22) gg.fillStyle(0xffffff, 0.5).fillCircle(tx, y, 3);
       // the crane: a jib across the top of the screen and a cable down to the piece
       const cg = this.craneG.clear();
       cg.fillStyle(0xf2c94c, 1).fillRect(330, 128, 720, 22).lineStyle(3, 0xb08a1e, 1);
@@ -444,7 +450,9 @@
       if (this.ended) return; this.ended = true;
       const r = this.s.result, sv = save.get(); sv.stars[this.L.k] = Math.max(sv.stars[this.L.k] || 0, r.stars); save.set(sv);
       S.yay(); if (window.Book && Book.confetti) Book.confetti(60);
-      this.worker.setTexture("worker");
+      // show the finished top with its spire: hide the crane and move the camera up a little
+      this.craneG.setVisible(false); this.hangG.clear(); this.guideG.clear(); this.bDrop.setVisible(false);
+      this.cameras.main.pan(W / 2, this.topY() - 200 + H / 2, 900, "Sine.easeInOut");
       this.time.delayedCall(2000, () => this.scene.start("result", { level: this.li, r, kind: "build" }));
     }
   }
@@ -489,6 +497,10 @@
       if (this.ended) { this.tickToast(Math.min(0.05, dms / 1000)); return; }
       let inp = { up: this.bUp.down || k.up.isDown, down: this.bDown.down || k.down.isDown };
       if (window.__stBot) inp = R.bot(s, dt, this.mem);
+      // holding the button that pushes the same way the tower is going: say so, gently
+      this.wrongT = inp.dir && Math.abs(s.v) > 6 && inp.dir === Math.sign(s.v) ? (this.wrongT || 0) + dt : 0;
+      if (this.wrongT > 0.6 && !(this.saidWrong > 0)) { this.toast("🙃 Other way! The tower is going " + (s.v > 0 ? "▶, so hold ◀" : "◀, so hold ▶")); this.saidWrong = 4; }
+      this.saidWrong = (this.saidWrong || 0) - dt;
       const n = Math.max(1, Math.ceil(dt / (1 / 30)));
       for (let i = 0; i < n; i++) { R.step(s, dt / n, inp); this.handle(s.events); if (s.done) break; }
       this.draw(dt, inp);
@@ -525,7 +537,7 @@
       // the doors slide open at a stop
       this.doorK += ((s.doors > 0 ? 1 : 0) - this.doorK) * Math.min(1, dt * 5);
       const dg = this.doorG.clear(), dw = 96 * (1 - this.doorK);
-      dg.fillStyle(0xc9ced6, 0.92).fillRect(SHAFT_X - 96, CAB_Y - FLOOR_PX + 10, dw, FLOOR_PX + 56).fillRect(SHAFT_X + 96 - dw, CAB_Y - FLOOR_PX + 10, dw, FLOOR_PX + 56);
+      dg.fillStyle(0xc9ced6, 0.45).fillRect(SHAFT_X - 96, CAB_Y - FLOOR_PX + 10, dw, FLOOR_PX + 56).fillRect(SHAFT_X + 96 - dw, CAB_Y - FLOOR_PX + 10, dw, FLOOR_PX + 56);
       // where you would stop if you let go now
       const at = R.stopAt(s), sy = yOf(at) - FLOOR_PX / 2 + 70;
       const show = Math.abs(s.v) > 0.3 && s.doors <= 0;
@@ -535,12 +547,13 @@
       this.floorT.setText(Math.round(s.y) + "F");
       this.speedT.setText(String(Math.round(Math.abs(s.v) * 4.4 * 3.6)));
       this.stopsT.setText(L.stops.map((f, i) => (i < s.stop || (i === s.stop && s.doors > 0) ? "✅ " : i === s.stop ? "👉 " : "⬜ ") + f + "F").join("    "));
-      const d = target - s.y, over = (at - target) * Math.sign(d || 1) > 0.5;
-      this.tipT.setText(s.doors > 0 ? "🚪 Doors open" : s.leveling ? "🎯 Leveling..." : Math.abs(s.v) > 0.3 && over ? "✋ Let go now to stop in time!" : Math.abs(s.v) > 0.3 && !inp.up && !inp.down ? "👍 Slowing down..." : Math.abs(d) < 0.6 ? "" : d > 0 ? "Hold ▲ to go up" : "Hold ▼ to go down")
+      const d = target - s.y, over = (at - target) * Math.sign(d || 1) > 0.5, going = inp.up || inp.down;
+      const brakeUp = over && !going && s.v < -0.3, brakeDown = over && !going && s.v > 0.3;
+      this.tipT.setText(s.doors > 0 ? "🚪 Doors open" : s.leveling ? "🎯 Leveling..." : s.held && going ? (s.v ? "🛑 Braking..." : "✋ Stopped. Let go!") : Math.abs(s.v) > 0.3 && over && going ? "✋ Let go now to stop in time!" : brakeDown ? "😮 Too fast! Hold ▼ to brake" : brakeUp ? "😮 Too fast! Hold ▲ to brake" : Math.abs(s.v) > 0.3 && !inp.up && !inp.down ? "👍 Slowing down..." : Math.abs(d) < 0.6 ? "" : d > 0 ? "Hold ▲ to go up" : "Hold ▼ to go down")
         .setColor(Math.abs(s.v) > 0.3 && over ? "#ff8a8a" : "#ffffff");
       this.stopAtT.setText(show ? "🛑 If you let go now: " + clamp(Math.round(at), 1, 101) + "F" : "");
-      this.bUp.glow(!s.doors && !inp.up && d > 0.6 && !over && Math.abs(s.v) < 0.2);
-      this.bDown.glow(!s.doors && !inp.down && d < -0.6 && !over && Math.abs(s.v) < 0.2);
+      this.bUp.glow(!s.doors && !inp.up && ((d > 0.6 && !over && Math.abs(s.v) < 0.2) || brakeUp));
+      this.bDown.glow(!s.doors && !inp.down && ((d < -0.6 && !over && Math.abs(s.v) < 0.2) || brakeDown));
       this.infoT.setText("⏱ " + Math.floor(s.t) + " s   " + (s.over ? "😮 passed: " + s.over : "🎯 no misses"));
     }
     finish() {
@@ -562,10 +575,12 @@
       const title = L.free ? "Endless Storm" : r.stars >= 3 ? "Amazing! 🎉" : r.stars === 2 ? "Great job! 👏" : "You did it! 👍";
       txt(this, W / 2, 130, title, 52, "#1e2340", { strokeThickness: 0 });
       if (!L.free) txt(this, W / 2, 210, "★".repeat(r.stars) + "☆".repeat(3 - r.stars), 72, "#ffc41f", { stroke: "#8a6a10", strokeThickness: 5 });
+      else txt(this, W / 2, 210, "🏆 Best: " + (save.get().best || 0) + " s", 52, "#ffc41f", { stroke: "#8a6a10", strokeThickness: 5 });
       let lines;
-      if (kind === "steady") lines = L.free ? ["⏱ You kept the tower steady for " + r.time + " seconds!", "🟡 Bao swung the right way " + r.share + "% of the time"]
-        : [r.spilled ? "🥤 Bubble tea saved: " + r.cups + " / 3" : "🥤 Not one drop spilled!", "🟡 Bao swung the right way " + r.share + "% of the time",
-          r.spilled ? "Tip: when the tower moves ▶, hold ◀." : ""];
+      const way = r.share >= 30 ? "🟡 Bao swung the right way " + r.share + "% of the time" : "Tip: when the tower moves ▶, hold ◀. When it moves ◀, hold ▶.";
+      if (kind === "steady") lines = L.free ? ["⏱ You kept the tower steady for " + r.time + " seconds!", way]
+        : [r.spilled ? "🥤 Bubble tea saved: " + r.cups + " / 3" : "🥤 Not one drop spilled!", way,
+          r.spilled && r.share >= 30 ? "Tip: when the tower moves ▶, hold ◀." : ""];
       else if (kind === "build") lines = ["🏙️ Taipei 101 is built!", r.misses ? "😅 Pieces that slid off: " + r.misses : "🎯 No pieces slid off!", "🌟 Perfect drops: " + r.perfect];
       else lines = ["⏱ Time: " + r.time + " s  (a perfect ride: about " + r.par + " s)", r.over ? "😮 Passed the floor: " + r.over + " time" + (r.over > 1 ? "s" : "") + ". Let go earlier!" : "🎯 Stopped right on every floor!"];
       txt(this, W / 2, 335, lines.filter(Boolean).join("\n"), 27, "#1e2340", { strokeThickness: 0, lineSpacing: 10 });
