@@ -240,7 +240,11 @@
       if (ms) this.time.delayedCall(ms, () => { if (this.bub === c) { c.destroy(); this.bub = null; } });
     }
     toast(s, col) {
+      // a newer message pushes the older ones up and out, so two never sit on top of each other
+      this.toasts = (this.toasts || []).filter(o => o.active);
+      this.toasts.forEach(o => { this.tweens.killTweensOf(o); this.tweens.add({ targets: o, y: o.y - 52, alpha: 0, duration: 400, onComplete: () => o.destroy() }); });
       const t = txt(this, W / 2, 180, s, 40, col || "#ffffff").setDepth(40).setScale(0.3);
+      this.toasts = [t];
       this.tweens.add({ targets: t, scale: 1, duration: 250, ease: "Back.out" });
       this.tweens.add({ targets: t, alpha: 0, y: 150, delay: 1100, duration: 500, onComplete: () => t.destroy() });
     }

@@ -34,6 +34,8 @@
     .side { max-width: 560px; width: 100%; }
     .gamebox { width: min(100%, calc((100vh - 70px) * 9 / 16)); }
   }
+  .turn { display: none; position: fixed; left: 12px; top: 45%; max-width: calc(50vw - 110px); margin: 0; font-weight: 800; z-index: 5; }
+  @media (orientation: landscape) and (max-height: 520px) { .turn { display: block; } }
 </style>
 </head>
 <body>
@@ -45,6 +47,7 @@
     <button class="pill" id="snd" title="Sound on/off">🔊</button>
   </div>
 </header>
+<p class="turn">📱 Turn your phone upright for a bigger view!</p>
 <div class="layout">
   <div class="gamebox"><div id="game"></div></div>
   <aside class="side">
