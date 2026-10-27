@@ -56,6 +56,10 @@ JOBS = [
     ("spoonbill", "square", "spoonbill-square", (1080, 1080)),
     ("spoonbilljourney", "wide", "spoonbilljourney-fb", (1200, 630)),
     ("spoonbilljourney", "square", "spoonbilljourney-square", (1080, 1080)),
+    ("phobos", "wide", "phobos-fb", (1200, 630)),
+    ("phobos", "square", "phobos-square", (1080, 1080)),
+    ("moonscoop", "wide", "moonscoop-fb", (1200, 630)),
+    ("moonscoop", "square", "moonscoop-square", (1080, 1080)),
 ]
 
 

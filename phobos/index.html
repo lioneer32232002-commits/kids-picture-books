@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emmy's Trip to Phobos: Scooping a Moon of Mars | Picture Book + Moon Scoop! Game</title>
+<meta name="description" content="Japan's MMX spacecraft is on its way to Phobos, a tiny potato-shaped moon of Mars, to scoop up its soil and bring it home in 2031. Meet Emmy and the little rover Idefix: a moon that zips around Mars 3 times a day, gravity so weak you could jump hundreds of meters, and the mystery of where Phobos came from. Then land, scoop and fly home in Moon Scoop! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Emmy's Trip to Phobos 🚀 A picture book + a space game for kids">
+<meta property="og:description" content="Japan's MMX spacecraft is flying to Mars's tiny moon Phobos to bring back its soil. Jump hundreds of meters, drive a little rover, and land a capsule in Australia! For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/phobos-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/phobos/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #e2a12b; --accent-4: #5a8de0;
+    --bg: radial-gradient(circle at 12% 8%, #fff1d6 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #e3e8ff 0, transparent 45%), #f7f6fb;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 62%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #e2a12b; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.blue { background: #5a8de0; } .bigbtn.red { background: #e8662e; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.gray { background: #6b7a90; }
+  .svgstage { background: #141a3a; }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .lbl { font: 800 34px "Baloo 2", sans-serif; fill: #fff; paint-order: stroke; stroke: #141a3a; stroke-width: 7px; pointer-events: none; }
+  .lbl.dark { fill: #1e2340; stroke: #fff; }
+  .ages { position: absolute; left: 3%; bottom: 5%; z-index: 4; display: flex; flex-wrap: wrap; gap: 6px; max-width: 94%; }
+  .ages .bigbtn { padding: 6px 14px; min-width: 3em; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #e2a12b; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #b07a14; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: radial-gradient(circle at 80% 20%, #e8834a 0, #b4532a 14%, transparent 15%), linear-gradient(#141a3a 0, #2a2f5a 65%, #6c625a 65%, #5a514a); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🚀</span>Emmy's Trip to Phobos</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Emmy, a cute golden box-shaped spacecraft with solar panels and a little scoop arm, flies through space carrying the rover Idefix on its back, toward the gray potato-shaped moon Phobos in front of the big red planet Mars."><div class="layer"></div></div>
+      <div class="text">
+        <h1>Emmy's Trip to Phobos</h1>
+        <p>Mars, the red planet, has two tiny moons. One of them is called <span class="hl">Phobos</span>. It is shaped like a potato!</p>
+        <p>In October 2026, a spacecraft from Japan set off to visit it. Its real name is <b>MMX</b>, but let's call it <b>Emmy</b>. Emmy's job: scoop up some Phobos soil and bring it home to Earth!</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 MARS AND ITS MOONS -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="The red planet Mars with a white ice cap at the top, and its two small lumpy moons: gray Phobos with a big crater, and smaller, smoother Deimos farther away."><div class="layer"></div></div>
+      <div class="text">
+        <p>Our Moon is round and big. But Mars's moons are small and <b>lumpy</b>, like potatoes. Their names are <span class="hl">Phobos</span> and <b>Deimos</b>.</p>
+        <p>Phobos is the bigger one, and it is very close to Mars. 👆 Tap the planet and the moons.</p>
+        <span class="fact">📏 Phobos is only about <b>22 km</b> across. A car on a highway could drive past it in about 15 minutes! Our Moon is about 160 times wider.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 THE FAST MOON -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage svgstage" id="orbit">
+        <svg id="orbitsvg" viewBox="0 0 1000 560" aria-label="Mars in the middle, with Phobos going around it fast on a small circle and Deimos going around slowly on a big circle"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" id="orbitBtn">⏩ Run one Mars day</button></div>
+        <div class="readout" id="orbitOut">Who goes around Mars faster?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Phobos is a <span class="hl">speedy</span> moon! It goes all the way around Mars in about <b>7 and a half hours</b>. That's about <b>3 times</b> in one Mars day.</p>
+        <p>Deimos is far away and slow: it takes more than a day. 👆 Run one Mars day and count!</p>
+        <span class="fact">🌅 From the ground on Mars, Phobos rises in the <b>west</b> and sets in the <b>east</b>, the opposite way from our Sun and Moon. It moves so fast it passes Mars's turning!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 LAUNCH -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage" id="launch"><img class="art" src="img/p03.webp" alt="At dawn on the island of Tanegashima, a big white H3 rocket lifts off with a bright flame, while a boy named Riku holding a toy rocket jumps for joy on the black sand beach next to his mom.">
+        <div class="ctl" data-noread><button class="bigbtn red" id="countBtn">🔟 Count down!</button></div>
+        <div class="readout" id="launchOut" style="left:auto;right:3%;max-width:40%">Tanegashima, Japan</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Riku and his mom woke up very early to watch. On <b>October 20, 2026</b>, before sunrise, a big <b>H3 rocket</b> lifted off from Tanegashima Island in Japan, carrying Emmy!</p>
+        <p>"3, 2, 1... <span class="hl">Liftoff!</span>" 👆 Count down with Riku.</p>
+        <span class="fact">🧳 Emmy weighs about <b>4,500 kg</b>, as heavy as three cars. Most of that is fuel for the long trip there and back.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 TO MARS -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage svgstage" id="trip">
+        <svg id="tripsvg" viewBox="0 0 1000 560" aria-label="The Sun in the middle, Earth's path and Mars's path around it, and Emmy flying in a curve from Earth to Mars"></svg>
+        <div class="ctl" data-noread><button class="bigbtn blue" id="tripBtn">🚀 Fly to Mars</button></div>
+        <div class="readout" id="tripOut">Earth to Mars</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Mars is <b>very</b> far away. Emmy can't fly straight there. It goes around the Sun in a big <span class="hl">curve</span>, and meets Mars when Mars comes around.</p>
+        <p>The trip takes about <b>10 months</b>. Emmy should reach Mars in <b>August 2027</b>. 👆 Fly the curve!</p>
+        <span class="fact">🎯 It's like throwing a ball to a friend who is running: you throw to where your friend <b>will be</b>, not where they are now.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 WHERE DID PHOBOS COME FROM? -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage svgstage" id="origin">
+        <svg id="originsvg" viewBox="0 0 1000 560" aria-label="Two ideas for how Phobos was made: an asteroid caught by Mars, or pieces thrown up when something big crashed into Mars"></svg>
+        <div class="ctl" data-noread><button class="bigbtn purple" data-idea="catch">☄️ Idea 1: Caught!</button><button class="bigbtn red" data-idea="crash">💥 Idea 2: A big crash!</button></div>
+        <div class="readout" id="originOut">Where did Phobos come from?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Here is a <span class="hl">mystery</span>: nobody knows where Phobos came from! Scientists have two big ideas.</p>
+        <p><b>Idea 1:</b> Phobos was an asteroid that flew too close, and Mars caught it. <b>Idea 2:</b> Something huge crashed into Mars long ago, and the pieces that flew up stuck together. 👆 Watch both ideas.</p>
+        <span class="fact">🔍 The soil can tell! If it's made of the same stuff as Mars, Idea 2 wins. If it's like asteroid rock, Idea 1 wins. That's why Emmy is bringing some home.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 SUPER LIGHT -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage svgstage" id="jump">
+        <svg id="jumpsvg" viewBox="0 0 1000 560" aria-label="Riku jumping on Earth and on Phobos side by side; on Phobos he floats up very high"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" id="jumpBtn">🦘 Jump!</button></div>
+        <div class="readout" id="jumpOut" style="top:auto;bottom:5%;max-width:55%">Same jump, two places</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Phobos is so small that it hardly pulls on anything. On Phobos, Riku would feel <span class="hl">super light</span>, as light as a handful of paper clips!</p>
+        <p>If he jumped as hard as he can on Earth, on Phobos he would float up <b>hundreds of meters</b>, about as high as Taipei 101, and take many minutes to come down. 👆 Jump in both places.</p>
+        <span class="fact">⚠️ That's why landing is tricky! Land too fast, and you bounce away. Emmy has to come down very, very gently.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 IDEFIX -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="The little rover Idefix bounces across the gray dusty ground of Phobos, leaving a dotted path of hops, while Emmy waves from above and big red Mars fills the sky."><div class="layer"></div></div>
+      <div class="text">
+        <p>Emmy has a little friend on its back: a rover named <span class="hl">Idefix</span>! It was built by France and Germany.</p>
+        <p>Before Emmy lands, it lets Idefix go. Idefix has no landing legs. It just drops, then <b>bounces</b>, boing... boing... until it stops. Then it stands up and drives, very slowly. 👆 Tap around.</p>
+        <span class="fact">🔬 Idefix weighs less than <b>30 kg</b>. It will look at the soil with its cameras, and check if Phobos is a safe place for Emmy to land.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 SCOOP -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage" id="scoop"><img class="art" src="img/p05.webp" alt="Emmy has landed on Phobos with its legs on the gray ground and is scooping soil with its arm, while Idefix watches from a rock nearby. Mars glows behind them.">
+        <div class="ctl" data-noread><button class="bigbtn" data-tool="arm">🦾 Dig with the arm</button><button class="bigbtn blue" data-tool="puff">💨 Puff with air</button></div>
+        <div class="readout" id="scoopOut">🥄 Soil collected: 0 g</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Emmy lands for just a few hours. Time to <span class="hl">scoop</span>! It has two ways: an arm that pushes a tube into the ground to dig, and a gun that puffs <b>air</b> to blow soil into a box.</p>
+        <p>Emmy needs at least <b>10 grams</b>, about as heavy as two or three sugar cubes. 👆 Help Emmy collect it!</p>
+        <span class="fact">🕑 The whole scooping job is planned to take about <b>2 and a half hours</b>. Then Emmy takes off again, gently!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 STICKNEY AND THE FALLING MOON -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage svgstage" id="stick">
+        <svg id="sticksvg" viewBox="0 0 1000 560" aria-label="Phobos close up, with its giant crater Stickney"></svg>
+        <div class="readout" id="stickOut">👆 Tap Phobos to explore</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Look at that giant hole! It is a crater called <span class="hl">Stickney</span>, about <b>9 km</b> wide. Something hit Phobos so hard it almost broke apart!</p>
+        <p>And here is a surprise: Phobos is very, very slowly getting <b>closer</b> to Mars. One day, millions and millions of years from now, Mars may pull it apart into a <b>ring</b>. 👆 Explore Phobos.</p>
+        <span class="fact">🐌 Phobos comes closer to Mars by about <b>2 meters every 100 years</b>. That's much slower than a snail!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 HOME TO AUSTRALIA -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="A small capsule floats down under an orange and white parachute over the red desert of Australia, while a team of scientists in white coats and hats waves and points next to their truck, and a kangaroo watches from the bushes."><div class="layer"></div></div>
+      <div class="text">
+        <p>After exploring, Emmy flies back toward Earth. Near home, it drops a small <span class="hl">capsule</span> with the soil inside.</p>
+        <p>The capsule zooms through the air, glowing hot. Then, pop! A parachute opens, and it lands softly in the desert of <b>South Australia</b>, in <b>2031</b>. 👆 Tap around.</p>
+        <span class="fact">🇯🇵 Japan has done this before! The <b>Hayabusa2</b> capsule landed in the same desert in 2020, with soil from the asteroid Ryugu.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 HOW OLD WILL YOU BE? -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage svgstage" id="age">
+        <svg id="agesvg" viewBox="0 0 1000 560" aria-label="A timeline from 2026 to 2031 showing Emmy's trip"></svg>
+        <div class="ages" data-noread id="ageBtns"></div>
+        <div class="readout" id="ageOut">How old are you now? 👇</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Emmy's whole trip takes about <b>5 years</b>. When the Phobos soil lands in Australia, how old will <span class="hl">you</span> be?</p>
+        <p>Maybe one day, you'll be the scientist who looks at the Phobos soil and solves the mystery! 👆 Pick your age.</p>
+        <span class="fact">📅 2026: liftoff · 2027: reach Mars · 2027 to 2030: explore Phobos (and visit Deimos) · 2031: the capsule comes home.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 HOW TO PLAY -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:30%;top:40%;width:26%" data-say="Hold UP to push gently, and land on the green glow. Land too fast and I'll bounce! Then hold SCOOP."><img src="img/emmy.webp" alt="Emmy"></button>
+          <button class="actor idle" style="left:62%;top:72%;width:14%;animation-delay:.5s" data-say="Hold GO to drive me. Slow down over the bumps, or I'll float away! Stop by a sparkly rock and hold SCAN."><img src="img/idefix.webp" alt="Idefix"></button>
+          <button class="actor idle" style="left:86%;top:42%;width:15%;animation-delay:1s" data-say="Open my parachute below the yellow line, then steer me into the landing zone!"><img src="img/chute.webp" alt="The capsule"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Moon Scoop!</h2>
+        <ol class="steps">
+          <li><b>🛬 Land:</b> hold <b>▲ UP</b> to slow down and <b>◀ ▶</b> to slide. Come down gently on the green glow, then hold <b>SCOOP</b>.</li>
+          <li>Too fast? <b>Boing!</b> On Phobos you bounce very high. Little taps work best, and watch your fuel.</li>
+          <li><b>🤖 Rover:</b> hold <b>GO</b> to drive Idefix. Go slowly over bumps, stop next to a sparkly rock and hold <b>SCAN</b>.</li>
+          <li><b>🪂 Home:</b> wait for the yellow line, open the parachute, and steer into the landing zone in Australia.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Moon Scoop!</a>
+        <span class="fact" data-noread>8 missions, from your first touchdown to the trip home, plus <b>Free Landing</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 QUIZ + SOURCES -->
+  <section class="page" data-page="14">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="Emmy scooping soil on Phobos with Idefix nearby."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know Phobos!</h2>
+        <p>Phobos is a tiny, potato-shaped moon that zips around Mars. Its gravity is super weak, so landing has to be gentle. Emmy (MMX) will scoop its soil and bring it to Australia in 2031, to find out where Phobos came from.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. What shape is Phobos?</div>
+          <div class="choice-row"><button class="choice">⚽ Round like a ball</button><button class="choice" data-ok>🥔 Lumpy like a potato</button><button class="choice">🍩 Like a donut</button></div>
+          <div class="q">2. Why must Emmy land very gently?</div>
+          <div class="choice-row"><button class="choice">🌊 Phobos is covered in water</button><button class="choice" data-ok>🏀 Weak gravity makes you bounce away</button><button class="choice">🔥 The ground is hot</button></div>
+          <div class="q">3. Where will the capsule land?</div>
+          <div class="choice-row"><button class="choice">🌋 On Mars</button><button class="choice">🗻 In Japan</button><button class="choice" data-ok>🦘 In the desert of Australia</button></div>
+        </div>
+        <span class="fact" data-noread>🔭 Try it with a grown-up: on a clear night, look for a reddish "star" that doesn't twinkle much. That might be Mars! (Phobos is far too small to see without a big telescope.)</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://www.esa.int/ESA_Multimedia/Images/2026/10/MMX_lifts_off_to_Mars_s_moon_Phobos" target="_blank" rel="noopener">ESA, MMX lifts off to Mars's moon Phobos (04:41 JST on 20 October 2026, H3, Tanegashima)</a> ·
+          <a href="https://www.esa.int/ESA_Multimedia/Images/2026/10/The_Martian_Moons_eXploration_MMX_mission" target="_blank" rel="noopener">ESA, the MMX mission (samples land in the Woomera area of Australia in 2031)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Martian_Moons_eXploration" target="_blank" rel="noopener">Martian Moons eXploration (about 4,480 kg, Mars in August 2027, at least 10 g of soil, coring and pneumatic samplers, about 2.5 hours of sampling, the Idefix rover under 30 kg from CNES and DLR that bounces after release, Deimos flybys, return in 2031)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Phobos_(moon)" target="_blank" rel="noopener">Phobos (about 27 × 22 × 18 km, an orbit of 7 h 39 min, rising in the west, Stickney crater about 9 km, moving closer to Mars by about 1.8 m per century, the two ideas about its origin)</a> ·
+          <a href="https://en.wikipedia.org/wiki/Deimos_(moon)" target="_blank" rel="noopener">Deimos (an orbit of about 30 hours)</a> ·
+          <a href="https://www.space.gov.au/" target="_blank" rel="noopener">Australian Space Agency (the JAXA partnership for Phobos samples landing in South Australia in 2031; Hayabusa2 landed at Woomera in 2020)</a><br>
+          Emmy, Riku and the faces are pretend; "Emmy" is just a nickname for MMX. Numbers are rounded for kids: Phobos's average width is about 22 km; a Mars day is about 24 hours and 40 minutes, so Phobos goes around a little more than 3 times. The jump on page 7 assumes a strong kid's jump on Earth of about 30 cm; Phobos's pull is different in different places, and a very fast jump could even fly off into space. The pictures on pages 3, 5 and 6 are not to scale. The landing on Phobos is planned for 2029 or 2030, so the timeline on page 12 is approximate.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Moon Scoop!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+  let anims = {};
+  const stop = k => { cancelAnimationFrame(anims[k]); anims[k] = 0; };
+  const stars = (svg, n) => { let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647; for (let i = 0; i < n; i++) svg.appendChild(el("circle", { cx: r() * 1000, cy: r() * 560, r: 0.8 + r() * 1.8, fill: "#fff", opacity: 0.3 + r() * 0.6 })); };
+  const planet = (svg, x, y, r, c1, c2) => {
+    const id = "g" + Math.round(Math.random() * 1e6);
+    const g = el("radialGradient", { id, cx: "35%", cy: "35%", r: "70%" });
+    g.appendChild(el("stop", { offset: "0%", "stop-color": c1 })); g.appendChild(el("stop", { offset: "100%", "stop-color": c2 }));
+    const defs = el("defs", {}); defs.appendChild(g); svg.appendChild(defs);
+    const c = el("circle", { cx: x, cy: y, r, fill: "url(#" + id + ")" }); svg.appendChild(c); return c;
+  };
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => { const st = stageOf(1); F.weather(st, "stars", .3); build(1, st => {
+    say(st, 37, 40, 14, 22, "Emmy", "<b>Hi, I'm Emmy!</b>My real name is MMX, from Japan. I'm going to scoop some moon soil!", S.chirp, 4, 62);
+    say(st, 25, 22, 9, 14, "Idefix", "<b>Idefix:</b> I'm riding on Emmy's back. I'll drive on Phobos!", S.pop, 4, 6);
+    say(st, 55, 66, 15, 22, "Phobos", "<b>Phobos!</b>A tiny, lumpy moon of Mars. See the big crater?", S.ding, 98, 6, true);
+    say(st, 82, 72, 16, 22, "Mars", "<b>Mars</b>, the red planet. Its red color comes from rusty dust!", S.whoosh, 98, 6, true);
+    say(st, 69, 21, 5, 9, "Deimos", "<b>Deimos</b>, Mars's other tiny moon, far away.", S.sparkle, 98, 6, true);
+  }); });
+
+  /* -------- 2 Mars and its moons -------- */
+  B.on(2, () => { const st = stageOf(2); F.weather(st, "stars", .3); build(2, st => {
+    say(st, 30, 52, 26, 40, "Mars", "<b>Mars</b> is about half as wide as Earth. Phobos goes around it only about 6,000 km above the ground!", S.whoosh, 56, 6);
+    say(st, 68, 58, 14, 22, "Phobos", "<b>Phobos</b> means \"fear\" in Greek. But it's a friendly little potato!", S.ding, 4, 6);
+    say(st, 83, 32, 9, 14, "Deimos", "<b>Deimos</b> is even smaller, about 12 km across.", S.sparkle, 4, 6);
+    say(st, 30, 16, 12, 9, "Ice cap", "<b>Ice!</b> Mars has white caps of ice at its top and bottom.", S.pop, 56, 6);
+  }); });
+
+  /* -------- 3 fast orbit -------- */
+  B.on(3, () => build(3, st => {
+    const svg = $("#orbitsvg"); stars(svg, 120);
+    svg.appendChild(el("circle", { cx: 500, cy: 290, r: 125, fill: "none", stroke: "#fff", "stroke-opacity": .3, "stroke-width": 3, "stroke-dasharray": "6 10" }));
+    svg.appendChild(el("circle", { cx: 500, cy: 290, r: 245, fill: "none", stroke: "#fff", "stroke-opacity": .2, "stroke-width": 3, "stroke-dasharray": "6 10" }));
+    planet(svg, 500, 290, 70, "#f0a070", "#a8401f");
+    const ph = el("image", { href: "img/moon.webp", width: 52, height: 46, x: -26, y: -23 }); svg.appendChild(ph);
+    const de = el("image", { href: "img/moon.webp", width: 32, height: 28, x: -16, y: -14, opacity: .85 }); svg.appendChild(de);
+    svg.appendChild(el("text", { class: "lbl", x: 500, y: 300, "text-anchor": "middle", style: "font-size:30px" }, "Mars"));
+    const clock = el("text", { class: "lbl", x: 40, y: 520, style: "font-size:30px" }, ""); svg.appendChild(clock);
+    const laps = el("text", { class: "lbl", x: 960, y: 50, "text-anchor": "end", style: "font-size:30px" }, ""); svg.appendChild(laps);
+    const put = (h) => {
+      const a1 = -Math.PI / 2 + h / 7.65 * Math.PI * 2, a2 = -Math.PI / 2 + h / 30.3 * Math.PI * 2;
+      ph.setAttribute("transform", "translate(" + (500 + 125 * Math.cos(a1)) + " " + (290 + 125 * Math.sin(a1)) + ")");
+      de.setAttribute("transform", "translate(" + (500 + 245 * Math.cos(a2)) + " " + (290 + 245 * Math.sin(a2)) + ")");
+      clock.textContent = "🕐 " + Math.floor(h) + " hours";
+      laps.textContent = "Phobos: " + Math.floor(h / 7.65) + " laps · Deimos: " + Math.floor(h / 30.3);
+    };
+    put(0);
+    $("#orbitBtn").onclick = e => {
+      e.stopPropagation(); stop("orbit"); S.whoosh();
+      const t0 = performance.now(), D = 9000; let last = 0;
+      const step = now => {
+        const h = Math.min(1, (now - t0) / D) * 24.66; put(h);
+        const n = Math.floor(h / 7.65); if (n > last) { last = n; S.ding(); $("#orbitOut").innerHTML = "🔄 Phobos went around <b>" + n + "</b> time" + (n > 1 ? "s" : "") + "!"; }
+        if (now - t0 < D) anims.orbit = requestAnimationFrame(step);
+        else { S.yay(); $("#orbitOut").innerHTML = "🏁 One Mars day: Phobos went around <b>3 times</b>. Deimos didn't even finish once!"; }
+      };
+      anims.orbit = requestAnimationFrame(step);
+    };
+  }), () => stop("orbit"));
+
+  /* -------- 4 launch -------- */
+  B.on(4, () => build(4, st => {
+    let busy = false;
+    $("#countBtn").onclick = e => {
+      e.stopPropagation(); if (busy) return; busy = true;
+      let n = 10; const out = $("#launchOut");
+      const tick = () => {
+        if (n > 0) { S.tick(); out.innerHTML = "<span style='font-size:1.6em'>" + n + "</span>"; n--; setTimeout(tick, 450); return; }
+        S.rocket(); out.innerHTML = "🚀 <b>Liftoff!</b> Go, Emmy!"; st.classList.add("shake");
+        const [x, y] = B.px(st, 66, 38); for (let i = 0; i < 10; i++) setTimeout(() => { F.smoke(st, x, y, 6); F.jet(st, x, y, 0, 1, 14); }, i * 120);
+        setTimeout(() => { S.yay(); B.confetti(60); busy = false; }, 1400);
+      };
+      tick();
+    };
+    say(st, 66, 22, 7, 30, "H3 rocket", "<b>The H3 rocket</b> is Japan's newest big rocket. Emmy is inside the tip!", S.rocket, 98, 50, true);
+    say(st, 38, 66, 12, 30, "Riku", "<b>Riku:</b> Wow! Bye, Emmy! Bring back some moon soil!", S.yay, 4, 6);
+    say(st, 21, 60, 12, 34, "Mom", "<b>Mom:</b> When the soil comes back, Riku, you'll be in elementary school!", S.chirp, 4, 6);
+    say(st, 85, 78, 14, 14, "Sea", "<b>Tanegashima</b> is an island in the south of Japan, with rocket pads right by the sea.", S.splash, 98, 6, true);
+  }));
+
+  /* -------- 5 Earth to Mars -------- */
+  B.on(5, () => build(5, st => {
+    const svg = $("#tripsvg"); stars(svg, 120);
+    const C = [470, 290], rE = 140, rM = 230;
+    svg.appendChild(el("circle", { cx: C[0], cy: C[1], r: rE, fill: "none", stroke: "#6fb2ff", "stroke-opacity": .45, "stroke-width": 3, "stroke-dasharray": "6 10" }));
+    svg.appendChild(el("circle", { cx: C[0], cy: C[1], r: rM, fill: "none", stroke: "#ff9a6a", "stroke-opacity": .45, "stroke-width": 3, "stroke-dasharray": "6 10" }));
+    planet(svg, C[0], C[1], 45, "#fff6b0", "#ffb020");
+    svg.appendChild(el("text", { class: "lbl", x: C[0], y: C[1] + 10, "text-anchor": "middle", style: "font-size:26px" }, "Sun"));
+    // a half ellipse from Earth (left) to Mars (right side, opposite)
+    const a = (rE + rM) / 2, cx = C[0] + (rM - rE) / 2, b = Math.sqrt(rE * rM);
+    const pt = k => [cx - a * Math.cos(Math.PI * k), C[1] + b * Math.sin(Math.PI * k)];
+    const trail = el("path", { fill: "none", stroke: "#ffd23d", "stroke-width": 5, "stroke-linecap": "round" }); svg.appendChild(trail);
+    const earth = planet(svg, 0, 0, 18, "#8fd0ff", "#2a6fd0"), mars = planet(svg, 0, 0, 15, "#f0a070", "#a8401f");
+    const emmy = el("image", { href: "img/emmy.webp", width: 70, height: 42, x: -35, y: -21 }); svg.appendChild(emmy);
+    const lE = el("text", { class: "lbl", x: 0, y: 0, "text-anchor": "middle", style: "font-size:26px" }, "Earth"), lM = el("text", { class: "lbl", x: 0, y: 0, "text-anchor": "middle", style: "font-size:26px" }, "Mars");
+    svg.appendChild(lE); svg.appendChild(lM);
+    const put = k => {
+      const aE = Math.PI + k * Math.PI * 1.42, aM = Math.PI * 1.24 + k * Math.PI * 0.76;   // Mars starts a bit ahead; Earth goes around faster
+      const e = [C[0] + rE * Math.cos(aE), C[1] - rE * Math.sin(aE)], m = [C[0] + rM * Math.cos(aM), C[1] - rM * Math.sin(aM)];
+      earth.setAttribute("cx", e[0]); earth.setAttribute("cy", e[1]); lE.setAttribute("x", e[0]); lE.setAttribute("y", e[1] - 26);
+      mars.setAttribute("cx", m[0]); mars.setAttribute("cy", m[1]); lM.setAttribute("x", m[0]); lM.setAttribute("y", m[1] - 24);
+      const p = k ? pt(k) : e; emmy.setAttribute("transform", "translate(" + p[0] + " " + (p[1] - (k ? 0 : 30)) + ")");
+      let d = ""; for (let i = 0; i <= 40; i++) { const q = pt(k * i / 40); d += (i ? "L" : "M") + q[0].toFixed(1) + "," + q[1].toFixed(1); }
+      trail.setAttribute("d", k ? d : "");
+    };
+    put(0);
+    const MONTH = ["October 2026", "December 2026", "February 2027", "April 2027", "June 2027", "August 2027"];
+    $("#tripBtn").onclick = e => {
+      e.stopPropagation(); stop("trip"); S.whoosh();
+      const t0 = performance.now(), D = 7000;
+      const step = now => {
+        const k = Math.min(1, (now - t0) / D); put(k);
+        $("#tripOut").innerHTML = "📅 " + MONTH[Math.min(5, Math.floor(k * 5.99))];
+        if (k < 1) anims.trip = requestAnimationFrame(step);
+        else { S.yay(); $("#tripOut").innerHTML = "🎉 <b>August 2027:</b> Hello, Mars!"; }
+      };
+      anims.trip = requestAnimationFrame(step);
+    };
+  }), () => stop("trip"));
+
+  /* -------- 6 two ideas -------- */
+  B.on(6, () => build(6, st => {
+    const svg = $("#originsvg"); stars(svg, 120);
+    const mars = planet(svg, 620, 300, 130, "#f0a070", "#a8401f");
+    const g = el("g", {}); svg.appendChild(g);
+    const ph = el("image", { href: "img/moon.webp", width: 60, height: 54, x: -30, y: -27, opacity: 0 }); svg.appendChild(ph);
+    const orbit = el("circle", { cx: 620, cy: 300, r: 200, fill: "none", stroke: "#fff", "stroke-opacity": 0, "stroke-width": 3, "stroke-dasharray": "6 10" }); svg.appendChild(orbit);
+    const SAY = { catch: "☄️ <b>Idea 1:</b> An asteroid wandered by, and Mars caught it!", crash: "💥 <b>Idea 2:</b> A big crash! Pieces of Mars flew up and stuck together." };
+    st.querySelectorAll("[data-idea]").forEach(btn => btn.onclick = e => {
+      e.stopPropagation(); stop("origin"); g.innerHTML = ""; const idea = btn.dataset.idea;
+      $("#originOut").innerHTML = SAY[idea]; S.whoosh();
+      const t0 = performance.now(), D = 5200;
+      let bits = [];
+      if (idea === "crash") for (let i = 0; i < 26; i++) { const a = -Math.PI * (0.15 + 0.7 * Math.random()); const c = el("circle", { r: 4 + Math.random() * 7, fill: i % 3 ? "#8a7d72" : "#c0603a" }); g.appendChild(c); bits.push({ c, a, s: 0.6 + Math.random() * 0.6 }); }
+      const rock = el("circle", { r: 18, fill: "#d9d0c5" }); g.appendChild(rock);
+      let boom = false;
+      const step = now => {
+        const k = Math.min(1, (now - t0) / D);
+        if (idea === "catch") {
+          // the asteroid flies in from the left and curls into a circle around Mars
+          rock.setAttribute("opacity", 0);
+          if (k < 0.5) { const q = k / 0.5, x = 60 + (420 - 60) * q, y = 80 + 140 * q * q; ph.setAttribute("opacity", 1); ph.setAttribute("transform", "translate(" + x + " " + y + ")"); }
+          else { const a = Math.PI * 1.1 + (k - 0.5) * 2 * Math.PI * 2.2; ph.setAttribute("transform", "translate(" + (620 + 200 * Math.cos(a)) + " " + (300 + 200 * Math.sin(a)) + ")"); orbit.setAttribute("stroke-opacity", 0.35); }
+        } else {
+          if (k < 0.25) { const q = k / 0.25; rock.setAttribute("opacity", 1); rock.setAttribute("cx", 100 + (510 - 100) * q); rock.setAttribute("cy", 60 + (210 - 60) * q); ph.setAttribute("opacity", 0); }
+          else {
+            if (!boom) { boom = true; S.rumble(); rock.setAttribute("opacity", 0); F.explode && F.explode(st, ...B.px(st, 51, 39), 1); }
+            const q = (k - 0.25) / 0.75;
+            bits.forEach(b => { const r = 140 + q * 90 * b.s, a = b.a + q * 2.4 * (q > 0.5 ? 1 : q * 2), gather = Math.max(0, (q - 0.55) / 0.45);
+              const x = 620 + r * Math.cos(a), y = 300 + r * Math.sin(a), tx = 620 + 200 * Math.cos(-Math.PI * 0.5 + q * 1.6), ty = 300 + 200 * Math.sin(-Math.PI * 0.5 + q * 1.6);
+              b.c.setAttribute("cx", x + (tx - x) * gather); b.c.setAttribute("cy", y + (ty - y) * gather); b.c.setAttribute("opacity", 1 - gather * 0.9); });
+            if (q > 0.85) { const a = -Math.PI * 0.5 + q * 1.6; ph.setAttribute("opacity", (q - 0.85) / 0.15); ph.setAttribute("transform", "translate(" + (620 + 200 * Math.cos(a)) + " " + (300 + 200 * Math.sin(a)) + ")"); orbit.setAttribute("stroke-opacity", 0.35); }
+          }
+        }
+        if (k < 1) anims.origin = requestAnimationFrame(step);
+        else { S.ding(); $("#originOut").innerHTML = SAY[idea] + "<br>Which one is right? The soil will tell!"; }
+      };
+      orbit.setAttribute("stroke-opacity", 0);
+      anims.origin = requestAnimationFrame(step);
+    });
+  }), () => stop("origin"));
+
+  /* -------- 7 jump -------- */
+  B.on(7, () => build(7, st => {
+    const svg = $("#jumpsvg");
+    svg.appendChild(el("rect", { x: 0, y: 0, width: 500, height: 560, fill: "#8fd0ff" }));
+    svg.appendChild(el("rect", { x: 0, y: 470, width: 500, height: 90, fill: "#7cc66a" }));
+    svg.appendChild(el("rect", { x: 500, y: 0, width: 500, height: 560, fill: "#141a3a" }));
+    stars({ appendChild: c => { if (+c.getAttribute("cx") > 500) svg.appendChild(c); } }, 140);
+    svg.appendChild(el("rect", { x: 500, y: 470, width: 500, height: 90, fill: "#6c625a" }));
+    svg.appendChild(el("line", { x1: 500, y1: 0, x2: 500, y2: 560, stroke: "#fff", "stroke-width": 6 }));
+    svg.appendChild(el("text", { class: "lbl", x: 250, y: 60, "text-anchor": "middle", style: "font-size:40px" }, "🌍 Earth"));
+    svg.appendChild(el("text", { class: "lbl", x: 750, y: 60, "text-anchor": "middle", style: "font-size:40px" }, "🥔 Phobos"));
+    const k1 = el("image", { href: "img/riku.webp", width: 90, height: 152, x: 205, y: 320 }), k2 = el("image", { href: "img/riku.webp", width: 90, height: 152, x: 705, y: 320 });
+    svg.appendChild(k1); svg.appendChild(k2);
+    const hT = el("text", { class: "lbl", x: 750, y: 110, "text-anchor": "middle", style: "font-size:32px" }, ""); svg.appendChild(hT);
+    const arrow = el("text", { class: "lbl", x: 750, y: 165, "text-anchor": "middle", style: "font-size:30px", opacity: 0 }, "⬆ still going up..."); svg.appendChild(arrow);
+    $("#jumpBtn").onclick = e => {
+      e.stopPropagation(); stop("jump"); S.whoosh();
+      const t0 = performance.now(), D = 6500;
+      const step = now => {
+        const s = (now - t0) / 1000;
+        const ye = s < 0.5 ? 4 * 60 * (s / 0.5) * (1 - s / 0.5) : 0;         // Earth: up and down in half a second
+        k1.setAttribute("y", 320 - ye);
+        const yp = Math.min(s * 140, 1000);                                     // Phobos: still rising when the demo ends
+        k2.setAttribute("y", 320 - yp); arrow.setAttribute("opacity", yp > 330 ? 1 : 0);
+        hT.textContent = "Phobos: " + Math.round(s / 6.5 * 500) + " m up!";
+        if (now - t0 < D) anims.jump = requestAnimationFrame(step);
+        else { S.ding(); $("#jumpOut").innerHTML = "🌍 Earth: up and down in half a second.<br>🥔 Phobos: about <b>500 m</b> up, and back after about <b>15 minutes</b>!"; hT.textContent = ""; }
+      };
+      anims.jump = requestAnimationFrame(step);
+    };
+  }), () => stop("jump"));
+
+  /* -------- 8 Idefix -------- */
+  B.on(8, () => { const st = stageOf(8); F.weather(st, "stars", .2); build(8, st => {
+    say(st, 67, 58, 14, 24, "Idefix", "<b>Idefix:</b> Boing... boing... I made it! Now I'll drive very, very slowly.", S.pop, 4, 6);
+    say(st, 32, 80, 22, 12, "Bounce path", "<b>Boing, boing!</b>With weak gravity, each bounce takes a long time to come down.", S.whoosh, 4, 6);
+    say(st, 83, 26, 14, 22, "Emmy", "<b>Emmy:</b> Good luck, Idefix! Tell me if it's safe to land!", S.chirp, 4, 6);
+    say(st, 86, 88, 14, 10, "Crater", "<b>A crater</b>, made when a space rock hit Phobos.", S.ding, 98, 6, true);
+  }); });
+
+  /* -------- 9 scoop -------- */
+  B.on(9, () => build(9, st => {
+    let g = 0;
+    st.querySelectorAll("[data-tool]").forEach(btn => btn.onclick = e => {
+      e.stopPropagation();
+      if (g >= 10) { g = 0; }
+      const arm = btn.dataset.tool === "arm";
+      g = Math.min(10, g + (arm ? 3 : 4));
+      arm ? S.rumble() : S.hiss();
+      const [x, y] = B.px(st, 57, 72); F.dust(st, x, y, 20);
+      $("#scoopOut").innerHTML = (arm ? "🦾 Dig, dig!" : "💨 Puff!") + " 🥄 Soil collected: <b>" + g + " g</b>" + (g >= 10 ? " 🎉 Enough!" : "");
+      if (g >= 10) { S.yay(); B.confetti(70); }
+    });
+    say(st, 72, 46, 18, 34, "Emmy", "<b>Emmy:</b> I landed gently on my four legs. Now let's collect some soil!", S.chirp, 98, 6, true);
+    say(st, 46, 70, 10, 14, "Idefix", "<b>Idefix:</b> I'm watching! Is it dusty?", S.pop, 4, 6);
+    say(st, 59, 79, 10, 10, "Soil pile", "<b>Phobos soil</b> is dark gray, as dark as a road.", S.ding, 4, 6);
+  }));
+
+  /* -------- 10 Stickney -------- */
+  B.on(10, () => build(10, st => {
+    const svg = $("#sticksvg"); stars(svg, 140);
+    planet(svg, 1010, 610, 330, "#f0a070", "#a8401f");
+    svg.appendChild(el("image", { href: "img/moon.webp", width: 500, height: 445, x: 220, y: 55 }));
+    const done = {}, out = $("#stickOut");
+    const HOT = [
+      [69, 44, 16, 26, "Stickney crater", "🕳️ <b>Stickney crater</b>, about 9 km wide. That's more than a third of the way across Phobos!"],
+      [42, 66, 26, 22, "Grooves", "〰️ Phobos has long <b>grooves</b>, like scratches. Mars's pull may be slowly stretching it."],
+      [90, 86, 16, 22, "Mars", "🔴 Mars is pulling Phobos closer, about <b>2 m every 100 years</b>. Someday, it may become a <b>ring</b> around Mars!"],
+      [40, 26, 14, 16, "Dust", "🌫️ Phobos is covered in fine, dark <b>dust</b>. That's what Emmy will scoop."],
+    ];
+    HOT.forEach(([x, y, w, h, label, html]) => B.hot(st, x, y, w, h, label, () => {
+      S.ding(); F.sparkles(st, ...B.px(st, x, y), 16); out.innerHTML = html; done[label] = 1;
+      if (Object.keys(done).length === HOT.length) setTimeout(() => { S.yay(); B.confetti(50); }, 600);
+    }));
+  }));
+
+  /* -------- 11 home -------- */
+  B.on(11, () => build(11, st => {
+    say(st, 69, 28, 20, 28, "Parachute", "<b>Pop!</b> The parachute slows the capsule down, so the soil inside stays safe.", S.whoosh, 4, 6);
+    say(st, 64, 52, 10, 12, "Capsule", "<b>The capsule</b> got very hot zooming through the air. Its shell protects the soil.", S.ding, 4, 6);
+    say(st, 34, 70, 26, 30, "Team", "<b>The recovery team:</b> There it is! Let's go pick it up, very carefully!", S.yay, 98, 6, true);
+    say(st, 90, 72, 10, 26, "Kangaroo", "<b>A kangaroo</b> wonders what just fell from the sky!", S.pop, 98, 6, true);
+    say(st, 17, 66, 14, 22, "Truck", "<b>The truck</b> drives the capsule to a clean lab. Then scientists open it.", S.rumble, 4, 6);
+  }));
+
+  /* -------- 12 how old -------- */
+  B.on(12, () => build(12, st => {
+    const svg = $("#agesvg"); stars(svg, 100);
+    const YEARS = [[2026, "🚀 Liftoff"], [2027, "🔴 Mars"], [2028, "🥔 Explore"], [2029, "🥄 Scoop"], [2030, "↩️ Head home"], [2031, "🪂 Home!"]];
+    const x = i => 110 + i * 156;
+    svg.appendChild(el("line", { x1: 90, y1: 250, x2: 910, y2: 250, stroke: "#fff", "stroke-width": 6, "stroke-linecap": "round" }));
+    const kids = [];
+    YEARS.forEach(([yr, t], i) => {
+      svg.appendChild(el("circle", { cx: x(i), cy: 250, r: 14, fill: i === 5 ? "#ffd23d" : "#e2a12b", stroke: "#fff", "stroke-width": 4 }));
+      svg.appendChild(el("text", { class: "lbl", x: x(i), y: 215, "text-anchor": "middle", style: "font-size:30px" }, String(yr)));
+      svg.appendChild(el("text", { class: "lbl", x: x(i), y: 300, "text-anchor": "middle", style: "font-size:24px" }, t));
+      const k = el("text", { class: "lbl", x: x(i), y: 360, "text-anchor": "middle", style: "font-size:30px;fill:#ffe27a" }, ""); svg.appendChild(k); kids.push(k);
+    });
+    const box = $("#ageBtns");
+    for (let a = 3; a <= 10; a++) {
+      const b = document.createElement("button"); b.className = "bigbtn blue"; b.textContent = a;
+      b.onclick = e => {
+        e.stopPropagation(); S.ding();
+        box.querySelectorAll(".bigbtn").forEach(x => x.classList.toggle("on", x === b));
+        kids.forEach((k, i) => k.textContent = "age " + (a + i));
+        $("#ageOut").innerHTML = "🎂 You're " + a + " now. When the soil lands in 2031, you'll be <b>" + (a + 5) + "</b>!";
+        const [px, py] = B.px(st, x(5) / 10, 64); F.sparkles(st, px, py, 24);
+      };
+      box.appendChild(b);
+    }
+  }));
+
+  /* -------- 13 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(13), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), y > 55 ? 6 : Math.min(70, y + 16), "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+  B.on(13, () => F.weather(stageOf(13), "stars", .3));
+
+  /* -------- 14 -------- */
+  B.on(14, () => { const st = stageOf(14); F.weather(st, "stars", .2); build(14, st => {
+    say(st, 72, 46, 18, 34, "Emmy", "<b>Emmy:</b> Thanks for coming along! Want to try landing on Phobos yourself?", S.yay, 98, 6, true);
+  }); });
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

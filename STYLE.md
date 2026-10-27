@@ -28,7 +28,7 @@
 ### 2.2 構圖規則
 
 - **插圖頁**：16:9 橫式；要放文字或互動元件的地方，在提示詞裡指定「左邊 45% 留空」「下方地板留空」。
-- **Banner 底圖**：16:9，**左 45% 留給標題**，主角放右邊。
+- **Banner 底圖**：16:9。舊版排版是**左 45% 留給標題**、主角放右邊；從火衛一這本開始用海報式排版（見第 6 節），底圖改成**上方 30% 留天空**、主角放中間偏右下。
 - **素材表（sprites）**：純白底、無陰影、無外框、無文字，`N by M grid`，每格一個物件、周圍大量留白、大小一致。
   之後用 `tools/process_images.py` 依連通區塊自動去背切圖（標籤文字會自動被丟掉）。
 - **遊戲直式背景**：9:16，畫面要「平靜」，不能有可碰撞的物件；程式會鏡像拼接成可無限捲動。
@@ -66,6 +66,9 @@
 | 黑琵 | Bomi | cute chubby black-faced spoonbill: white feathers, a long flat black bill that widens into a round spoon at the tip, bare black skin around the eyes, big shiny eyes, rosy cheeks, long black legs, one small plain green leg ring（春天：只有後頭的冠羽和胸前一塊是黃色，身體仍是白的） |
 | 黑琵 | Ting | cheerful 6-year-old Taiwanese girl birdwatcher, short black hair with a side clip, green bucket hat, binoculars, orange vest with many pockets, khaki shorts, white sneakers |
 | 黑琵 | A-gong | kind Taiwanese fish-farmer grandpa, tanned face, conical straw hat, light blue shirt, dark rubber boots up to the knees |
+| 火衛一 | Emmy | cute chubby box-shaped spacecraft wrapped in shiny crinkled GOLD foil, a cream-white face panel on the front (big shiny eyes, rosy cheeks, smile), two dark-blue solar panel wings, a round white antenna dish on top, four short landing legs with round feet, one thin robot arm with a small scoop（MMX；暱稱是書裡取的） |
+| 火衛一 | Idefix | small four-wheeled silver-gray rover, a little dark-blue solar panel on its back, a head on a neck with two round camera eyes, a small smile（法德合作的真實探測車，書裡有表情） |
+| 火衛一 | Riku | cheerful 5-year-old Japanese boy, spiky black hair, red T-shirt with a yellow star, navy shorts, green sneakers |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -156,7 +159,10 @@ Chrome 會擋 Gemini 連續自動下載：
 - **覓食遊戲**（黑琵書）：側面看魚塭，背景用 Gemini 的遠景圖，水和泥底用程式畫在下半部，水位才能動（阿公放水、漲潮）。水太深的地方鳥走不過去（「too deep」標示）。走太快會嚇跑魚，被嚇到的魚 2.5 秒內抓不到，教「慢慢走、左右掃」。夜晚的魚只看得到漣漪，嘴靠近才看得清楚。
 - **遷徙遊戲**：東亞海岸線用經緯度手畫簡化（`spoonbill/sim.js` 的 `COAST`），繪本地圖頁和遊戲共用。秋天東北季風往西南吹，春天換成往北的弱風。中途濕地每處只休息一次（休息完還在光圈裡會一直重新休息，曾經卡住），累了會自動滑翔到最近的濕地。
 - **Phaser 效能**：Graphics 裡上千個小圓點（星空、虛線航線）每一格都會重畫，水星遊戲一度只有每秒 10 格。星空改成一張 512 px 的 tileSprite，航線改成一條 strokePoints，之後的遊戲照這樣做。
-- Windows 10 的 canvas 字型畫不出 🪂（emoji 12），遊戲裡改用 📡；HTML 文字可以用。
+- Windows 10 的 canvas 字型畫不出 🪂（emoji 12），遊戲裡改用 📡；HTML 文字可以用。🪶 也一樣畫不出來。
+- **降落遊戲**（火衛一書）：側面看火衛一，重力很弱，按住 UP 推、◀ ▶ 平移；落地太快或碰到大石頭會「慢慢彈很高」，不會壞；停在發光點上放開推進器就自動進入挖土。燃料用完給一次小備用油箱，再用完又沒停在發光點才算失敗（結果頁教「小小點一下」）。最後一次挖完 Emmy 自己起飛，不用孩子再操作。按鈕是「按住」型，觸控可同時按多顆（`input.addPointer`）。
+- **探測車遊戲**：地面下降得比重力能拉下來的還快，車就會飛起來（跳躍判定），落地後要花 1.5 秒翻正，所以開快反而比較慢；速度表綠區安全、紅區會跳。停在發亮的石頭旁邊才出現 SCAN 鍵。
+- 素材表 Gemini 會自己在每格下方加名字標籤：`SHEETS_BY_BOOK` 的框高設到標籤上方就好，不必重畫。
 - **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。
   - 預覽分頁被藏起來時瀏覽器會把 setTimeout／rAF 降到每秒一次，遊戲幾乎不動。`tools/dev/current_autopilot.js` 的 `simBot()` 改成自己呼叫 `game.step()` 一格一格跑，一關約 4 秒，不受影響；之後的新遊戲建議都用這招。
@@ -167,7 +173,9 @@ Chrome 會擋 Gemini 連續自動下載：
 ## 6. Banner（FB 宣傳）
 
 - 每本兩張：`*-fb.jpg` 1200×630（連結貼文、廣告）、`*-square.jpg` 1080×1080（動態貼文）。
-- 由 `tools/banners/banner.html` 模板加 `tools/make_banners.py` 產生：左側標題（Baloo 2 字型）＋說明＋3 個標籤＋按鈕，右側是 Gemini 底圖。
+- 由 `tools/banners/banner.html` 模板加 `tools/make_banners.py` 產生。
+  - 舊版（黑琵以前）：左側標題（Baloo 2 字型）＋說明＋3 個標籤＋按鈕，右側是 Gemini 底圖。
+  - **v2 海報式（火衛一起，使用者要求換排版）**：圖滿版，上方深色漸層裡置中放標籤、標題、說明，底部一列放 3 個標籤（左）和按鈕（右）；方形版標籤和按鈕置中疊在底部。在 `banner.html` 的書目資料加 `layout: "v2"` 就會套用，CSS 放在 `<style>` 最後（要壓過舊版的 wide／square 規則）。
 - 標題斷行要檢查，例如「Clean‑Up」要用不換行連字號。
 
 ---

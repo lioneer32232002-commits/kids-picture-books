@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney|phobos|moonscoop&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -310,6 +310,56 @@
   .square .chips { justify-content: center; }
   .square .chip { font-size: 24px; }
   .square .cta { font-size: 28px; }
+  /* ---------- layout v2 (from the Phobos book on): a poster. Title centered at the top over a dark fade,
+     the picture fills the frame, and the chips + button sit in one row along the bottom. ---------- */
+  .v2 .art { background-size: cover; background-position: 50% 50%; }
+  .v2 .veil { background: linear-gradient(180deg, rgba(10,14,40,.9) 0%, rgba(10,14,40,.6) 26%, rgba(10,14,40,0) 48%, rgba(10,14,40,0) 74%, rgba(10,14,40,.75) 100%); }
+  .v2 .copy { inset: 0; padding: 26px 44px 30px; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; }
+  .v2 h1 { color: #fff; margin: 10px 0 6px; text-shadow: 0 4px 0 #141a3a, 0 8px 26px rgba(0,0,0,.6); }
+  .v2 .sub { text-shadow: 0 2px 10px rgba(0,0,0,.8); max-width: 900px; }
+  .v2 .row { margin-top: auto; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .v2 .row .chips { margin-top: 0; }
+  .v2 .row .cta { margin-top: 0; }
+  .v2 .chip { background: rgba(255,255,255,.95); color: #141a3a; }
+  .v2.wide h1 { font-size: 74px; white-space: nowrap; }
+  .v2.wide .sub { font-size: 25px; }
+  .v2.wide .kicker { font-size: 20px; }
+  .v2.wide .chip { font-size: 19px; }
+  .v2.wide .cta { font-size: 26px; }
+  .v2.square .copy { padding: 54px 50px 56px; }
+  .v2.square .veil { background: linear-gradient(180deg, rgba(10,14,40,.9) 0%, rgba(10,14,40,.55) 30%, rgba(10,14,40,0) 50%, rgba(10,14,40,0) 66%, rgba(10,14,40,.85) 100%); }
+  .v2.square h1 { font-size: 100px; }
+  .v2.square .sub { font-size: 32px; }
+  .v2.square .kicker { font-size: 26px; }
+  .v2.square .row { flex-direction: column; gap: 22px; }
+  .v2.square .chips { justify-content: center; }
+  .v2.square .chip { font-size: 25px; }
+  .v2.square .cta { font-size: 32px; }
+
+  /* the generic wide/square rules below come later, so v2 restates what it needs with two classes */
+  .v2.wide .copy, .v2.square .copy { inset: 0; width: auto; top: 0; bottom: 0; left: 0; right: 0; justify-content: flex-start; }
+  .v2.wide .kicker, .v2.wide .cta { align-self: center; }
+  .v2.wide .sub { max-width: 860px; }
+  .v2 .cta { white-space: nowrap; }
+  .v2.square .art { bottom: 0; }
+  .v2.square .veil { top: 0; }
+
+  /* ---------- phobos (v2) ---------- */
+  .phobos .art { background-image: url(../../_raw/phobos/banner.jpg); }
+  .phobos.wide .art { background-size: 112%; background-position: 70% 70%; }
+  .phobos.square .art { background-position: 64% 50%; }
+  .phobos .kicker { background: #ffd23d; color: #141a3a; }
+  .phobos h1 span { color: #ffc24a; }
+  .phobos .cta { background: #e8662e; box-shadow: 0 6px 0 #b0441a; }
+
+  /* ---------- Moon Scoop! (v2, the hopping Idefix picture) ---------- */
+  .moonscoop .art { background-image: url(../../_raw/phobos/p04.jpg); }
+  .moonscoop.wide .art { background-size: 108%; background-position: 50% 80%; }
+  .moonscoop.square .art { background-position: 62% 50%; }
+  .moonscoop .kicker { background: #7dff8a; color: #141a3a; }
+  .moonscoop h1 span { color: #7dff8a; }
+  .moonscoop .cta { background: #5a8de0; box-shadow: 0 6px 0 #3a63ad; }
+
 </style>
 </head>
 <body>
@@ -452,6 +502,22 @@
       chips: ["🐟 Catch by touch", "🕊️ Fly south", "🧒 Ages 5–7"],
       cta: "Play free ▶",
     },
+    phobos: {
+      layout: "v2",
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "Emmy's Trip to <span>Phobos</span>",
+      sub: "Japan's MMX is flying to a tiny moon of Mars to scoop its soil and bring it home!",
+      chips: ["🥔 A potato moon", "🦘 Super‑light jumps", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    moonscoop: {
+      layout: "v2",
+      kicker: "FREE SPACE GAME FOR KIDS",
+      title: "Moon <span>Scoop!</span>",
+      sub: "Land softly on Phobos, drive Idefix over the bumps, and parachute the soil home!",
+      chips: ["🛬 Gentle landings", "🤖 Rover hops", "🪂 Home to Australia"],
+      cta: "Play free ▶",
+    },
     planet: {
       kicker: "FREE INTERACTIVE PICTURE BOOK",
       title: "Are We <span>There</span> Yet?",
@@ -460,10 +526,11 @@
       cta: "Blast off ▶",
     },
   }[book];
+  const chips = '<div class="chips">' + C.chips.map(c => '<span class="chip">' + c + '</span>').join("") + '</div>', cta = '<span class="cta">' + C.cta + '</span>';
+  if (C.layout) document.getElementById("b").classList.add(C.layout);
   document.getElementById("copy").innerHTML =
     '<span class="kicker">' + C.kicker + '</span><h1>' + C.title + '</h1><div class="sub">' + C.sub + '</div>' +
-    '<div class="chips">' + C.chips.map(c => '<span class="chip">' + c + '</span>').join("") + '</div>' +
-    '<span class="cta">' + C.cta + '</span>';
+    (C.layout === "v2" ? '<div class="row">' + chips + cta + '</div>' : chips + cta);
 </script>
 </body>
 </html>

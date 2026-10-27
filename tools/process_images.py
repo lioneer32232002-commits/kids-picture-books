@@ -14,7 +14,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury", "spoonbill": "spoonbill"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury", "spoonbill": "spoonbill", "phobos": "phobos"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520, "tower": 760, "mercury_big": 820}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -106,11 +106,17 @@ SHEETS_BY_BOOK = {
                        [("bomi", 0, 0, 320), ("bomi_sweep", 1, 0, 320), ("bomi_fly", 2, 0, 300), ("bomi_spring", 3, 0, 320),
                         ("fish", 0, 1, 140), ("shrimp", 1, 1, 110), ("ting", 2, 1, 300), ("agong", 3, 1, 300)]},
     },
+    # Phobos book + Moon Scoop! (Gemini added name labels under each sticker: the boxes stop above them)
+    "phobos": {
+        "sheet_cast": {n: ((c / 4, r * 0.5, (c + 1) / 4, r * 0.5 + (0.40 if r == 0 else 0.42)), s) for n, c, r, s in
+                       [("emmy", 0, 0, 360), ("emmy_fire", 1, 0, 360), ("idefix", 2, 0, 240), ("capsule", 3, 0, 200),
+                        ("chute", 0, 1, 300), ("moon", 1, 1, 300), ("riku", 2, 1, 300), ("boulder", 3, 1, 180)]},
+    },
 }
 # sprites that must face right but were drawn facing left
 FLIP = {"rocket", "ambulance", "jetty", "bomi_spring"}
 # sprites made of several blobs (a cloud and its lightning bolt, a flock of birds): keep every blob in the box
-MULTI = {"storm", "gulls", "sonde", "chime", "water", "stack", "stack2"}
+MULTI = {"storm", "gulls", "sonde", "chime", "water", "stack", "stack2", "emmy_fire", "chute"}
 # round sprites (a whole planet): cut with a circle that fits the shape, so a bright rim is not eaten by the white flood-fill
 CIRCLE = {"mercury_big"}
 # see-through sprites (nets): white holes inside the shape are cleared too
