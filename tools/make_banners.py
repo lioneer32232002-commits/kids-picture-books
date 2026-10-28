@@ -64,6 +64,10 @@ JOBS = [
     ("taipei101", "square", "taipei101-square", (1080, 1080)),
     ("steadytower", "wide", "steadytower-fb", (1200, 630)),
     ("steadytower", "square", "steadytower-square", (1080, 1080)),
+    ("meiji", "wide", "meiji-fb", (1200, 630)),
+    ("meiji", "square", "meiji-square", (1080, 1080)),
+    ("bridgepuzzle", "wide", "bridgepuzzle-fb", (1200, 630)),
+    ("bridgepuzzle", "square", "bridgepuzzle-square", (1080, 1080)),
 ]
 
 

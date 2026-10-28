@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bridge in 435 Pieces: Taipei's Meiji Bridge | Picture Book + Bridge Puzzle! Game</title>
+<meta name="description" content="A beautiful arch bridge crossed Taipei's Keelung River from 1933. In 2002 it was taken apart into 435 numbered pieces, and today people are talking about how to put it back together. Learn how arches stand up, why bridges must let floods pass, and why every piece has a number. Then build arches, find pieces and test bridges against floods in Bridge Puzzle! For kids 5-7.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Bridge in 435 Pieces 🌉 A picture book + a game for kids">
+<meta property="og:description" content="Taipei's old Meiji Bridge was taken apart into 435 numbered pieces. How do arches stand? Why must bridges let floods pass? Where should it go now? For kids 5-7.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/meiji-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://lioneer32232002-commits.github.io/kids-picture-books/meiji/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌉</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root {
+    --accent: #b97a2e; --accent-4: #4f86c6;
+    --bg: radial-gradient(circle at 12% 8%, #fff0d8 0, transparent 40%),
+          radial-gradient(circle at 88% 92%, #dcebf7 0, transparent 45%), #f7f5f1;
+  }
+  .actor { position: absolute; transform: translate(-50%, -50%); border: none; background: none; padding: 0; z-index: 2; cursor: pointer;
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+  .actor img { width: 100%; display: block; pointer-events: none; }
+  .idle { animation: idle 2.4s ease-in-out infinite; }
+  @keyframes idle { 50% { margin-top: -6px; } }
+  .actor.pop { animation: hop .45s ease; }
+  @keyframes hop { 40% { transform: translate(-50%, -62%) scale(1.15); } }
+  .readout { position: absolute; left: 3%; top: 5%; z-index: 4; background: rgba(255,255,255,.94); border-radius: 16px; padding: 6px 14px; font-weight: 800; font-size: clamp(13px, 1.8vw, 20px); pointer-events: none; max-width: 56%; }
+  .ctl { position: absolute; z-index: 4; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; right: 3%; bottom: 5%; max-width: 70%; }
+  .ctl.col { flex-direction: column; align-items: flex-end; bottom: auto; top: 5%; }
+  .bigbtn { border: none; border-radius: 999px; padding: 8px 18px; color: #fff; font: 800 clamp(13px, 1.9vw, 22px) "Baloo 2", sans-serif; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.22); background: #b97a2e; }
+  .bigbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.22); }
+  .bigbtn.on { background: #5ccf6a; } .bigbtn.blue { background: #4f86c6; } .bigbtn.red { background: #e8662e; } .bigbtn.purple { background: #9b6cf2; } .bigbtn.gray { background: #6b7a90; } .bigbtn.green { background: #3f9e5a; }
+  .svgstage { background: linear-gradient(#cfe7f6, #f1f8fc 70%); }
+  .svgstage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .lbl { font: 800 34px "Baloo 2", sans-serif; fill: #1e2340; paint-order: stroke; stroke: #fff; stroke-width: 7px; pointer-events: none; }
+  .lbl.w { fill: #fff; stroke: #1e2340; }
+  .playbtn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; background: #b97a2e; color: #fff; font-weight: 800; font-size: clamp(20px, 2.6vw, 28px);
+    border-radius: 999px; padding: 12px 30px; box-shadow: 0 6px 0 #835317; margin: 8px 0; animation: bob 1.4s ease-in-out infinite; }
+  .steps { margin: 6px 0 8px; padding-left: 0; list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; margin: 6px 0; padding-left: 44px; position: relative; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; }
+  .sources { font-size: .7em; color: var(--ink-soft); margin-top: 10px; line-height: 1.5; }
+  .sources a { color: var(--ink-soft); }
+  .quiz .q { font-weight: 800; margin: 12px 0 4px; }
+  .end-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .howbg { background: linear-gradient(#cfe7f6 0, #f1f8fc 60%, #a8d08d 60%, #8cc276); }
+  .ideas { position: absolute; left: 3%; right: 3%; bottom: 5%; z-index: 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .ideas .bigbtn { padding: 8px 6px; font-size: clamp(12px, 1.6vw, 19px); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../"><span class="badge">🌉</span>The Bridge in 435 Pieces</a>
+  <div class="tools">
+    <a class="pill" href="play.html" title="Play the game">🎮<span class="lbl"> Play</span></a>
+    <button class="pill" data-read title="Read this page aloud">📖<span class="lbl"> Read to me</span></button>
+    <button class="pill" data-mute title="Sound on/off">🔊</button>
+  </div>
+</header>
+
+<main class="book">
+
+  <!-- 1 COVER -->
+  <section class="page" data-page="1">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="At sunset, a boy named Hao and his grandma hold hands on a riverbank and look at an elegant old gray arch bridge with bronze lamp posts."><div class="layer"></div></div>
+      <div class="text">
+        <h1>The Bridge in 435 Pieces</h1>
+        <p>This is <b>Hao</b>, and this is his grandma, <b>A-ma</b>. When A-ma was a little girl, she walked across a beautiful bridge in Taipei every week.</p>
+        <p>It was called the <span class="hl">Meiji Bridge</span>. But today, you can't walk on it. It lies in <b>435 pieces</b>! What happened?</p>
+        <p data-noread style="font-size:.8em;color:var(--ink-soft)">👆 Tap the glowing circles. Tap <b>📖 Read to me</b> to hear the story. Press <b>Next ▶</b> to keep reading, or <a href="play.html">jump straight to the game</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 LONG AGO -->
+  <section class="page" data-page="2">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p02.webp" alt="Long ago, people in old-fashioned clothes walk across the arch bridge: a lady with a parasol, a rickshaw, an old black car, and children waving, with bronze lamps shining."><div class="layer"></div></div>
+      <div class="text">
+        <p>The first bridge here was made of <b>iron</b>, in 1901. Later the river was changed, and a new bridge was built. It opened in <b>1933</b>, more than 90 years ago!</p>
+        <p>The new bridge had graceful <span class="hl">arches</span>, a stone railing, and two pairs of shiny <b>bronze lamps</b>. People loved to walk across it. 👆 Tap around.</p>
+        <span class="fact">🌉 The bridge led from the city to a hill by the river, where today's Grand Hotel stands. It was about <b>17 m</b> wide, wider than most streets back then.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 HOW AN ARCH STANDS -->
+  <section class="page" data-page="3">
+    <div class="sheet">
+      <div class="stage svgstage" id="arch">
+        <svg id="archsvg" viewBox="0 0 1000 560" aria-label="An arch made of wedge-shaped stones on a wooden frame, with the keystone at the top"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn" id="stoneBtn">🧱 Add a stone</button><button class="bigbtn gray" id="frameBtn">👷 Take the frame away</button><button class="bigbtn blue" id="archAgain">🔄 Again</button></div>
+        <div class="readout" id="archOut">How does an arch stand up?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>An arch is made of stones shaped like <b>wedges</b>. Builders put them on a wooden frame, starting from the bottom on both sides.</p>
+        <p>The last stone goes at the very top: the <span class="hl">keystone</span>. Now the stones push on each other and hold each other up, and the frame can come away! 👆 Build an arch, or try taking the frame away too early.</p>
+        <span class="fact">🏛️ People have built arches for thousands of years. The bridge's arches were made of concrete with steel inside, but they work the same way.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 TIMELINE -->
+  <section class="page" data-page="4">
+    <div class="sheet">
+      <div class="stage svgstage" id="time">
+        <svg id="timesvg" viewBox="0 0 1000 560" aria-label="A timeline of the bridge from 1901 to 2027"></svg>
+        <div class="ctl" data-noread><button class="bigbtn" id="timeBtn">⏩ Next year</button></div>
+        <div class="readout" id="timeOut">The bridge's long life</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Over many years, the bridge <span class="hl">changed</span>. After 1945 it got a new name, the <b>Zhongshan Bridge</b>. More and more cars came, so it was made wider, and the bronze lamps were taken off.</p>
+        <p>Then, in 2002, something big happened. 👆 Travel through the years.</p>
+        <span class="fact">🚗 In 1968 the bridge was widened from 17 m to 23 m, so more cars could fit. That's when the lamps and the stone railing came off.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 FLOOD -->
+  <section class="page" data-page="5">
+    <div class="sheet">
+      <div class="stage" id="flood"><img class="art" src="img/p03.webp" alt="A typhoon night: heavy rain, and the muddy river rises high and squeezes between the thick piers of the bridge."><div class="layer"></div></div>
+      <div class="text">
+        <p>In 2001, a big storm called <b>Typhoon Nari</b> brought huge amounts of rain to Taipei, and many places <span class="hl">flooded</span>.</p>
+        <p>Here, the river is narrow. People worried that in a big flood, the old bridge's low arches and thick piers would get in the way of the water. 👆 Tap around the storm.</p>
+        <span class="fact">🌊 A bridge must let floodwater pass underneath. If the water can't get through, it backs up and rises even higher.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 LET THE WATER PASS -->
+  <section class="page" data-page="6">
+    <div class="sheet">
+      <div class="stage svgstage" id="pass">
+        <svg id="passsvg" viewBox="0 0 1000 560" aria-label="A river seen from the side with a bridge; you can change how high it is and how many piers stand in the water, then send a flood"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn blue" id="hiBtn">⬆ Higher</button><button class="bigbtn blue" id="loBtn">⬇ Lower</button><button class="bigbtn gray" id="pierBtn">🧱 Piers: 2</button><button class="bigbtn red" id="floodBtn">🌊 Flood!</button></div>
+        <div class="readout" id="passOut">Build a bridge the flood can pass</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>So where should a bridge be? <b>High enough</b> that floodwater flows under it. But <b>not too high</b>, or the ramps get too steep for cars.</p>
+        <p>And not too many <span class="hl">piers</span> in the water: each one pushes the flood a little higher. 👆 Try it, then send a flood!</p>
+        <span class="fact">📏 Engineers look at old floods to see how high the water can get, then leave a little extra space under the bridge, just in case.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 TAKING IT APART -->
+  <section class="page" data-page="7">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p04.webp" alt="Yellow cranes carefully lift big gray blocks cut from the old bridge onto a truck, while friendly workers in hard hats guide them."><div class="layer"></div></div>
+      <div class="text">
+        <p>So in <b>December 2002</b>, workers began taking the old bridge <span class="hl">apart</span>. The city promised to keep it and build it again somewhere else.</p>
+        <p>They cut it into big blocks. Each block got a <b>number</b>, so one day it could be put back in the right place. 👆 Tap around.</p>
+        <span class="fact">🧩 In all, the bridge became <b>435 pieces</b>. That's like a giant puzzle, with pieces as heavy as cars!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 WHY NUMBERS -->
+  <section class="page" data-page="8">
+    <div class="sheet">
+      <div class="stage svgstage" id="nums">
+        <svg id="numsvg" viewBox="0 0 1000 560" aria-label="Six numbered stones mixed up on the ground and an empty arch above them"></svg>
+        <div class="ctl col" data-noread><button class="bigbtn blue" id="numAgain">🔄 Mix them up</button></div>
+        <div class="readout" id="numOut">👆 Tap stone number 1</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Why the <span class="hl">numbers</span>? Every piece of the bridge is a little different. A piece only fits in its own place, like a puzzle piece.</p>
+        <p>With the numbers, builders know exactly where each piece goes. 👆 Tap the stones in order, 1, 2, 3..., and watch the arch come back!</p>
+        <span class="fact">📸 Builders also took photos and made drawings before taking it apart. Numbers, photos and drawings together are like the picture on a puzzle box.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 THE POOL -->
+  <section class="page" data-page="9">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p05.webp" alt="Big gray blocks from the bridge lie in rows in an old empty swimming pool with cracked blue tiles and weeds. Hao and A-ma look through the fence."><div class="layer"></div></div>
+      <div class="text">
+        <p>The pieces were taken to an old, empty <span class="hl">swimming pool</span>, and there they lie. Grass grows between them.</p>
+        <p>It has been more than <b>20 years</b>. Why so long? Finding the right place is hard: it needs lots of space, it shouldn't block a river, and putting the pieces back together is tricky. 👆 Tap around.</p>
+        <span class="fact">🏷️ In 2004 the bridge became an official <b>historic building</b>, even in pieces. Over the years, the city looked at <b>16</b> places for it, but none was quite right.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 WHERE SHOULD IT GO? -->
+  <section class="page" data-page="10">
+    <div class="sheet">
+      <div class="stage svgstage" id="where">
+        <svg id="wheresvg" viewBox="0 0 1000 560" aria-label="Four ideas for where the bridge could go: by a small river, in a park, in a museum, or as a picture on a screen"></svg>
+        <div class="ideas" data-noread>
+          <button class="bigbtn blue" data-idea="river">🏞️ Over a little stream</button>
+          <button class="bigbtn green" data-idea="park">🌳 In a park</button>
+          <button class="bigbtn purple" data-idea="museum">🏛️ Some pieces in a museum</button>
+          <button class="bigbtn gray" data-idea="screen">💻 A 3D model on a screen</button>
+        </div>
+        <div class="readout" id="whereOut">If it were up to you, where would it go?</div>
+        <div class="layer"></div>
+      </div>
+      <div class="text">
+        <p>Now people in Taipei are talking about it again. Should the bridge be put back together? <span class="hl">Where?</span></p>
+        <p>Every idea has good parts and hard parts. There isn't one right answer: people share ideas, listen to each other, and then decide together. 👆 Look at each idea.</p>
+        <span class="fact">🗳️ When a city decides something big, many people help: experts, students, neighbors, and the people everyone votes for.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 WORKSHOP -->
+  <section class="page" data-page="11">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p06.webp" alt="In a bright room, students, an architect and neighbors gather around a model of the arch bridge and colorful drawings, while Hao stands on a chair holding up his own drawing."><div class="layer"></div></div>
+      <div class="text">
+        <p>In 2026, the city invited experts, university students and neighbors to look at the pieces and share <span class="hl">ideas</span>. Hao brought his drawing too!</p>
+        <p>The city plans to finish a report about how the bridge could be put back together in <b>January 2027</b>. Maybe, one day, A-ma and Hao will walk across it together. 👆 Tap around.</p>
+        <span class="fact">✏️ What would you draw? A bridge over a pond? A bridge you can walk under? Your idea counts too!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 HOW TO PLAY -->
+  <section class="page" data-page="12">
+    <div class="sheet">
+      <div class="stage howbg" id="how">
+        <div class="layer">
+          <button class="actor idle" style="left:20%;top:52%;width:12%" data-say="Drag each stone to the slot with the same number. Build up from both sides. The keystone goes last!"><img src="img/hao.webp" alt="Hao"></button>
+          <button class="actor idle" style="left:50%;top:52%;width:13%;animation-delay:.5s" data-say="Find the pieces in the pool in order: 1, 2, 3... Lift the tarps to see what's underneath."><img src="img/ama.webp" alt="A-ma"></button>
+          <button class="actor idle" style="left:80%;top:52%;width:12%;animation-delay:1s" data-say="Choose how high the bridge is and how many piers it has. Then test it with a flood!"><img src="img/engineer.webp" alt="The engineer"></button>
+        </div></div>
+      <div class="text">
+        <h2>How to play Bridge Puzzle!</h2>
+        <ol class="steps">
+          <li><b>🧱 Arch:</b> drag each numbered stone to the slot with the same number (or tap the stone, then the slot). Build up from both sides; the keystone goes last. Then take the frame away!</li>
+          <li><b>🔍 Find:</b> tap the pieces in the pool in order. Tap a tarp to lift it.</li>
+          <li><b>🌊 Flood:</b> pick the bridge's height and its piers, then press <b>Test</b>. The water must pass under it, and cars must get up the ramps.</li>
+        </ol>
+        <a class="playbtn" href="play.html" data-noread>🎮 Play Bridge Puzzle!</a>
+        <span class="fact" data-noread>8 missions, from your first arch to Opening Day, plus <b>Free Build</b>. Your stars are saved on this device.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 QUIZ + SOURCES -->
+  <section class="page" data-page="13">
+    <div class="sheet">
+      <div class="stage"><img class="art" src="img/p01.webp" alt="Hao and A-ma look at the old arch bridge at sunset."><div class="layer"></div></div>
+      <div class="text">
+        <h2>You Know the Meiji Bridge!</h2>
+        <p>Taipei's Meiji Bridge opened in 1933 with graceful arches and bronze lamps. In 2002 it was taken apart into 435 numbered pieces to help the river during floods. Today people are working out how and where to put it back together.</p>
+        <div class="quiz" data-noread>
+          <p style="font-weight:800;margin:10px 0 0">🧠 Quick Quiz!</p>
+          <div class="q">1. Which stone goes into an arch last?</div>
+          <div class="choice-row"><button class="choice">🧱 The bottom stone</button><button class="choice" data-ok>🔑 The keystone at the top</button><button class="choice">🪵 The wooden frame</button></div>
+          <div class="q">2. Why did each piece get a number?</div>
+          <div class="choice-row"><button class="choice" data-ok>🧩 So it can go back in the right place</button><button class="choice">🎂 For its birthday</button><button class="choice">🏃 To make it faster</button></div>
+          <div class="q">3. What must a bridge over a river let pass underneath?</div>
+          <div class="choice-row"><button class="choice">✈️ Airplanes</button><button class="choice" data-ok>🌊 Floodwater</button><button class="choice">🐘 Elephants</button></div>
+        </div>
+        <span class="fact" data-noread>🌉 Try it with a grown-up: stand two books up and lean them against each other at the top. That's a tiny arch! What happens if you pull one away?</span>
+        <div class="end-links" data-noread>
+          <a class="playbtn" href="play.html" style="font-size:22px;padding:10px 24px;margin:0">🎮 Play the game</a>
+          <button class="pill" onclick="Book.go(0)">🔁 Read again</button>
+          <a class="pill" href="../">📚 More books</a>
+        </div>
+        <div class="sources" data-noread>
+          <b>Sources:</b>
+          <a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%B1%B1%E6%A9%8B_(%E8%87%BA%E5%8C%97%E5%B8%82)" target="_blank" rel="noopener">中山橋 (臺北市) (the iron truss bridge of 1901; the reinforced-concrete arch bridge built from January 1930 and finished in March 1933, about 17 m wide with a granite railing and two pairs of bronze lamp posts; renamed Zhongshan Bridge in 1946; widened to 23 m in 1968 when the lamps and railing came off; after Typhoon Nari in 2001, the 2002 decision to move it for water and heritage reasons; taken apart from 20 December 2002 into 435 pieces stored at the old Zaichun swimming pool; a historic building from 2004; the new Zhongshan Bridge opened in 2007)</a> ·
+          <a href="https://www.cna.com.tw/news/aloc/202609160207.aspx" target="_blank" rel="noopener">CNA, 16 September 2026 (the 435 pieces at the old Zaichun pool, the 2020 restoration plan, the expert forum, site walk and student workshop in 2026, and the reassembly concept report planned for January 2027)</a> ·
+          <a href="https://www.epochtimes.com/b5/26/10/25/n14876489.htm" target="_blank" rel="noopener">Epoch Times, 25 October 2026 (16 places studied, the pieces cut vertically, river law limits near the water)</a> ·
+          <a href="https://spectralcodex.com/shilin-taipei-zhongshan-bridge/" target="_blank" rel="noopener">Spectral Codex, Taipei Zhongshan Bridge (completed in 1933, widened in 1968, dismantled in late 2002 into 435 pieces, historic building in 2004)</a><br>
+          Hao, A-ma and their story are pretend. The pictures are drawn from imagination, not exact copies of the real bridge (for example, how many arches it had). Sources give its length as about 93 m or 120 m. The arch and flood pages are simplified: the real arches were concrete with steel inside, and how much the old bridge affected floods was argued about for years, so the book only says people worried about it. The ideas on page 10 are examples, not the city's real plans.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="arrow prev" aria-label="Previous page">◀ Back</button>
+  <div class="dots"></div>
+  <button class="arrow next" aria-label="Next page">Next ▶</button>
+</nav>
+<footer class="footer">Illustrations made with Google Gemini · <a href="play.html">Play Bridge Puzzle!</a> · <a href="../">More picture books</a></footer>
+
+<script src="../assets/book.js"></script>
+<script src="sim.js"></script>
+<script>
+(function () {
+  const B = Book, S = Book.sfx, F = Book.fx, R = BridgeSim;
+  const $ = s => document.querySelector(s);
+  const stageOf = n => document.querySelector('[data-page="' + n + '"] .stage');
+  const once = {};
+  const build = (n, fn) => { if (!once[n]) { once[n] = true; fn(stageOf(n)); } };
+  const say = (st, x, y, w, h, label, html, snd, bx, by, right) => B.hot(st, x, y, w, h, label, () => {
+    snd(); F.sparkles(st, ...B.px(st, x, y), 16); B.bubble(st, bx, by, html, right ? { right: true } : null);
+  });
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, at, txt) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; return e; };
+  let anims = {};
+  const stop = k => { cancelAnimationFrame(anims[k]); anims[k] = 0; };
+  const loop = (k, fn) => { stop(k); let last = performance.now(); const f = now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; if (fn(dt, now) !== false) anims[k] = requestAnimationFrame(f); }; anims[k] = requestAnimationFrame(f); };
+  const STONE = "#cfcbc3", STONE_D = "#8f8a80", WOOD = "#b98a55";
+
+  // one wedge stone of an arch: ring between r1 and r2, from angle a0 to a1 (radians, 0 = right, PI = left, measured upward)
+  const wedge = (cx, cy, r1, r2, a0, a1) => {
+    const P = (r, a) => (cx + r * Math.cos(a)).toFixed(1) + "," + (cy - r * Math.sin(a)).toFixed(1);
+    return "M" + P(r2, a0) + " A" + r2 + "," + r2 + " 0 0 0 " + P(r2, a1) + " L" + P(r1, a1) + " A" + r1 + "," + r1 + " 0 0 1 " + P(r1, a0) + " Z";
+  };
+  const archSlots = (n, cx, cy, r1, r2) => [...Array(n).keys()].map(i => { const a1 = Math.PI - i * Math.PI / n, a0 = a1 - Math.PI / n, am = (a0 + a1) / 2;
+    return { d: wedge(cx, cy, r1, r2, a0, a1), x: cx + (r1 + r2) / 2 * Math.cos(am), y: cy - (r1 + r2) / 2 * Math.sin(am), a: am }; });
+
+  /* -------- 1 cover -------- */
+  B.on(1, () => build(1, st => {
+    say(st, 18, 78, 9, 26, "Hao", "<b>Hao:</b> A-ma, is that the bridge you walked on when you were little?", S.chirp, 4, 6);
+    say(st, 29, 72, 10, 32, "A-ma", "<b>A-ma:</b> It is! Every Sunday. I loved the shiny lamps.", S.yay, 4, 6);
+    say(st, 62, 58, 26, 22, "Arches", "<b>Arches!</b> The road sits on curved arches. The river flows underneath.", S.ding, 98, 6, true);
+    say(st, 19, 26, 9, 30, "Lamps", "<b>Bronze lamps</b> stood at each end of the bridge, lighting the way at night.", S.sparkle, 98, 6, true);
+    say(st, 80, 76, 16, 16, "River", "<b>The Keelung River</b> flows through Taipei, past the green hills.", S.splash, 4, 6);
+  }));
+
+  /* -------- 2 long ago -------- */
+  B.on(2, () => build(2, st => {
+    say(st, 79, 58, 6, 22, "Parasol", "<b>A parasol</b> keeps the sun off on a hot Taipei day.", S.pop, 4, 6);
+    say(st, 85, 52, 10, 20, "Rickshaw", "<b>A rickshaw:</b> a little cart pulled by a person. Cars were still rare!", S.chirp, 4, 6);
+    say(st, 66, 49, 8, 12, "Old car", "<b>An old car</b> from the 1930s. Beep beep!", S.tick, 4, 6);
+    say(st, 92, 74, 14, 20, "Children", "<b>Children</b> wave to the boat from the railing.", S.yay, 4, 6);
+    say(st, 41, 82, 14, 12, "Boat", "<b>A little boat</b> rows under the arch. Arches leave room for boats.", S.splash, 98, 6, true);
+    say(st, 74, 34, 6, 30, "Bronze lamp", "<b>The bronze lamps</b> had round glass globes. They were some of the most loved parts of the bridge.", S.sparkle, 4, 6);
+  }));
+
+  /* -------- 3 how an arch stands -------- */
+  B.on(3, () => build(3, st => {
+    const svg = $("#archsvg"), N = 7, cx = 470, cy = 470, r1 = 180, r2 = 250;
+    svg.appendChild(el("rect", { x: 0, y: cy, width: 1000, height: 90, fill: "#a8d08d" }));
+    svg.appendChild(el("rect", { x: cx - r2 - 70, y: cy - 30, width: 80, height: 120, fill: STONE_D }));
+    svg.appendChild(el("rect", { x: cx + r2 - 10, y: cy - 30, width: 80, height: 120, fill: STONE_D }));
+    const frame = el("g", {}); svg.appendChild(frame);
+    frame.appendChild(el("path", { d: "M" + (cx - r1) + "," + cy + " A" + r1 + "," + r1 + " 0 0 1 " + (cx + r1) + "," + cy + " Z", fill: "#e9cfa6", stroke: WOOD, "stroke-width": 8 }));
+    for (let k = 0; k < 7; k++) { const x = cx - r1 + 20 + k * (2 * r1 - 40) / 6; frame.appendChild(el("line", { x1: x, y1: cy, x2: x, y2: cy - Math.sqrt(Math.max(0, r1 * r1 - (x - cx) ** 2)) + 6, stroke: WOOD, "stroke-width": 7 })); }
+    const slots = archSlots(N, cx, cy, r1, r2), stones = [];
+    slots.forEach((sl, i) => {
+      svg.appendChild(el("path", { d: sl.d, fill: "none", stroke: "#9aa3ad", "stroke-width": 2, "stroke-dasharray": "6 6" }));
+      const g = el("g", { opacity: 0 }), p = el("path", { d: sl.d, fill: i === 3 ? "#e8c66a" : STONE, stroke: STONE_D, "stroke-width": 3 });
+      g.appendChild(p); g.appendChild(el("text", { class: "lbl", x: sl.x, y: sl.y + 10, "text-anchor": "middle", style: "font-size:26px" }, i === 3 ? "🔑" : ""));
+      svg.appendChild(g); stones.push({ g, sl, on: false, y: 0, v: 0, rot: 0 });
+    });
+    const order = [0, 6, 1, 5, 2, 4, 3];
+    let k = 0, framed = true, falling = false;
+    const draw = () => stones.forEach(s => { s.g.setAttribute("opacity", s.on ? 1 : 0); s.g.setAttribute("transform", "translate(0 " + s.y.toFixed(1) + ") rotate(" + s.rot.toFixed(1) + " " + s.sl.x + " " + s.sl.y + ")"); });
+    const reset = () => { stop("arch"); k = 0; framed = true; falling = false; stones.forEach(s => { s.on = false; s.y = 0; s.v = 0; s.rot = 0; }); frame.setAttribute("opacity", 1); frame.setAttribute("transform", ""); draw(); $("#archOut").innerHTML = "How does an arch stand up?"; };
+    $("#stoneBtn").onclick = e => {
+      e.stopPropagation(); if (!framed || k >= N) return;
+      const s = stones[order[k]]; s.on = true; k++; S.dig(); draw();
+      const [x, y] = B.px(st, s.sl.x / 10, 100 * s.sl.y / 560); F.dust(st, x, y, 8);
+      $("#archOut").innerHTML = k === N ? "🔑 The <b>keystone</b> is in! Now take the frame away." : k === N - 1 ? "Only the top is missing: the <b>keystone</b>!" : "Stone " + k + " of " + N + ": both sides grow up together.";
+    };
+    $("#frameBtn").onclick = e => {
+      e.stopPropagation(); if (!framed) return; framed = false; S.whoosh();
+      let t = 0; const done = k === N;
+      loop("arch", dt => {
+        t += dt; frame.setAttribute("transform", "translate(0 " + (t * 260).toFixed(0) + ")"); frame.setAttribute("opacity", Math.max(0, 1 - t));
+        if (!done && t > 0.4) { falling = true; stones.forEach((s, i) => { if (!s.on) return; s.v += 900 * dt; s.y = Math.min(s.y + s.v * dt, cy + 60 - s.sl.y); s.rot += (s.sl.x < cx ? -1 : 1) * 60 * dt * (s.y < cy + 50 - s.sl.y ? 1 : 0); }); draw(); }
+        if (t > 1.6) {
+          if (done) { S.yay(); B.confetti(50); $("#archOut").innerHTML = "🎉 It stands by itself! The stones push on each other and hold each other up."; }
+          else { S.oops(); $("#archOut").innerHTML = k ? "😮 It fell! Without the keystone, the stones can't hold each other." : "The frame is gone, but there are no stones yet!"; }
+          return false;
+        }
+      });
+    };
+    $("#archAgain").onclick = e => { e.stopPropagation(); S.pop(); reset(); };
+    reset();
+  }), () => stop("arch"));
+
+  /* -------- 4 timeline -------- */
+  B.on(4, () => build(4, st => {
+    const svg = $("#timesvg");
+    const EV = [[1901, "🔩", "The first bridge here: an <b>iron</b> bridge."], [1933, "🌉", "The new <b>arch bridge</b> opens, with bronze lamps."], [1946, "🪧", "It gets a new name: <b>Zhongshan Bridge</b>."],
+      [1968, "🚗", "Made <b>wider</b> for cars. The lamps come off."], [2002, "🧩", "Taken apart into <b>435 pieces</b>."], [2004, "🏷️", "Even in pieces, it becomes a <b>historic building</b>."],
+      [2007, "🛣️", "A <b>new</b> Zhongshan Bridge opens nearby for cars."], [2027, "📝", "January: the city plans a <b>report</b> on putting it back together."]];
+    const x = i => 80 + i * 120;
+    svg.appendChild(el("line", { x1: 50, y1: 300, x2: 950, y2: 300, stroke: "#8f8a80", "stroke-width": 8, "stroke-linecap": "round" }));
+    const dots = EV.map(([yr, ic], i) => {
+      const g = el("g", { opacity: 0.25 });
+      g.appendChild(el("circle", { cx: x(i), cy: 300, r: 22, fill: "#b97a2e", stroke: "#fff", "stroke-width": 5 }));
+      g.appendChild(el("text", { class: "lbl", x: x(i), y: 250, "text-anchor": "middle", style: "font-size:28px" }, String(yr)));
+      g.appendChild(el("text", { x: x(i), y: 372, "text-anchor": "middle", style: "font-size:44px" }, ic));
+      svg.appendChild(g); return g;
+    });
+    let i = -1;
+    $("#timeBtn").onclick = e => {
+      e.stopPropagation(); i = (i + 1) % EV.length; if (i === 0) dots.forEach(d => d.setAttribute("opacity", 0.25));
+      dots[i].setAttribute("opacity", 1); S.ding();
+      const [px, py] = B.px(st, x(i) / 10, 300 / 5.6); F.sparkles(st, px, py, 14);
+      $("#timeOut").innerHTML = "<b>" + EV[i][0] + ":</b> " + EV[i][2];
+      $("#timeBtn").textContent = i === EV.length - 1 ? "🔁 From the start" : "⏩ Next year";
+    };
+  }));
+
+  /* -------- 5 flood -------- */
+  B.on(5, () => { const st = stageOf(5); F.weather(st, "rain", .6); build(5, st => {
+    say(st, 22, 82, 12, 14, "Pier", "<b>A pier</b> is a thick leg of the bridge standing in the river. Water has to go around it.", S.splash, 4, 6);
+    say(st, 50, 60, 20, 18, "Arch", "<b>Under the arch</b> the water squeezes through. In a big flood, it rises close to the top.", S.whoosh, 4, 6);
+    say(st, 84, 26, 14, 26, "City", "<b>Everyone is safe indoors.</b> After the storm, people asked: how do we stop floods like this?", S.pop, 4, 6);
+  }); });
+
+  /* -------- 6 let the water pass (uses the game's own rules) -------- */
+  B.on(6, () => build(6, st => {
+    const svg = $("#passsvg"), L = { flood: 7, boat: false }, RV = R.RIVER;
+    const Y = m => 470 - m * 26, X0 = 230, X1 = 770, bank = Y(RV.bank);
+    svg.appendChild(el("path", { d: "M0," + bank + " L" + X0 + "," + bank + " L" + X0 + "," + Y(-2) + " L" + X1 + "," + Y(-2) + " L" + X1 + "," + bank + " L1000," + bank + " L1000,560 L0,560 Z", fill: "#a8d08d", stroke: "#6d9b57", "stroke-width": 4 }));
+    const water = el("rect", { x: X0, width: X1 - X0, fill: "#5aa0d8", opacity: .75 }); svg.appendChild(water);
+    const mark = el("line", { x1: X0 - 40, x2: X1 + 40, stroke: "#e8662e", "stroke-width": 3, "stroke-dasharray": "10 8" }); svg.appendChild(mark);
+    const markT = el("text", { class: "lbl", x: 20, style: "font-size:20px" }, "biggest flood"); svg.appendChild(markT);
+    const bridge = el("g", {}); svg.appendChild(bridge);
+    let h = 6, piers = 2, busy = false;
+    const drawBridge = () => {
+      bridge.innerHTML = "";
+      const deckY = Y(h), roadY = Y(h + RV.deck), rampW = 160;
+      bridge.appendChild(el("path", { d: "M" + (X0 - rampW) + "," + bank + " L" + X0 + "," + roadY + " L" + X1 + "," + roadY + " L" + (X1 + rampW) + "," + bank, fill: "none", stroke: "#6b6b74", "stroke-width": 10, "stroke-linejoin": "round" }));
+      bridge.appendChild(el("rect", { x: X0, y: roadY, width: X1 - X0, height: deckY - roadY, fill: STONE, stroke: STONE_D, "stroke-width": 3 }));
+      const span = (X1 - X0) / (piers + 1);
+      for (let p = 1; p <= piers; p++) bridge.appendChild(el("rect", { x: X0 + p * span - 12, y: deckY, width: 24, height: Y(-2) - deckY, fill: STONE_D }));
+      // an arch under each span: from low on the piers up to the deck in the middle
+      const lowY = Math.min(Y(-2), deckY + 70);
+      for (let p = 0; p <= piers; p++) { const a = X0 + p * span + (p ? 12 : 0), b = X0 + (p + 1) * span - (p < piers ? 12 : 0);
+        bridge.appendChild(el("path", { d: "M" + a + "," + lowY + " Q" + (a + b) / 2 + "," + (2 * deckY - lowY) + " " + b + "," + lowY, fill: "none", stroke: STONE_D, "stroke-width": 6 })); }
+      $("#pierBtn").textContent = "🧱 Piers: " + piers;
+    };
+    const setWater = m => { water.setAttribute("y", Y(m)); water.setAttribute("height", Y(-2) - Y(m)); };
+    mark.setAttribute("y1", Y(L.flood)); mark.setAttribute("y2", Y(L.flood)); markT.setAttribute("y", Y(L.flood) - 6);
+    setWater(0); drawBridge();
+    $("#hiBtn").onclick = e => { e.stopPropagation(); if (busy) return; h = Math.min(RV.maxH, h + 0.5); S.tick(); drawBridge(); };
+    $("#loBtn").onclick = e => { e.stopPropagation(); if (busy) return; h = Math.max(RV.minH, h - 0.5); S.tick(); drawBridge(); };
+    $("#pierBtn").onclick = e => { e.stopPropagation(); if (busy) return; piers = piers % 5 + 1; S.tick(); drawBridge(); };
+    $("#floodBtn").onclick = e => {
+      e.stopPropagation(); if (busy) return; busy = true; S.wind();
+      const r = R.floodCheck(L, h, piers), top = Math.min(r.flood, h + 0.2); let t = 0;
+      loop("pass", dt => {
+        t += dt; const lv = Math.min(top, t * 3); setWater(lv);
+        if (t > top / 3 + 1) {
+          busy = false; setTimeout(() => setWater(0), 1800);
+          const P = r.problems;
+          $("#passOut").innerHTML = r.ok ? "🎉 The flood flows under the bridge, and cars can still drive up the ramps!"
+            : P.includes("low") ? "💦 Too low! The flood hits the bridge and backs up. Go higher."
+            : P.includes("steep") ? "🚗 The water passes, but the ramps are too steep for cars! Go a little lower."
+            : P.includes("span") ? "🌉 With so few piers, each arch would have to be too long. Add a pier."
+            : "Try again!";
+          r.ok ? (S.yay(), B.confetti(40)) : S.oops();
+          return false;
+        }
+      });
+    };
+  }), () => stop("pass"));
+
+  /* -------- 7 taking apart -------- */
+  B.on(7, () => build(7, st => {
+    say(st, 61, 30, 10, 26, "Crane", "<b>Cranes</b> lift each block very slowly and carefully.", S.whoosh, 4, 6);
+    say(st, 61, 69, 12, 14, "Block", "<b>See the colored dots?</b> Marks and numbers tell where each block came from.", S.ding, 4, 6);
+    say(st, 41, 37, 6, 14, "Worker", "<b>Worker:</b> Easy... easy! Every piece must stay safe.", S.chirp, 4, 6);
+    say(st, 77, 55, 10, 16, "Cut edge", "<b>A clean cut.</b> The bridge was cut into blocks, so it could be moved.", S.dig, 4, 6);
+  }));
+
+  /* -------- 8 why numbers -------- */
+  B.on(8, () => build(8, st => {
+    const svg = $("#numsvg"), N = 6, cx = 500, cy = 300, r1 = 120, r2 = 180;
+    svg.appendChild(el("rect", { x: 0, y: 430, width: 1000, height: 130, fill: "#c9c0ae" }));
+    const slots = archSlots(N, cx, cy, r1, r2);
+    slots.forEach(sl => svg.appendChild(el("path", { d: sl.d, fill: "none", stroke: "#9aa3ad", "stroke-width": 2, "stroke-dasharray": "6 6" })));
+    let next = 1, items = [];
+    const mix = () => {
+      items.forEach(it => it.g.remove()); items = []; next = 1;
+      const xs = [...Array(N).keys()].sort(() => Math.random() - .5);
+      for (let i = 0; i < N; i++) {
+        const g = el("g", { style: "cursor:pointer" }), sl = slots[i], hx = 150 + xs[i] * 140, hy = 485;
+        g.appendChild(el("path", { d: sl.d, fill: STONE, stroke: STONE_D, "stroke-width": 3 }));
+        g.appendChild(el("text", { class: "lbl", x: sl.x, y: sl.y + 11, "text-anchor": "middle", style: "font-size:30px" }, String(i + 1)));
+        const it = { g, sl, hx, hy, home: true }; items.push(it);
+        g.setAttribute("transform", "translate(" + (hx - sl.x) + " " + (hy - sl.y) + ") rotate(" + ((i * 37) % 60 - 30) + " " + sl.x + " " + sl.y + ")");
+        g.addEventListener("click", ev => {
+          ev.stopPropagation(); if (!it.home) return;
+          if (i + 1 !== next) { S.oops(); $("#numOut").innerHTML = "That's stone <b>" + (i + 1) + "</b>. Find number <b>" + next + "</b>!"; return; }
+          it.home = false; next++; S.dig(); g.style.transition = "transform .6s ease"; g.setAttribute("transform", "");
+          $("#numOut").innerHTML = next > N ? "🎉 Every stone is back in its place!" : "👆 Now stone number " + next;
+          if (next > N) { setTimeout(() => { S.yay(); B.confetti(50); }, 600); }
+        });
+        svg.appendChild(g);
+      }
+      $("#numOut").innerHTML = "👆 Tap stone number 1";
+    };
+    mix();
+    $("#numAgain").onclick = e => { e.stopPropagation(); S.pop(); mix(); };
+  }));
+
+  /* -------- 9 pool -------- */
+  B.on(9, () => build(9, st => {
+    say(st, 48, 72, 22, 26, "Pieces", "<b>The pieces</b> are heavy concrete blocks, each one numbered.", S.dig, 4, 6);
+    say(st, 63, 60, 14, 16, "Arch piece", "<b>Curved pieces</b> came from the arches. Can you see the curve?", S.ding, 4, 6);
+    say(st, 15, 78, 14, 18, "Weeds", "<b>Little plants</b> grow between the tiles. They have had more than 20 years!", S.chirp, 98, 6, true);
+    say(st, 79, 38, 6, 26, "Hao", "<b>Hao:</b> A-ma, can we put it back together? I'm good at puzzles!", S.yay, 4, 6);
+    say(st, 86, 38, 6, 30, "A-ma", "<b>A-ma:</b> It's a very, very big puzzle. Lots of people are thinking about it.", S.pop, 4, 6);
+  }));
+
+  /* -------- 10 where should it go? -------- */
+  B.on(10, () => build(10, st => {
+    const svg = $("#wheresvg");
+    const IDEAS = {
+      river: ["🏞️", "<b>Over a little stream:</b> 👍 people could walk on it again! 🤔 It must let the stream's floods pass, and needs a big, strong place."],
+      park: ["🌳", "<b>In a park on dry land:</b> 👍 no flood worries, and you can walk under it. 🤔 A bridge over nothing? Some people find that strange."],
+      museum: ["🏛️", "<b>Some pieces in a museum:</b> 👍 easy to look after and learn from. 🤔 You couldn't walk across it."],
+      screen: ["💻", "<b>A 3D model on a screen:</b> 👍 anyone can visit it, even from far away. 🤔 You can't touch the real stones."],
+    };
+    const big = el("text", { x: 500, y: 390, "text-anchor": "middle", style: "font-size:150px" }, "🌉"); svg.appendChild(big);
+    st.querySelectorAll("[data-idea]").forEach(b => b.onclick = e => {
+      e.stopPropagation(); const I = IDEAS[b.dataset.idea]; S.ding(); big.textContent = I[0]; $("#whereOut").innerHTML = I[1];
+      const [x, y] = B.px(st, 50, 45); F.sparkles(st, x, y, 18);
+    });
+  }));
+
+  /* -------- 11 workshop -------- */
+  B.on(11, () => build(11, st => {
+    say(st, 80, 40, 9, 40, "Hao", "<b>Hao:</b> My idea: put it over a pond, so the ducks can swim under it!", S.yay, 4, 6);
+    say(st, 49, 69, 22, 16, "Model", "<b>A model</b> of the bridge helps everyone imagine it.", S.ding, 4, 6);
+    say(st, 37, 33, 9, 28, "Architect", "<b>The architect:</b> Every idea helps. Let's look at the good parts and the hard parts.", S.chirp, 4, 6);
+    say(st, 93, 62, 9, 34, "A-ma", "<b>A-ma:</b> I hope I can walk on it again one day, holding your hand.", S.pop, 4, 6);
+  }));
+
+  /* -------- 12 how to play -------- */
+  document.querySelectorAll("#how [data-say]").forEach(btn => btn.onclick = () => {
+    btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+    S.pop(); const st = stageOf(12), x = parseFloat(btn.style.left), y = parseFloat(btn.style.top);
+    F.sparkles(st, ...B.px(st, x, y), 16);
+    B.bubble(st, x > 60 ? 98 : Math.max(4, x - 10), 6, "<b>" + btn.querySelector("img").alt + ":</b> " + btn.dataset.say, x > 60 ? { right: true } : null);
+  });
+
+  /* -------- 13 -------- */
+  B.on(13, () => build(13, st => {
+    say(st, 62, 58, 26, 22, "Bridge", "<b>The bridge:</b> 435 pieces, waiting for their next chapter. Want to build an arch yourself?", S.yay, 98, 6, true);
+  }));
+  let right = 0;
+  document.querySelectorAll(".quiz .choice-row").forEach(row => row.querySelectorAll(".choice").forEach(c => c.onclick = () => {
+    if (row.dataset.done) return;
+    if (c.hasAttribute("data-ok")) { c.classList.add("right"); row.dataset.done = 1; S.ding(); if (++right === 3) { S.yay(); B.confetti(120); } }
+    else { c.classList.remove("wrong"); void c.offsetWidth; c.classList.add("wrong"); S.oops(); }
+  }));
+
+  B.init();
+})();
+</script>
+</body>
+</html>

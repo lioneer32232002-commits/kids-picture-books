@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bridge Puzzle! | A Kids' Game from "The Bridge in 435 Pieces"</title>
+<meta name="description" content="A free game for kids 5-7 about Taipei's old Meiji Bridge: build stone arches on a wooden frame with the keystone last, find the bridge's numbered pieces in an old swimming pool, and design a bridge that lets floods and boats pass.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bridge Puzzle! 🌉 A Meiji Bridge game for kids">
+<meta property="og:description" content="Build arches, find the 435 numbered pieces, and keep a bridge safe from floods. 8 missions + Free Build.">
+<meta property="og:image" content="https://lioneer32232002-commits.github.io/kids-picture-books/banners/bridgepuzzle-fb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌉</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/book.css">
+<style>
+  :root { --accent: #b97a2e; --bg: radial-gradient(circle at 15% 10%, #fff3cf 0, transparent 40%), radial-gradient(circle at 90% 90%, #d8f2ee 0, transparent 45%), #f6f8f7; }
+  .gamebox { width: min(100% - 24px, calc((100vh - 84px) * 16 / 9), 1280px); margin: 0 auto 16px; }
+  #game { width: 100%; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #1e2340; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #game canvas { display: block; }
+  .side { max-width: 1180px; margin: 0 auto; padding: 0 12px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .side .box { background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 3px 0 rgba(59,47,74,.1); font-size: 15px; line-height: 1.45; }
+  .side h3 { margin: 0 0 6px; font-size: 19px; }
+  .side ul { margin: 4px 0; padding-left: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .gamebox { width: min(100% - 12px, calc((100vh - 64px) * 16 / 9)); } }
+  @media (orientation: portrait) and (max-width: 860px) { .turn { display: block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="badge">🌉</span>Bridge Puzzle!</a>
+  <div class="tools">
+    <a class="pill" href="./" title="Back to the story">📖<span class="lbl"> Story</span></a>
+    <button class="pill" id="fs" title="Full screen">⛶<span class="lbl"> Full screen</span></button>
+    <button class="pill" id="snd" title="Sound on/off">🔊</button>
+  </div>
+</header>
+<p class="turn" style="display:none;text-align:center;margin:0 12px 8px;font-weight:800">📱 Turn your phone sideways for a bigger view!</p>
+<div class="gamebox"><div id="game"></div></div>
+<div class="side">
+  <div class="box">
+    <h3>🕹️ How to play</h3>
+    <ul>
+      <li><b>🧱 Arch:</b> drag each numbered stone to the slot with the same number, or tap the stone and then the slot. The glowing slots are ready. Build up from both sides; the keystone 🔑 goes last. Then take the frame away!</li>
+      <li><b>🔍 Find:</b> tap the pieces in the pool in order, 1, 2, 3... Tap a blue tarp to look underneath.</li>
+      <li><b>🌊 Flood:</b> pick the bridge's height (and piers), then press <b>TEST</b>. The flood must pass under it, trucks must get up the ramps, and boats must fit.</li>
+    </ul>
+    <p class="note">On a computer you can drag with the mouse.</p>
+  </div>
+  <div class="box">
+    <h3>🔬 Is it real?</h3>
+    Taipei's Meiji Bridge really opened in 1933 with arches and bronze lamps, and in 2002 it really was taken apart into 435 numbered pieces, which lie in an old swimming pool. Arches really are built on a wooden frame with the keystone last, and bridges over rivers really must let floods pass.
+    <p class="note">Game note: the arches, floods and numbers are much simpler than in real life, and the flood heights are made up for the game. Where the real bridge will go is still being discussed.</p>
+  </div>
+  <div class="box">
+    <h3>📖 Read the story</h3>
+    What happened to the bridge, and where could it go? Read <a href="./">The Bridge in 435 Pieces</a> first.
+  </div>
+</div>
+<footer class="footer">Illustrations made with Google Gemini · Built with Phaser · <a href="../">More picture books</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.88.2/dist/phaser.min.js"></script>
+<script src="../assets/book.js"></script>
+<script src="sim.js"></script>
+<script src="game.js"></script>
+<script>
+  window.__bpGame = BridgePuzzle.start();
+  const snd = document.getElementById("snd");
+  const paint = () => { snd.textContent = Book.muted ? "🔇" : "🔊"; snd.classList.toggle("on", !Book.muted); };
+  paint();
+  snd.onclick = () => { Book.setMuted(!Book.muted); paint(); if (!Book.muted) Book.sfx.pop(); };
+  document.getElementById("fs").onclick = () => { const g = window.__bpGame; if (g) g.scale.isFullscreen ? g.scale.stopFullscreen() : g.scale.startFullscreen(); };
+</script>
+</body>
+</html>

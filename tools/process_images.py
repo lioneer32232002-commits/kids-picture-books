@@ -14,7 +14,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "_raw"
 
-BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury", "spoonbill": "spoonbill", "phobos": "phobos", "taipei101": "taipei101"}
+BOOKS = {"dino": "dinosaurs", "planet": "planets", "immune": "immune", "space": "planets", "currents": "currents", "aircar": "aircar", "flight": "flight", "tsa": "songshan", "paris": "paris", "typhoon": "typhoon", "mercury": "mercury", "spoonbill": "spoonbill", "phobos": "phobos", "taipei101": "taipei101", "meiji": "meiji"}
 # sprite name -> max size (px)
 SPRITES = {"asteroid": 360, "boss": 520, "tower": 760, "mercury_big": 820}
 # sprite sheets cut into boxes: name -> {out_name: (l, t, r, b) as fractions}
@@ -117,6 +117,12 @@ SHEETS_BY_BOOK = {
         "sheet_cast": {n: ((c / 4, r / 2, (c + 1) / 4, (r + 1) / 2), s) for n, c, r, s in
                        [("bao", 0, 0, 320), ("bao_brave", 1, 0, 320), ("yuyu", 2, 0, 300), ("yuyu_cheer", 3, 0, 300),
                         ("tea", 0, 1, 160), ("cloud", 1, 1, 260), ("worker", 2, 1, 300), ("dad", 3, 1, 300)]},
+    },
+    # Meiji Bridge book + Bridge Puzzle! (the egret in the sheet is white on white, so it is not cut out)
+    "meiji": {
+        "sheet_cast": {n: ((c / 4, r / 2, (c + 1) / 4, (r + 1) / 2), s) for n, c, r, s in
+                       [("hao", 0, 0, 300), ("hao_cheer", 1, 0, 300), ("ama", 2, 0, 300), ("lamp", 3, 0, 320),
+                        ("truck", 0, 1, 260), ("boat", 1, 1, 240), ("engineer", 3, 1, 300)]},
     },
 }
 # sprites that must face right but were drawn facing left

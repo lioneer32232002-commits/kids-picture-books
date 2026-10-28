@@ -72,6 +72,9 @@
 | 台北 101 | Bao | GIANT shiny golden ball with a friendly face (big shiny eyes, rosy cheeks, little smile) and thin horizontal lines of stacked steel plates, hanging from thick steel cables（真的阻尼器沒有臉；台北 101 自己的吉祥物「阻尼器寶寶」是三麗鷗設計的，不要照抄它的樣子） |
 | 台北 101 | Yuyu | cheerful 6-year-old Taiwanese girl, black hair in one high ponytail with a yellow bow, light-purple T-shirt with a little white star, denim shorts, orange sneakers, small blue backpack（跨年夜穿紅外套） |
 | 台北 101 | Dad | kind Taiwanese dad, short black hair, glasses, green polo shirt, khaki pants |
+| 明治橋 | Hao | cheerful 6-year-old Taiwanese boy, short black hair with a little cowlick, orange T-shirt, navy shorts, green sneakers, small sketchbook |
+| 明治橋 | A-ma | kind Taiwanese grandma, short wavy gray hair, round glasses, lavender cardigan, dark pants |
+| 明治橋 | 明治橋 | elegant 1930s light-gray reinforced-concrete arch bridge, open arches under the road, stone railing, two pairs of tall bronze lamp posts with round glass lanterns（真的橋沒有臉；1968 年後的畫面不畫燈柱） |
 | 洋流 | Mo | tiny baby green sea turtle, rounded olive-green shell with a soft hexagon pattern, cream-yellow belly, chubby flippers, big shiny eyes and rosy cheeks（遊戲用 top-down 圖：head pointing UP） |
 
 ### 2.4 一定要檢查的地方（做過的修正）
@@ -168,6 +171,10 @@ Chrome 會擋 Gemini 連續自動下載：
 - **穩住大樓遊戲**（台北 101 書）：塔的擺動是「彈簧＋阻尼」，陣風用同樣的節奏推（共振才看得出晃），地震是幾個頻率混在一起的短暫搖晃。孩子按 ◀ ▶ 的規則是「往塔『正在移動』的反方向擺 Bao」才會減少晃動（看位置不看速度在物理上沒用，所以畫面上用塔頂的移動箭頭，第一關讓該按的鍵發光）。真的阻尼器不用人推，play 頁面要明寫。會輸的只有 89 樓咖啡廳的珍奶（灑掉 3 杯也會打完，只是 1 星）。
 - **電梯遊戲**：快的電梯要很早放開才停得住，畫面上的 🛑 標記和面板文字「現在放開會停在幾樓」是這關的核心；靠近樓層又夠慢時電梯自己平層（真的電梯也會）。數字照真的：最快 60.6 km/h，5 樓到 89 樓機器人剛好 37 秒。
 - Windows 10 也畫不出 🧋 🛗 🫸 🫨（emoji 13 以後），HTML 也一樣：珍奶用 🥤、電梯用 ⬆️、推用 🤜🤛。
+- **拼橋遊戲**（明治橋書）：拱石只能「從兩邊往上」放、拱心石最後，放錯號碼或順序只會滑回托盤；可以拖曳，也可以先點石頭再點位置（5–7 歲拖不準）。防洪關的正確範圍要寬（至少 4 種高度可過），一次測試最多說出兩個問題，不然孩子要多測好幾次才知道還有別的錯。河岸要比洪水高，不然畫面上水會像一道牆浮在草地上。
+- **有爭議的城市議題**（明治橋要不要重建、放哪裡）：不寫政治人物、不選邊，只列每個想法的好處和難處，說「大家說想法、互相聽、再一起決定」。
+- **按鈕直接呼叫 sim 會吃掉事件**：sim 每一步開頭會清空 events，所以按鈕的動作要排進下一步再執行（`acts` 佇列），不然提示和畫面不會更新（曾經發生「拆支架」按鈕按了還在）。給孩子的回饋（放錯、測試失敗）要立刻顯示（`toastNow`），不能排在別的訊息後面。
+- Windows 10 畫不出 🪵，換成 👷。
 - 素材表 Gemini 會自己在每格下方加名字標籤：`SHEETS_BY_BOOK` 的框高設到標籤上方就好，不必重畫。
 - **救護遊戲**（松山機場書，使用者要求「私人飛機與醫療後送」）：地圖用 `currents/geo.js` 真實經緯度，跑道方向和編號照真實（松山 10/28、金門 06/24、馬祖 03/21、澎湖 02/20、台東 04/22），飛機一定逆風起降；噴射機要放輪（三綠燈）＋SLOW 才會被進場漏斗接手自動落地，直升機在 H 上減速按 LAND。病人舒適度取代血量：亂流、靠近鳥群、忘了回應護理師都只扣舒適度，不會失敗；鳥一定安全飛走。氣象雷達（小地圖紫色）讓孩子學繞過雷雨。島和機場畫得比實際大，頁面明寫。
 - **難度用自動駕駛實測**：`tools/dev/td_autoplay.js`、`tools/dev/space_autopilot.js` 搭配網址參數 `?unlock=1&timer=1`。目標是前幾關無傷、最後幾關有挑戰但打得過。

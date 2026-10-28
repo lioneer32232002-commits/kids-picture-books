@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney|phobos|moonscoop|taipei101|steadytower&size=wide|square -->
+<!-- Banner template. Rendered by tools/make_banners.py with ?book=dino|planet|immune|space|currents|ridecurrent|aircar|blastracer|flight|skypilot|paris|cathedral|songshan|skyrescue|typhoon|typhoonchasers|mercury|mercurymission|spoonbill|spoonbilljourney|phobos|moonscoop|taipei101|steadytower|meiji|bridgepuzzle&size=wide|square -->
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -376,6 +376,22 @@
   .steadytower h1 span { color: #ffd23d; }
   .steadytower .cta { background: #e8662e; box-shadow: 0 6px 0 #b0441a; }
 
+  /* ---------- Meiji Bridge (v2) ---------- */
+  .meiji .art { background-image: url(../../_raw/meiji/p01.jpg); }
+  .meiji.wide .art { background-size: 108%; background-position: 50% 80%; }
+  .meiji.square .art { background-position: 55% 50%; }
+  .meiji .kicker { background: #ffd23d; color: #1e2340; }
+  .meiji h1 span { color: #ffd23d; }
+  .meiji .cta { background: #b97a2e; box-shadow: 0 6px 0 #835317; }
+
+  /* ---------- Bridge Puzzle! (v2, the pieces in the pool) ---------- */
+  .bridgepuzzle .art { background-image: url(../../_raw/meiji/p05.jpg); }
+  .bridgepuzzle.wide .art { background-size: 108%; background-position: 50% 85%; }
+  .bridgepuzzle.square .art { background-position: 55% 50%; }
+  .bridgepuzzle .kicker { background: #7dff8a; color: #1e2340; }
+  .bridgepuzzle h1 span { color: #ffd23d; }
+  .bridgepuzzle .cta { background: #4f86c6; box-shadow: 0 6px 0 #2f62a0; }
+
 </style>
 </head>
 <body>
@@ -548,6 +564,22 @@
       title: "Steady <span>Tower!</span>",
       sub: "Swing Bao against the typhoon, stack the bamboo tower, and stop the 60 km/h elevator!",
       chips: ["🌀 Calm the sway", "🏗️ Build it", "⬆️ Super-fast lift"],
+      cta: "Play free ▶",
+    },
+    meiji: {
+      layout: "v2",
+      kicker: "FREE PICTURE BOOK + GAME",
+      title: "The Bridge in <span>435 Pieces</span>",
+      sub: "Taipei's old Meiji Bridge was taken apart in 2002. How do arches stand? Where should it go now?",
+      chips: ["🌉 Taipei's Meiji Bridge", "🔑 How arches stand", "🧒 Ages 5–7"],
+      cta: "Read & play free ▶",
+    },
+    bridgepuzzle: {
+      layout: "v2",
+      kicker: "FREE BRIDGE GAME FOR KIDS",
+      title: "Bridge <span>Puzzle!</span>",
+      sub: "Build arches with the keystone last, find the numbered pieces, and let the flood pass!",
+      chips: ["🧱 Build arches", "🔍 Find the pieces", "🌊 Beat the flood"],
       cta: "Play free ▶",
     },
     planet: {
