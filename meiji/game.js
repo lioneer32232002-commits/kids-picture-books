@@ -228,7 +228,11 @@
     up(p) {
       const d = this.drag; this.drag = null; if (!d) return;
       const moved = Math.hypot(p.x - d.sx, p.y - d.sy) > 25;
-      if (!moved) { this.pick = this.pick === d.num ? null : d.num; return; }     // a tap: pick this stone, then tap a slot
+      if (!moved) {     // a tap: pick this stone, then tap a slot
+        this.pick = this.pick === d.num ? null : d.num;
+        if (this.pick != null) this.toastNow("👉 Now tap slot " + (this.pick + 1) + " on the arch.");
+        return;
+      }
       const slot = this.slotAt(p);
       if (slot != null) this.tryPlace(d.num, slot);
     }
@@ -280,7 +284,8 @@
         const on = s.filled[sl.i];
         if (on) { ag.fillStyle(sl.i === key ? 0xe8c66a : STONE, 1).fillPoints(sl.pts, true).lineStyle(3, STONE_D, 1).strokePoints(sl.pts, true); }
         else {
-          const glow = open.has(sl.i) && s.phase === "stones";
+          const glow = open.has(sl.i) && s.phase === "stones", picked = this.pick === sl.i;
+          if (picked) { ag.fillStyle(0xfff3a8, 0.75 + 0.2 * Math.sin(t * 8)).fillPoints(sl.pts, true).lineStyle(6, 0xff9f1a, 1).strokePoints(sl.pts, true); return; }
           ag.fillStyle(glow ? 0xfff3a8 : 0xffffff, glow ? 0.35 + 0.25 * Math.sin(t * 5) : 0.18).fillPoints(sl.pts, true);
           ag.lineStyle(3, glow ? 0xffd23d : 0xffffff, glow ? 1 : 0.6).strokePoints(sl.pts, true);
         }
@@ -457,7 +462,7 @@
       this.boat = fit(this.add.image(-200, YM(0), "boat"), 150).setOrigin(0.5, 0.8).setDepth(5).setVisible(!!L.boat);
       this.mast = this.add.graphics().setDepth(5);
       this.truck = fit(this.add.image(-200, bank, "truck"), 140).setOrigin(0.5, 1).setDepth(6);
-      fit(this.add.image(70, bank, "engineer"), 150).setOrigin(0.5, 1).setDepth(6);
+      fit(this.add.image(46, bank, "engineer"), 140).setOrigin(0.5, 1).setDepth(5);
       hud(this, L.name);
       toaster(this, 150);
       // controls on the right
@@ -539,7 +544,7 @@
       if (testing && r) {
         const steep = r.problems.includes("steep"), tk = Math.min(1, s.testT / R.TEST_T);
         let tx = -200 + tk * (W + 400), ty = bank;
-        if (steep && tx > X0 - rampW - 40) { const back = Math.max(0, tk - 0.35) * 600; tx = Math.max(X0 - rampW - 80, X0 - rampW - 10 - back); }
+        if (steep && tx > X0 - rampW - 40) { const back = Math.max(0, tk - 0.35) * 300; tx = Math.max(X0 - rampW + 10, X0 - rampW + 60 - back); }   // stops at the foot of the ramp
         else if (tx > X0 - rampW - 40 && tx < X1 + rampW + 40) { ty = tx < X0 - 20 ? bank + (roadY - bank) * (tx - (X0 - rampW - 40)) / (rampW + 20) : tx > X1 + 20 ? roadY + (bank - roadY) * (tx - (X1 + 20)) / (rampW + 20) : roadY; }
         this.truck.setPosition(tx, ty);
         if (L.boat) {
